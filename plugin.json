@@ -1,0 +1,12 @@
+{
+  "id": "mobile_ui",
+  "name": "Mobile UI",
+  "version": "0.1.0",
+  "description": "Mobile-first layout and player UI improvements for FeedBack.",
+  "category": "practice",
+  "script": "screen.js",
+  "scriptType": "module",
+  "styles": "assets/mobile_ui.css",
+  "private": false,
+  "standards": ["plugin-runtime-idempotent.v1"]
+}

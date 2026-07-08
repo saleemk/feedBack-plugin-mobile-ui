@@ -1,0 +1,9 @@
+/* Mobile UI plugin.
+   Foundation slice only: no visible layout rules yet.
+
+   The runtime currently applies reversible classification classes to <html>:
+   - mobile-ui-enabled
+   - mobile-ui-phone / mobile-ui-tablet / mobile-ui-desktop
+   - mobile-ui-portrait / mobile-ui-landscape
+   - mobile-ui-standalone
+*/
