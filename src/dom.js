@@ -1,6 +1,7 @@
 const SCREEN_CLASS_NAMES = [
   'mobile-ui-screen-home',
   'mobile-ui-screen-library',
+  'mobile-ui-screen-progress',
   'mobile-ui-screen-player',
   'mobile-ui-screen-settings',
   'mobile-ui-screen-plugins',
@@ -34,6 +35,9 @@ export function screenNameFromId(screenId) {
       return 'home';
     case 'v3-songs':
       return 'library';
+    case 'v3-progress':
+    case 'progress':
+      return 'progress';
     case 'player':
       return 'player';
     case 'settings':
