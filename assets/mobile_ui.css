@@ -1090,3 +1090,83 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-c
   max-height: 320px !important;
   overflow: hidden !important;
 }
+
+/* 6. v3 Progress
+   Compact phone progress cards and let tablet progress content use more width. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress > .max-w-5xl {
+  padding: 1rem 1rem 1.5rem !important;
+  gap: 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress > .max-w-5xl > div {
+  margin-top: 0.85rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress > .max-w-5xl > div:first-child {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  align-items: center !important;
+  margin-top: 0 !important;
+  gap: 0.75rem !important;
+  padding: 0.8rem 0.9rem !important;
+  text-align: left !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress > .max-w-5xl > div:first-child > div {
+  min-width: 0;
+  text-align: left !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress > .max-w-5xl > div:first-child .text-6xl {
+  font-size: 2.75rem !important;
+  line-height: 0.95 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress > .max-w-5xl > div:first-child .text-3xl {
+  font-size: 1.45rem !important;
+  line-height: 1.05 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress > .max-w-5xl > div:first-child .text-xs {
+  font-size: 0.66rem !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress > .max-w-5xl > div:first-child [data-prog-shop] {
+  margin-top: 0.35rem !important;
+  font-size: 0.72rem !important;
+  line-height: 1.1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress .bg-fb-card\/80.backdrop-blur.rounded-xl {
+  padding: 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress .divide-y.divide-fb-border\/30 > div {
+  padding-top: 0.45rem !important;
+  padding-bottom: 0.45rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress h3 {
+  font-size: 1rem !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-tablet #v3-progress > .max-w-5xl {
+  max-width: 72rem !important;
+  padding: 1.5rem 1.75rem 2rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-tablet #v3-progress > .max-w-5xl > div:first-child {
+  gap: 1.5rem !important;
+  padding: 1.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-tablet #v3-progress .grid.md\:grid-cols-2 {
+  gap: 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-tablet #v3-progress > .max-w-5xl > .grid.md\:grid-cols-2:not(:last-child) {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
