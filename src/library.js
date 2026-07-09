@@ -115,7 +115,7 @@ export function createFeature() {
       row.className = 'mobile-ui-library-refine-row';
       row.innerHTML =
         '<div class="mobile-ui-library-refine-summary" aria-live="polite"></div>' +
-        '<button id="mobile-ui-library-refine-toggle" type="button" class="mobile-ui-library-refine-toggle" aria-controls="v3-songs-toolbar" aria-expanded="false">Refine</button>';
+        '<button id="mobile-ui-library-refine-toggle" type="button" class="mobile-ui-library-refine-toggle" aria-controls="v3-songs-toolbar" aria-expanded="false">Options</button>';
 
       const toggle = row.querySelector('#mobile-ui-library-refine-toggle');
       toggle?.addEventListener('click', () => {
@@ -151,7 +151,7 @@ export function createFeature() {
     const button = row?.querySelector('#mobile-ui-library-refine-toggle');
     if (button) {
       button.setAttribute('aria-expanded', refineOpen ? 'true' : 'false');
-      button.textContent = refineOpen ? 'Hide' : 'Refine';
+      button.textContent = refineOpen ? 'Hide' : 'Options';
     }
   }
 
