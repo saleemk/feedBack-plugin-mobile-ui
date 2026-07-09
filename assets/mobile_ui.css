@@ -901,3 +901,12 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v3-azrail:focus-within {
   opacity: 1;
 }
+
+/* v3 Song Library sticky toolbar v1.
+   On mobile/tablet, the library options bar scrolls with content; the global topbar stays sticky. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-toolbar {
+  position: static !important;
+  top: auto !important;
+}
