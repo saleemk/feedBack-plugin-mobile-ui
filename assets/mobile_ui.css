@@ -224,3 +224,72 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet.mobile-ui-portrait #v3-topb
   max-width: 100% !important;
   flex: none !important;
 }
+
+/* v3 mobile drawer polish.
+   Core owns drawer open/close behavior; mobile_ui only softens the shell styling. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-sidebar {
+  width: clamp(12.5rem, 54vw, 13rem) !important;
+  padding-top: max(0.25rem, env(safe-area-inset-top)) !important;
+  border-right-color: rgba(96, 165, 250, 0.22) !important;
+  background-image:
+    radial-gradient(circle at 30% 0%, rgba(37, 99, 235, 0.22) 0%, rgba(15, 23, 42, 0.08) 34%, transparent 62%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(10, 15, 28, 0.98)) !important;
+  box-shadow:
+    18px 0 46px rgba(0, 0, 0, 0.48),
+    inset -1px 0 0 rgba(148, 163, 184, 0.08);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-brand {
+  padding: 0.95rem 0.9rem 0.7rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-brand img {
+  max-width: 10rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-nav {
+  padding-left: 0.65rem !important;
+  padding-right: 0.65rem !important;
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom)) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-nav a[data-v3-nav] {
+  min-height: 2.7rem;
+  gap: 0.65rem !important;
+  padding-left: 0.7rem !important;
+  padding-right: 0.7rem !important;
+  border-radius: 0.9rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-nav a[data-v3-nav] svg {
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-nav a[data-v3-nav] .v3-nav-label {
+  font-size: 0.86rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-nav a[data-v3-nav].bg-fb-card {
+  background: rgba(30, 41, 59, 0.78) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-sidebar-backdrop {
+  background: rgba(2, 6, 23, 0.74) !important;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-sidebar {
+  width: 15.5rem !important;
+  border-right-color: rgba(96, 165, 250, 0.18) !important;
+  box-shadow: 18px 0 50px rgba(0, 0, 0, 0.36);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-sidebar-backdrop {
+  background: rgba(2, 6, 23, 0.6) !important;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
