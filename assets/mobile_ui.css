@@ -1,14 +1,21 @@
 /* Mobile UI plugin.
-   Foundation slices only: no Home/Library/Player layout rules yet.
-
-   The runtime currently applies reversible classification classes to <html>:
+   The runtime applies reversible classification classes to <html>:
    - mobile-ui-enabled
    - mobile-ui-phone / mobile-ui-tablet / mobile-ui-desktop
    - mobile-ui-portrait / mobile-ui-landscape
    - mobile-ui-standalone
    - mobile-ui-v3
    - mobile-ui-screen-*
+
+   Sections:
+   1. Diagnostics
+   2. v3 Top Status Rail
+   3. v3 Mobile Drawer
+   4. v3 Song Library
+   5. v3 Home
 */
+
+/* 1. Diagnostics */
 
 .mobile-ui-debug-overlay {
   position: fixed;
@@ -32,8 +39,8 @@
   color: #7dd3fc;
 }
 
-/* v3 top status rail: first visible slice.
-   Keep selectors rooted in mobile_ui classes so desktop and core styles stay intact. */
+/* 2. v3 Top Status Rail
+   Compact the global v3 status widgets on phone/tablet while leaving desktop intact. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone .mobile-ui-topbar-status-row {
   flex-direction: column !important;
@@ -225,8 +232,8 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet.mobile-ui-portrait #v3-topb
   flex: none !important;
 }
 
-/* v3 mobile drawer polish.
-   Core owns drawer open/close behavior; mobile_ui only softens the shell styling. */
+/* 3. v3 Mobile Drawer
+   Core owns drawer open/close behavior; mobile_ui only softens mobile/tablet shell styling. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-sidebar {
   width: clamp(12.5rem, 54vw, 13rem) !important;
@@ -294,8 +301,10 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-sidebar-backdrop {
   backdrop-filter: blur(2px);
 }
 
-/* v3 Song Library mobile layout v1.
-   Compact the library chrome while keeping the existing grid, filters, and actions visible. */
+/* 4. v3 Song Library
+   Toolbar, content, and sticky behavior are scoped to the library screen. */
+
+/* Song Library base mobile/tablet layout. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs > .max-w-7xl {
   padding-left: 1rem !important;
@@ -488,8 +497,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v
   height: 2.4rem !important;
 }
 
-/* v3 Song Library toolbar v2.
-   Phone-only primary/secondary grouping; core still owns all toolbar behavior. */
+/* Song Library toolbar: Options/More controls and phone collapsed states. */
 
 html.mobile-ui-enabled.mobile-ui-v3 .mobile-ui-library-more-toggle {
   display: none;
@@ -553,8 +561,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3
   flex: 1 1 calc(50% - 0.35rem) !important;
 }
 
-/* v3 Song Library toolbar v3.
-   Phone collapsed summary row; Refine opens primary controls, More opens advanced controls. */
+/* Song Library toolbar: phone summary row. */
 
 html.mobile-ui-enabled.mobile-ui-v3 .mobile-ui-library-refine-row {
   display: none;
@@ -611,8 +618,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3
   display: none !important;
 }
 
-/* v3 Song Library tablet toolbar polish.
-   Tablet expanded controls use the full row width. */
+/* Song Library toolbar: tablet structure. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-toolbar .mobile-ui-library-refine-row,
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #mobile-ui-library-more {
@@ -667,8 +673,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v
   padding: 0.45rem 0.75rem !important;
 }
 
-/* v3 Song Library tablet refine.
-   Tablet also defaults to a compact summary row; Refine reveals primary controls. */
+/* Song Library toolbar: tablet summary row and expanded states. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-toolbar .mobile-ui-library-refine-row {
   display: flex !important;
@@ -727,8 +732,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v
   display: none !important;
 }
 
-/* v3 Song Library tablet expanded layout fix.
-   Keep the collapsed tablet summary, but make expanded controls wrap as intentional rows. */
+/* Song Library toolbar: tablet expanded layout. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-toolbar.mobile-ui-library-refine-open {
   padding-right: 2rem !important;
@@ -786,8 +790,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v
   max-width: 10.5rem !important;
 }
 
-/* v3 Song Library content v1.
-   Compact the shelf/grid details without changing toolbar behavior or grid mode. */
+/* Song Library content: shelves, cards, chips, and A-Z rail. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-lib-home {
   margin-top: 0.35rem !important;
@@ -902,8 +905,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v
   opacity: 1;
 }
 
-/* v3 Song Library sticky toolbar v1.
-   On mobile/tablet, the library options bar scrolls with content; the global topbar stays sticky. */
+/* Song Library sticky behavior: the options bar scrolls with content while the global topbar stays sticky. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar,
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-toolbar {
@@ -911,8 +913,10 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v
   top: auto !important;
 }
 
-/* v3 Home hero v1.
-   Reduce first-screen hero dominance on mobile/tablet while keeping the brand image and CTAs. */
+/* 5. v3 Home
+   Compact the mobile/tablet hero and follow-on dashboard content without changing desktop. */
+
+/* Home hero and primary dashboard grid. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-home > .max-w-7xl {
   padding-left: 1rem !important;
@@ -989,8 +993,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-h
   margin-top: 1.25rem !important;
 }
 
-/* v3 Home hero v2.
-   Further compact the mobile hero and continue card so dashboard content appears sooner. */
+/* Home continue/pick card sizing. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero {
   min-height: 250px !important;
@@ -1041,8 +1044,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-c
   overflow: hidden !important;
 }
 
-/* v3 Home tablet content v1.
-   Keep the tablet hero size, but make follow-on dashboard content arrive sooner. */
+/* Home tablet follow-on content. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-home > .max-w-7xl > .grid {
   gap: 1rem !important;
@@ -1072,8 +1074,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-h
   line-height: 1.1 !important;
 }
 
-/* v3 Home tablet continue width v1.
-   Let the tablet Continue/Pick card use the available hero-column width without returning to a tall square. */
+/* Home tablet continue width. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-continue,
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-pick {
