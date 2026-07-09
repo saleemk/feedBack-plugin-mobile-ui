@@ -910,3 +910,182 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v
   position: static !important;
   top: auto !important;
 }
+
+/* v3 Home hero v1.
+   Reduce first-screen hero dominance on mobile/tablet while keeping the brand image and CTAs. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-home > .max-w-7xl {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  padding-bottom: 1.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero {
+  min-height: 300px !important;
+  border-radius: 0.9rem !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero > img {
+  width: 72% !important;
+  opacity: 0.72 !important;
+  object-position: right center !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero > div.absolute.inset-0 {
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.72), rgba(15, 23, 42, 0.18)) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero > div.relative {
+  max-width: 18rem !important;
+  padding: 1.25rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero h3 {
+  font-size: 1.85rem !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.03em !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero p {
+  margin-top: 0.65rem !important;
+  font-size: 0.9rem !important;
+  line-height: 1.35 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero .flex {
+  flex-wrap: wrap !important;
+  gap: 0.55rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-start,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-lessons-btn {
+  min-height: 2.5rem !important;
+  padding: 0.55rem 0.9rem !important;
+  border-radius: 0.65rem !important;
+  font-size: 0.9rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-home > .max-w-7xl > .grid {
+  gap: 1rem !important;
+  margin-top: 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-hero {
+  min-height: 380px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-hero > div.relative {
+  padding: 1.75rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-hero h3 {
+  font-size: 2.4rem !important;
+  line-height: 1.05 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-home > .max-w-7xl > .grid {
+  gap: 1.25rem !important;
+  margin-top: 1.25rem !important;
+}
+
+/* v3 Home hero v2.
+   Further compact the mobile hero and continue card so dashboard content appears sooner. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero {
+  min-height: 250px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero > div.relative {
+  max-width: 17rem !important;
+  padding: 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero h3 {
+  font-size: 1.65rem !important;
+  line-height: 1.05 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-hero p {
+  font-size: 0.84rem !important;
+  line-height: 1.3 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-start,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-lessons-btn {
+  min-height: 2.35rem !important;
+  padding: 0.5rem 0.8rem !important;
+  font-size: 0.84rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-continue,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-pick {
+  max-height: 260px !important;
+  aspect-ratio: 16 / 10 !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-continue-pick {
+  max-height: 260px !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-hero {
+  min-height: 330px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-continue,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-pick,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-continue-pick {
+  max-height: 360px !important;
+  overflow: hidden !important;
+}
+
+/* v3 Home tablet content v1.
+   Keep the tablet hero size, but make follow-on dashboard content arrive sooner. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-home > .max-w-7xl > .grid {
+  gap: 1rem !important;
+  margin-top: 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-continue,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-pick {
+  justify-self: start !important;
+  width: min(100%, 28rem) !important;
+  max-height: 300px !important;
+  aspect-ratio: 16 / 9 !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-continue-pick {
+  max-height: 300px !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-home section.mt-10 {
+  margin-top: 1.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-home section.mt-10 h3 {
+  font-size: 1.35rem !important;
+  line-height: 1.1 !important;
+}
+
+/* v3 Home tablet continue width v1.
+   Let the tablet Continue/Pick card use the available hero-column width without returning to a tall square. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-continue,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-pick {
+  justify-self: stretch !important;
+  width: 100% !important;
+  max-width: none !important;
+  max-height: 320px !important;
+  aspect-ratio: 16 / 9 !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-continue-pick {
+  max-height: 320px !important;
+  overflow: hidden !important;
+}
