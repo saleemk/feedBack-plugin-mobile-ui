@@ -487,3 +487,126 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v
   width: 2.4rem !important;
   height: 2.4rem !important;
 }
+
+/* v3 Song Library toolbar v2.
+   Phone-only primary/secondary grouping; core still owns all toolbar behavior. */
+
+html.mobile-ui-enabled.mobile-ui-v3 .mobile-ui-library-more-toggle {
+  display: none;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar:not(.mobile-ui-library-more-open) .mobile-ui-library-secondary-control {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #mobile-ui-library-more.mobile-ui-library-more-toggle {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.25rem !important;
+  padding: 0.42rem 0.65rem !important;
+  border: 1px solid rgb(55, 65, 81);
+  border-radius: 0.375rem;
+  background: rgba(31, 41, 55, 0.5);
+  color: rgb(248, 250, 252);
+  font-size: 0.78rem !important;
+  line-height: 1.1;
+  outline: none;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #mobile-ui-library-more.mobile-ui-library-more-toggle:focus-visible {
+  border-color: rgb(14, 165, 233);
+  box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.75);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar.mobile-ui-library-toolbar > div > div:last-child {
+  align-items: stretch !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar .mobile-ui-library-primary-control:is(
+  #v3-songs-artist,
+  #v3-songs-album,
+  #v3-songs-sort,
+  #v3-songs-format
+) {
+  flex: 1 1 calc(50% - 0.35rem) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar .mobile-ui-library-primary-control#v3-songs-filters,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #mobile-ui-library-more.mobile-ui-library-more-toggle {
+  flex: 1 1 calc(50% - 0.35rem) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar.mobile-ui-library-more-open .mobile-ui-library-view-toggle-group {
+  display: flex !important;
+  flex: 1 1 100% !important;
+  max-width: max-content;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar.mobile-ui-library-more-open .mobile-ui-library-secondary-control:is(
+  #v3-songs-select,
+  #v3-songs-refresh,
+  #v3-songs-refresh-meta,
+  #v3-songs-unmatched,
+  #v3-songs-upload
+) {
+  flex: 1 1 calc(50% - 0.35rem) !important;
+}
+
+/* v3 Song Library toolbar v3.
+   Phone collapsed summary row; Refine opens primary controls, More opens advanced controls. */
+
+html.mobile-ui-enabled.mobile-ui-v3 .mobile-ui-library-refine-row {
+  display: none;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar .mobile-ui-library-refine-row {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar .mobile-ui-library-refine-summary {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(203, 213, 225, 0.88);
+  font-size: 0.78rem;
+  line-height: 1.15;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar .mobile-ui-library-refine-toggle {
+  display: inline-flex !important;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.25rem !important;
+  padding: 0.42rem 0.7rem !important;
+  border: 1px solid rgb(55, 65, 81);
+  border-radius: 0.375rem;
+  background: rgba(31, 41, 55, 0.5);
+  color: rgb(248, 250, 252);
+  font-size: 0.78rem !important;
+  line-height: 1.1;
+  outline: none;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar .mobile-ui-library-refine-toggle:focus-visible {
+  border-color: rgb(14, 165, 233);
+  box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.75);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar:not(.mobile-ui-library-refine-open) .mobile-ui-library-primary-control,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar:not(.mobile-ui-library-refine-open) .mobile-ui-library-secondary-control,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar:not(.mobile-ui-library-refine-open) .mobile-ui-library-view-toggle-group,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar:not(.mobile-ui-library-refine-open) #mobile-ui-library-more {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar.mobile-ui-library-refine-open:not(.mobile-ui-library-more-open) .mobile-ui-library-secondary-control {
+  display: none !important;
+}
