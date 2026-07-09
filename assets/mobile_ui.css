@@ -293,3 +293,197 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-sidebar-backdrop {
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
 }
+
+/* v3 Song Library mobile layout v1.
+   Compact the library chrome while keeping the existing grid, filters, and actions visible. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs > .max-w-7xl {
+  padding-left: 1rem !important;
+  padding-right: 2.25rem !important;
+  padding-bottom: 1.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar {
+  margin-left: -1rem !important;
+  margin-right: -2.25rem !important;
+  margin-bottom: 0.75rem !important;
+  padding: 0.45rem 2.25rem 0.55rem 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar > div {
+  gap: 0.55rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar > div > div:first-child {
+  gap: 0.45rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-toolbar > div > div:last-child {
+  gap: 0.45rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-count {
+  font-size: 0.8rem !important;
+  line-height: 1.1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-match-review {
+  font-size: 0.68rem !important;
+  padding: 0.15rem 0.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-artist,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-album,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-sort,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-format {
+  flex: 1 1 calc(50% - 0.35rem) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 2.25rem !important;
+  padding: 0.42rem 0.6rem !important;
+  font-size: 0.78rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-filters,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-select,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-refresh,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-refresh-meta,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-unmatched,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-upload {
+  min-height: 2.25rem !important;
+  padding: 0.42rem 0.65rem !important;
+  font-size: 0.78rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-grid-btn,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-tree-btn,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-albums-btn,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-folder-btn {
+  min-height: 2.25rem !important;
+  padding: 0.42rem 0.65rem !important;
+  font-size: 0.78rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-lib-home {
+  margin-bottom: 0.85rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-rep-meter {
+  max-width: 100%;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-shelf {
+  margin-top: 0.75rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-row {
+  gap: 0.55rem !important;
+  padding-bottom: 4px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-card {
+  flex-basis: 7rem !important;
+  width: 7rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-card .mt-1 {
+  font-size: 0.82rem !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-card .text-xs {
+  font-size: 0.68rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-grid {
+  gap: 0.75rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-grid [data-fn] > .mt-1 {
+  font-size: 0.82rem !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-grid [data-v3-artist],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-grid [data-fn] > .text-xs {
+  font-size: 0.68rem !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-card-chips {
+  height: 1.25rem !important;
+  gap: 0.2rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-card-chips > * {
+  font-size: 0.62rem !important;
+  padding-left: 0.3rem !important;
+  padding-right: 0.3rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-azrail {
+  right: 1px !important;
+  padding: 2px 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-azrail-letter {
+  font-size: 0.66rem !important;
+  line-height: 1 !important;
+  padding: 1px 4px !important;
+  border-radius: 3px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-azbubble {
+  right: 2rem !important;
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  font-size: 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs > .max-w-7xl {
+  padding-left: 1.5rem !important;
+  padding-right: 2.25rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-toolbar {
+  margin-left: -1.5rem !important;
+  margin-right: -2.25rem !important;
+  margin-bottom: 1rem !important;
+  padding: 0.65rem 2.25rem 0.75rem 1.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-toolbar > div,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-toolbar > div > div:last-child {
+  gap: 0.65rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-toolbar select,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-toolbar button {
+  min-height: 2.35rem;
+  font-size: 0.84rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs-grid {
+  gap: 0.9rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v3-kp-card {
+  flex-basis: 8rem !important;
+  width: 8rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v3-azrail {
+  right: 2px !important;
+  padding: 3px 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v3-azrail-letter {
+  font-size: 0.78rem !important;
+  padding: 1px 6px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v3-azbubble {
+  right: 2.25rem !important;
+  width: 2.4rem !important;
+  height: 2.4rem !important;
+}
