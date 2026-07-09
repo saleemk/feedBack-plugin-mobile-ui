@@ -785,3 +785,119 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v
   min-width: 5.5rem !important;
   max-width: 10.5rem !important;
 }
+
+/* v3 Song Library content v1.
+   Compact the shelf/grid details without changing toolbar behavior or grid mode. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-lib-home {
+  margin-top: 0.35rem !important;
+  margin-bottom: 0.65rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-rep-meter {
+  margin-bottom: 0.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-rep-meter .text-sm {
+  font-size: 0.82rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-rep-meter .text-xs {
+  font-size: 0.68rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-rep-track {
+  height: 0.35rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-shelf {
+  margin-top: 0.55rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-shelf h3 {
+  margin-bottom: 0.4rem !important;
+  font-size: 0.88rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-row {
+  gap: 0.5rem !important;
+  padding-bottom: 2px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-card {
+  flex-basis: 6.6rem !important;
+  width: 6.6rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-card .mt-1 {
+  margin-top: 0.2rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-card .text-sm {
+  font-size: 0.76rem !important;
+  line-height: 1.1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-kp-card .text-xs {
+  font-size: 0.68rem !important;
+  line-height: 1.1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-grid {
+  gap: 0.7rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-grid [data-fn] > div:nth-of-type(2) {
+  font-size: 0.82rem !important;
+  line-height: 1.1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-grid [data-v3-artist],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs-grid [data-fn] > div.text-xs {
+  font-size: 0.68rem !important;
+  line-height: 1.1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-card-chips {
+  height: 1.1rem !important;
+  min-height: 1.05rem !important;
+  max-height: 1.15rem !important;
+  gap: 0.2rem !important;
+  margin-top: 0.25rem !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-card-chips > * {
+  border-radius: 0.25rem !important;
+  font-size: 0.56rem !important;
+  line-height: 1 !important;
+  padding: 0.18rem 0.35rem !important;
+  opacity: 0.72;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-azrail {
+  opacity: 0.72;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-azrail:hover,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-azrail:focus-within {
+  opacity: 1;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-azrail-letter {
+  font-size: 0.62rem !important;
+  padding-inline: 3px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-songs > .max-w-7xl {
+  padding-right: 2.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v3-azrail {
+  opacity: 0.78;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v3-azrail:hover,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet .v3-azrail:focus-within {
+  opacity: 1;
+}
