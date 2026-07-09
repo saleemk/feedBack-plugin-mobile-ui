@@ -1,9 +1,33 @@
 /* Mobile UI plugin.
-   Foundation slice only: no visible layout rules yet.
+   Foundation slices only: no Home/Library/Player layout rules yet.
 
    The runtime currently applies reversible classification classes to <html>:
    - mobile-ui-enabled
    - mobile-ui-phone / mobile-ui-tablet / mobile-ui-desktop
    - mobile-ui-portrait / mobile-ui-landscape
    - mobile-ui-standalone
+   - mobile-ui-v3
+   - mobile-ui-screen-*
 */
+
+.mobile-ui-debug-overlay {
+  position: fixed;
+  right: 8px;
+  bottom: 8px;
+  z-index: 2147483000;
+  max-width: min(220px, calc(100vw - 16px));
+  padding: 8px 10px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 8px;
+  background: rgba(2, 6, 23, 0.86);
+  color: rgba(248, 250, 252, 0.94);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  font: 11px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  pointer-events: none;
+}
+
+.mobile-ui-debug-overlay strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #7dd3fc;
+}
