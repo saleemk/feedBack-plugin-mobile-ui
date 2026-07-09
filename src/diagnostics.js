@@ -20,6 +20,7 @@ export function createDiagnostics({ state, getViewport, getMountedFeatures }) {
         rootClasses: [...document.documentElement.classList].filter((name) => name.startsWith('mobile-ui-')),
         mountedFeatures: getMountedFeatures(),
         elements: getElementPresence(),
+        shell: getShellDiagnostics(),
         location: {
           href: window.location.href,
           path: window.location.pathname,
@@ -29,5 +30,15 @@ export function createDiagnostics({ state, getViewport, getMountedFeatures }) {
         safeArea: state.safeArea
       };
     }
+  };
+}
+
+function getShellDiagnostics() {
+  return {
+    topbarStatusRowFound: !!document.querySelector('.mobile-ui-topbar-status-row'),
+    topbarStatusRailFound: !!document.querySelector('.mobile-ui-topbar-status-rail'),
+    badgeTuner: !!document.getElementById('v3-badge-tuner'),
+    badgeInstrument: !!document.getElementById('v3-badge-instrument'),
+    badgeProfile: !!document.getElementById('v3-badge-profile')
   };
 }
