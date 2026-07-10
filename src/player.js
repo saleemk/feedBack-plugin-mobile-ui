@@ -36,18 +36,21 @@ function _unbind() {
   }
 }
 
-function _isPlayerOnPhone(state) {
-  return state?.screen === 'player' && state?.isV3 && state?.viewport?.deviceClass === 'phone';
+function _isPlayerMobileSpeedScope(state) {
+  if (state?.screen !== 'player' || !state?.isV3) return false;
+  const vp = state?.viewport;
+  if (!vp) return false;
+  return vp.deviceClass === 'phone' || (vp.isLandscape && vp.height <= 520);
 }
 
 export function createFeature() {
   return {
     name: 'player',
     mount(ctx) {
-      if (_isPlayerOnPhone(ctx?.state)) _bind();
+      if (_isPlayerMobileSpeedScope(ctx?.state)) _bind();
     },
     refresh(ctx) {
-      if (_isPlayerOnPhone(ctx?.state)) {
+      if (_isPlayerMobileSpeedScope(ctx?.state)) {
         _bind();
       } else {
         _unbind();
