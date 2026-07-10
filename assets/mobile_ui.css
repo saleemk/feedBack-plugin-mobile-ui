@@ -1671,17 +1671,24 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #pla
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) !important;
-  justify-items: center !important;
+  display: flex !important;
+  flex-direction: row !important;
   align-items: center !important;
+  justify-content: center !important;
   gap: 0.45rem !important;
+  flex-wrap: nowrap !important;
+  overflow: visible !important;
   padding: 0.65rem 0.85rem max(0.75rem, env(safe-area-inset-bottom)) !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-cluster {
-  grid-row: 1 !important;
-  justify-self: center !important;
+  order: 2 !important;
+  flex: 0 1 auto !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+  width: clamp(5.8rem, 27vw, 7.5rem) !important;
+  min-width: 5.8rem !important;
+  max-width: 7.5rem !important;
   padding: 0.35rem 0.55rem !important;
   border: 1px solid rgba(148, 163, 184, 0.22) !important;
   border-radius: 999px !important;
@@ -1689,13 +1696,53 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   backdrop-filter: blur(8px) !important;
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-cluster::after {
+  content: attr(data-mobile-speed-value);
+  position: absolute !important;
+  left: 50% !important;
+  top: -1.5rem !important;
+  transform: translateX(-50%) !important;
+  font-size: 0.68rem !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  color: #67e8f9 !important;
+  background: rgba(15, 23, 42, 0.8) !important;
+  padding: 0.15rem 0.45rem !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(103, 232, 249, 0.25) !important;
+  pointer-events: none !important;
+  white-space: nowrap !important;
+  opacity: 0 !important;
+  transition: opacity 120ms ease-out !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-cluster.mobile-ui-speed-peek::after {
+  opacity: 1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-slider {
+  box-sizing: border-box !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls #speed-label,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-label {
+  display: none !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed {
   align-items: center !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: 100% !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-transport-mid {
-  grid-row: 2 !important;
-  justify-self: center !important;
+  order: 1 !important;
+  flex: 0 0 auto !important;
   gap: 0.65rem !important;
 }
 
@@ -1741,6 +1788,9 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-cluster {
+    order: 2 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
     max-width: none !important;
     flex: 0 1 auto !important;
     flex-wrap: nowrap !important;
@@ -1752,22 +1802,48 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
     backdrop-filter: blur(8px) !important;
   }
 
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-cluster::after {
+    content: attr(data-mobile-speed-value);
+    position: absolute !important;
+    left: 50% !important;
+    top: -1.5rem !important;
+    transform: translateX(-50%) !important;
+    font-size: 0.68rem !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+    color: #67e8f9 !important;
+    background: rgba(15, 23, 42, 0.8) !important;
+    padding: 0.15rem 0.45rem !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(103, 232, 249, 0.25) !important;
+    pointer-events: none !important;
+    white-space: nowrap !important;
+    opacity: 0 !important;
+    transition: opacity 120ms ease-out !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-cluster.mobile-ui-speed-peek::after {
+    opacity: 1 !important;
+  }
+
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed {
     gap: 0.35rem !important;
     align-items: center !important;
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-slider {
-    width: clamp(5.5rem, 28vw, 7rem) !important;
+    box-sizing: border-box !important;
+    width: clamp(7rem, 24vw, 9rem) !important;
+    max-width: 100% !important;
   }
 
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls #speed-label,
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-label {
-    min-width: 2.7rem !important;
-    font-size: 0.78rem !important;
-    text-align: right !important;
+    display: none !important;
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-transport-mid {
+    order: 1 !important;
     gap: 0.65rem !important;
   }
 
