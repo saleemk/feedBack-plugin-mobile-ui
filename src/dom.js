@@ -6,6 +6,8 @@ const SCREEN_CLASS_NAMES = [
   'mobile-ui-screen-favorites',
   'mobile-ui-screen-saved',
   'mobile-ui-screen-lessons',
+  'mobile-ui-screen-feedbarcade',
+  'mobile-ui-screen-unlockables',
   'mobile-ui-screen-player',
   'mobile-ui-screen-settings',
   'mobile-ui-screen-plugins',
@@ -53,6 +55,13 @@ export function screenNameFromId(screenId) {
     case 'v3-lessons':
     case 'lessons':
       return 'lessons';
+    case 'v3-feedbarcade':
+    case 'feedbarcade':
+      return 'feedbarcade';
+    case 'v3-shop':
+    case 'v3-unlockables':
+    case 'unlockables':
+      return 'unlockables';
     case 'player':
       return 'player';
     case 'settings':
