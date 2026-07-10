@@ -1632,3 +1632,62 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #favorites .song-card .card
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #favorites .song-card > .p-4 {
   padding: 0.8rem !important;
 }
+
+/* 10. v3 Player
+   Phone-only speed control cleanup. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-speed-bars,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-chevrons,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls #speed-presets {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-speed-cluster {
+  max-width: none !important;
+  flex: 0 1 auto !important;
+  flex-wrap: nowrap !important;
+  gap: 0.35rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-speed {
+  gap: 0.35rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-speed-slider {
+  width: clamp(5.5rem, 28vw, 7rem) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-speed-label {
+  min-width: 2.7rem !important;
+  font-size: 0.78rem !important;
+  text-align: right !important;
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-bars,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-chevrons,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls #speed-presets {
+    display: none !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-cluster {
+    max-width: none !important;
+    flex: 0 1 auto !important;
+    flex-wrap: nowrap !important;
+    gap: 0.35rem !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed {
+    gap: 0.35rem !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-slider {
+    width: clamp(5.5rem, 28vw, 7rem) !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-label {
+    min-width: 2.7rem !important;
+    font-size: 0.78rem !important;
+    text-align: right !important;
+  }
+}
