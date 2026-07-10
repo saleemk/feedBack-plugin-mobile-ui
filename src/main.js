@@ -16,6 +16,7 @@ import { createFeature as createShellFeature } from './shell.js';
 import { createFeature as createHomeFeature } from './home.js';
 import { createFeature as createLibraryFeature } from './library.js';
 import { createFeature as createPlayerFeature } from './player.js';
+import { createFeature as createPluginsFeature } from './plugins.js';
 import { createFeature as createHighwayFeature } from './highway.js';
 import { createFeature as createSafeAreaFeature } from './safe-area.js';
 
@@ -48,6 +49,7 @@ function createRuntime() {
     createShellFeature(),
     createHomeFeature(),
     createLibraryFeature(),
+    createPluginsFeature(),
     createPlayerFeature(),
     createHighwayFeature(),
     createSafeAreaFeature()

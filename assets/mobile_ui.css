@@ -13,6 +13,9 @@
    3. v3 Mobile Drawer
    4. v3 Song Library
    5. v3 Home
+   6. v3 Progress
+   7. v3 Settings
+   8. v3 Plugins
 */
 
 /* 1. Diagnostics */
@@ -1257,4 +1260,167 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-tablet #
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-tablet #settings .fb-srow-control {
   min-width: 0 !important;
   flex-wrap: wrap !important;
+}
+
+/* 8. v3 Plugins
+   Present the phone pedalboard as a compact category list while tablet/desktop keep the core board. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedalboards-wrap {
+  padding: 0.75rem 1rem 1.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedalboards-wrap > div:first-child {
+  gap: 0.55rem !important;
+  margin-bottom: 0.85rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedalboards-wrap > div:first-child > span {
+  font-size: 0.9rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins #v3-pedal-reset,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins #v3-open-inspector {
+  min-height: 2.1rem !important;
+  padding: 0.35rem 0.6rem !important;
+  font-size: 0.78rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-board-section {
+  margin-bottom: 0.85rem !important;
+  padding-top: 2rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-board-title {
+  left: 0.6rem !important;
+  right: auto !important;
+  height: 1.9rem !important;
+  padding: 0 0.65rem !important;
+  border-radius: 0.55rem 0.55rem 0 0 !important;
+  font-size: 0.66rem !important;
+  letter-spacing: 0.06em !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-board-section.collapsed .v3-board-title {
+  border-radius: 0.55rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-board-count {
+  padding: 0.04rem 0.38rem !important;
+  font-size: 0.58rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-cable-layer,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-cable {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedalboard {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.65rem !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0.7rem !important;
+  overflow: visible !important;
+  border-radius: 0.85rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 2.4rem !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  width: 100% !important;
+  min-height: 4.25rem !important;
+  height: auto !important;
+  padding: 0.65rem !important;
+  border: 1px solid rgba(51, 65, 85, 0.55);
+  border-radius: 0.75rem;
+  background:
+    linear-gradient(135deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.9)),
+    var(--skin);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+  transform: none !important;
+  touch-action: manipulation !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal::before,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal-glow {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal-label {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 2;
+  display: grid !important;
+  grid-template-columns: 2.7rem minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  min-width: 0;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: left !important;
+  transform: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal-thumb {
+  width: 2.7rem !important;
+  height: 2.7rem !important;
+  border-radius: 0.55rem !important;
+  object-fit: contain !important;
+  background: rgba(15, 23, 42, 0.72);
+  padding: 0.25rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal-name {
+  font-size: 0.9rem !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal-pill,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal-err {
+  justify-self: start;
+  grid-column: 2;
+  font-size: 0.58rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal-bundled,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal-offbadge {
+  top: 0.35rem !important;
+  right: 3.2rem !important;
+  left: auto !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal-foot {
+  position: relative !important;
+  left: auto !important;
+  bottom: auto !important;
+  z-index: 4;
+  justify-self: end;
+  width: 2.35rem !important;
+  height: 2.35rem !important;
+  border: 1px solid rgba(148, 163, 184, 0.36) !important;
+  border-radius: 999px !important;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(34, 197, 94, 0.9) 0 28%, rgba(21, 128, 61, 0.85) 30% 48%, rgba(15, 23, 42, 0.9) 52% 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 12px rgba(34, 197, 94, 0.22);
+  transform: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedal-off .v3-pedal-foot {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(248, 113, 113, 0.92) 0 28%, rgba(185, 28, 28, 0.82) 30% 48%, rgba(15, 23, 42, 0.9) 52% 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 12px rgba(248, 113, 113, 0.2);
 }
