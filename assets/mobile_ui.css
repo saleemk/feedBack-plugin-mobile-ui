@@ -1670,6 +1670,39 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #pla
   text-align: right !important;
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  justify-items: center !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  padding: 0.65rem 0.85rem max(0.75rem, env(safe-area-inset-bottom)) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-cluster {
+  grid-row: 1 !important;
+  justify-self: center !important;
+  padding: 0.35rem 0.55rem !important;
+  border: 1px solid rgba(148, 163, 184, 0.22) !important;
+  border-radius: 999px !important;
+  background: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed {
+  align-items: center !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-transport-mid {
+  grid-row: 2 !important;
+  justify-self: center !important;
+  gap: 0.65rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-transport-mid > button[aria-label="Restart song"] {
+  display: none !important;
+}
+
 @media (orientation: landscape) and (max-height: 520px) {
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-bars,
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-chevrons,
