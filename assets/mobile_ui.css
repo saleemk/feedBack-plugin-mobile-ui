@@ -1722,10 +1722,16 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
     flex: 0 1 auto !important;
     flex-wrap: nowrap !important;
     gap: 0.35rem !important;
+    padding: 0.35rem 0.55rem !important;
+    border: 1px solid rgba(148, 163, 184, 0.22) !important;
+    border-radius: 999px !important;
+    background: rgba(15, 23, 42, 0.45) !important;
+    backdrop-filter: blur(8px) !important;
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed {
     gap: 0.35rem !important;
+    align-items: center !important;
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-slider {
@@ -1736,5 +1742,13 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
     min-width: 2.7rem !important;
     font-size: 0.78rem !important;
     text-align: right !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-transport-mid {
+    gap: 0.65rem !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-transport-mid > button[aria-label="Restart song"] {
+    display: none !important;
   }
 }
