@@ -16,6 +16,7 @@
    6. v3 Progress
    7. v3 Settings
    8. v3 Plugins
+   9. v3 Collections
 */
 
 /* 1. Diagnostics */
@@ -1423,4 +1424,211 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3
   background:
     radial-gradient(circle at 50% 45%, rgba(248, 113, 113, 0.92) 0 28%, rgba(185, 28, 28, 0.82) 30% 48%, rgba(15, 23, 42, 0.9) 52% 100%) !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 12px rgba(248, 113, 113, 0.2);
+}
+
+/* 9. v3 Collections
+   Compact Playlists/Favorites/Saved collection screens on phone/tablet only. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists > .max-w-5xl,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists > .max-w-3xl,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-saved > .max-w-3xl {
+  padding: 0.85rem 1rem 1.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists #v3-pl-new-album,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists #v3-pl-new,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists #v3-pl-shuffle,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists #v3-pl-playall,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists #v3-pl-rename,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists #v3-pl-delete {
+  min-height: 2.2rem !important;
+  padding: 0.42rem 0.65rem !important;
+  font-size: 0.78rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists [data-pl] {
+  padding: 0.75rem !important;
+  border-radius: 0.8rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists [data-pl] > div:first-child {
+  margin-bottom: 0.55rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists h2 {
+  font-size: 1.45rem !important;
+  line-height: 1.1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-pl-songs,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-saved-songs {
+  display: grid !important;
+  gap: 0.55rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-pl-songs li[data-fn],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-saved-songs li[data-fn] {
+  align-items: center !important;
+  gap: 0.65rem !important;
+  padding: 0.65rem !important;
+  border: 1px solid rgba(51, 65, 85, 0.7);
+  border-radius: 0.75rem;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-pl-songs li[data-fn] img,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-saved-songs li[data-fn] img {
+  width: 3rem !important;
+  height: 3rem !important;
+  border-radius: 0.55rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-pl-songs li[data-fn] .font-medium,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-saved-songs li[data-fn] .font-medium {
+  font-size: 0.86rem !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-pl-songs li[data-fn] .text-xs,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-saved-songs li[data-fn] .text-xs {
+  font-size: 0.68rem !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-saved.mobile-ui-phone #v3-saved-songs li[data-fn] > span.flex-1 > span:first-child {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-saved.mobile-ui-phone #v3-saved-songs li[data-fn] > span.flex-1 > span:first-child > span {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  max-width: 100% !important;
+  margin-left: 0.25rem !important;
+  padding: 0.12rem 0.32rem !important;
+  font-size: 0.58rem !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  vertical-align: 0.08em;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-pl-songs [data-v3-play],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-pl-songs [data-remove],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-pl-songs [data-slot],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-saved-songs [data-v3-play],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-saved-songs [data-remove] {
+  min-height: 2rem !important;
+  padding: 0.3rem 0.5rem !important;
+  font-size: 0.72rem !important;
+  opacity: 1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites > section {
+  padding: 0.85rem 1rem 1.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites h2 {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #fav-count {
+  margin-top: 0 !important;
+  font-size: 0.8rem !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .flex.items-center.justify-between {
+  align-items: flex-start !important;
+  gap: 0.7rem !important;
+  margin-bottom: 0.85rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .flex.gap-3.w-full {
+  gap: 0.45rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #fav-filter {
+  min-height: 2.25rem !important;
+  padding: 0.42rem 0.65rem !important;
+  font-size: 0.8rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #fav-sort,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #fav-view-grid-btn,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #fav-view-tree-btn,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .fav-tree-ctrl {
+  min-height: 2.15rem !important;
+  padding: 0.38rem 0.58rem !important;
+  font-size: 0.76rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #fav-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.7rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .song-card {
+  border-radius: 0.8rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .song-card .card-art {
+  aspect-ratio: 16 / 11 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .song-card > .p-4 {
+  padding: 0.65rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .song-card h3 {
+  font-size: 0.84rem !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .song-card p,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .song-card .text-xs {
+  font-size: 0.68rem !important;
+  line-height: 1.15 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .artist-header,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .album-header,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .song-row {
+  padding: 0.6rem 0.7rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #favorites .song-row {
+  border-radius: 0.65rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-playlists > .max-w-3xl,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-saved > .max-w-3xl {
+  max-width: 64rem !important;
+  padding: 1.25rem 1.5rem 2rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #favorites > section {
+  padding: 1.25rem 1.5rem 2rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #favorites h2 {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #favorites .flex.items-center.justify-between {
+  gap: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #fav-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0.9rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #favorites .song-card .card-art {
+  aspect-ratio: 16 / 10 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #favorites .song-card > .p-4 {
+  padding: 0.8rem !important;
 }
