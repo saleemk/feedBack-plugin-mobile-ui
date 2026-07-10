@@ -1642,6 +1642,13 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #pla
   display: none !important;
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone .feedBack-tour-menu-btn,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #feedBack-tour-menu-popover,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone .feedBack-tour-menu-popover,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone .feedBack-tour-prompt {
+  display: none !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-speed-cluster {
   max-width: none !important;
   flex: 0 1 auto !important;
@@ -1667,6 +1674,13 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #pla
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-speed-bars,
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls .v3-chevrons,
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls #speed-presets {
+    display: none !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .feedBack-tour-menu-btn,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #feedBack-tour-menu-popover,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .feedBack-tour-menu-popover,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .feedBack-tour-prompt {
     display: none !important;
   }
 
