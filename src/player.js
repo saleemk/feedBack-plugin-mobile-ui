@@ -60,6 +60,7 @@ let _controlsPicker = null;
 let _controlsOpen = false;
 let _activeAction = null;
 let _actionClickInProgress = false;
+let _landscapeControls = null;
 
 function _showPicker() {
   if (!_controlsPicker) return;
@@ -138,20 +139,16 @@ function _closeSheets() {
 }
 
 function _selectAction(action) {
-  if (!_controlsPicker) return;
   _clearSelection();
-  const chips = _controlsPicker.querySelectorAll('.mobile-ui-player-controls-option');
-  for (let i = 0; i < MORE_ACTIONS.length; i++) {
-    if (MORE_ACTIONS[i] === action && chips[i]) {
-      chips[i].classList.add('is-selected');
-      break;
-    }
-  }
+  const index = MORE_ACTIONS.indexOf(action);
+  if (index < 0) return;
+  document.querySelectorAll('[data-mobile-ui-player-action="' + index + '"]').forEach(function (chip) {
+    chip.classList.add('is-selected');
+  });
 }
 
 function _clearSelection() {
-  if (!_controlsPicker) return;
-  _controlsPicker.querySelectorAll('.mobile-ui-player-controls-option.is-selected').forEach(function (c) {
+  document.querySelectorAll('.mobile-ui-player-controls-option.is-selected, .mobile-ui-player-landscape-chip.is-selected').forEach(function (c) {
     c.classList.remove('is-selected');
   });
 }
@@ -161,13 +158,13 @@ function _restoreSelection() {
 }
 
 function _syncToggleChips() {
-  if (!_controlsPicker) return;
-  const chips = _controlsPicker.querySelectorAll('.mobile-ui-player-controls-option');
   MORE_ACTIONS.forEach(function (action, i) {
     if (!action.toggle) return;
     const btn = document.querySelector(action.selector);
     const active = btn && (btn.classList.contains('is-active') || btn.getAttribute('aria-pressed') === 'true');
-    if (chips[i]) chips[i].classList.toggle('is-active', !!active);
+    document.querySelectorAll('[data-mobile-ui-player-action="' + i + '"]').forEach(function (chip) {
+      chip.classList.toggle('is-active', !!active);
+    });
   });
 }
 
@@ -214,10 +211,11 @@ function _ensureControls() {
   picker.className = 'mobile-ui-player-controls-picker';
   picker.hidden = true;
 
-  MORE_ACTIONS.forEach(function (action) {
+  MORE_ACTIONS.forEach(function (action, index) {
     const option = document.createElement('button');
     option.className = 'mobile-ui-player-controls-option';
     option.type = 'button';
+    option.dataset.mobileUiPlayerAction = String(index);
     option.textContent = action.label;
     option.addEventListener('click', function (e) {
       e.stopPropagation();
@@ -230,6 +228,51 @@ function _ensureControls() {
 
   (controlsBar || player).appendChild(container);
   document.addEventListener('click', _onControlsOutsideClick);
+}
+
+function _ensureLandscapeControls() {
+  const controlsBar = document.getElementById('player-controls');
+  if (!controlsBar) return;
+
+  if (_landscapeControls && _landscapeControls.isConnected) {
+    if (_landscapeControls.parentElement !== controlsBar) controlsBar.appendChild(_landscapeControls);
+    return;
+  }
+
+  const container = document.createElement('div');
+  container.id = 'mobile-ui-player-landscape-controls';
+  container.className = 'mobile-ui-player-landscape-controls';
+  container.setAttribute('data-v3-native', '');
+
+  const row = document.createElement('div');
+  row.className = 'mobile-ui-player-landscape-chip-row';
+
+  MORE_ACTIONS.forEach(function (action, index) {
+    const chip = document.createElement('button');
+    chip.className = 'mobile-ui-player-landscape-chip';
+    chip.type = 'button';
+    chip.dataset.mobileUiPlayerAction = String(index);
+    chip.textContent = action.label;
+    chip.addEventListener('click', function (e) {
+      e.stopPropagation();
+      _openCategory(action);
+    });
+    row.appendChild(chip);
+  });
+  container.appendChild(row);
+
+  controlsBar.appendChild(container);
+  _landscapeControls = container;
+  _syncToggleChips();
+  _restoreSelection();
+}
+
+function _removeLandscapeControls() {
+  _closeSheets();
+  if (_landscapeControls) {
+    _landscapeControls.remove();
+    _landscapeControls = null;
+  }
 }
 
 function _removeControls() {
@@ -248,6 +291,13 @@ function _isPlayerPortraitPhone(state) {
   const vp = state?.viewport;
   if (!vp) return false;
   return vp.deviceClass === 'phone' && vp.isPortrait;
+}
+
+function _isPlayerLowHeightLandscape(state) {
+  if (state?.screen !== 'player' || !state?.isV3) return false;
+  const vp = state?.viewport;
+  if (!vp) return false;
+  return vp.isLandscape && vp.height <= 520;
 }
 
 // ── Play/Pause button sync (core bug compatibility) ───────────────────────
@@ -308,6 +358,7 @@ export function createFeature() {
     mount(ctx) {
       if (_isPlayerMobileSpeedScope(ctx?.state)) _bind();
       if (_isPlayerPortraitPhone(ctx?.state)) _ensureControls();
+      if (_isPlayerLowHeightLandscape(ctx?.state)) _ensureLandscapeControls();
       _installPlayButtonSync();
       _syncPlayButton();
     },
@@ -322,6 +373,11 @@ export function createFeature() {
       } else {
         _removeControls();
       }
+      if (_isPlayerLowHeightLandscape(ctx?.state)) {
+        _ensureLandscapeControls();
+      } else {
+        _removeLandscapeControls();
+      }
       if (ctx?.state?.screen === 'player' && ctx?.state?.isV3) {
         _installPlayButtonSync();
         _syncPlayButton();
@@ -332,6 +388,7 @@ export function createFeature() {
     unmount() {
       _unbind();
       _removeControls();
+      _removeLandscapeControls();
       _uninstallPlayButtonSync();
     }
   };
