@@ -1874,6 +1874,10 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   overflow-x: hidden !important;
   box-sizing: border-box !important;
   border-radius: 1rem 1rem 0.75rem 0.75rem !important;
+  background: rgba(15, 23, 42, 0.42) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border: 1px solid rgba(148, 163, 184, 0.24) !important;
   z-index: 60 !important;
   pointer-events: auto !important;
 }
