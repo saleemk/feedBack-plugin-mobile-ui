@@ -11,16 +11,31 @@ export function getViewportInfo() {
     orientation,
     isLandscape: orientation === 'landscape',
     isPortrait: orientation === 'portrait',
-    deviceClass: classifyDevice(width),
+    deviceClass: classifyDevice(width, height),
     standalone: isStandaloneMode(),
     visualViewport
   };
 }
 
-function classifyDevice(width) {
-  if (width <= 767) return 'phone';
+function classifyDevice(width, height) {
+  const shortSide = Math.min(width, height);
+  const longSide = Math.max(width, height);
+
+  if (shortSide <= 767 && longSide <= 1024) return 'phone';
   if (width <= 1024) return 'tablet';
+  if (isLikelyTabletViewport(shortSide, longSide)) return 'tablet';
   return 'desktop';
+}
+
+function isLikelyTabletViewport(shortSide, longSide) {
+  const maxTouchPoints = window.navigator?.maxTouchPoints || 0;
+  const coarsePointer = window.matchMedia?.('(pointer: coarse)')?.matches === true;
+  const hoverNone = window.matchMedia?.('(hover: none)')?.matches === true;
+  const tabletSized = shortSide >= 768 && shortSide <= 1024 && longSide <= 1366;
+
+  // Large tablets can exceed the tablet CSS breakpoint in landscape. Require
+  // touch-oriented input signals so ordinary desktop windows remain desktop.
+  return tabletSized && maxTouchPoints > 0 && (coarsePointer || hoverNone);
 }
 
 function isStandaloneMode() {
