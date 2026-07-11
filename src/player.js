@@ -45,12 +45,14 @@ function _isPlayerMobileSpeedScope(state) {
 
 // ── Mobile Controls button + category picker ──────────────────────────────
 
-const RAIL_CATEGORIES = [
-  { key: 'viz', label: 'Visuals' },
-  { key: 'audio', label: 'Audio' },
-  { key: 'mixer', label: 'Mixer' },
-  { key: 'plugins', label: 'Plugins' },
-  { key: 'advanced', label: 'Advanced' },
+const MORE_ACTIONS = [
+  { label: 'Visuals',  selector: '#v3-player-rail [data-rail="viz"]' },
+  { label: 'Audio',    selector: '#v3-player-rail [data-rail="audio"]' },
+  { label: 'Mixer',    selector: '#v3-player-rail [data-rail="mixer"]' },
+  { label: 'Lyrics',   selector: '#v3-player-rail [data-rail-action="lyrics"]', toggle: true },
+  { label: 'Plugins',  selector: '#v3-player-rail [data-rail="plugins"]' },
+  { label: 'Practice', selector: '#v3-player-rail #section-practice-pill' },
+  { label: 'Advanced', selector: '#v3-player-rail [data-rail="advanced"]' },
 ];
 
 let _controlsBtn = null;
@@ -61,6 +63,7 @@ function _showPicker() {
   if (!_controlsPicker) return;
   _controlsPicker.hidden = false;
   _controlsOpen = true;
+  _syncToggleChips();
 }
 
 function _hidePicker() {
@@ -74,10 +77,22 @@ function _togglePicker(e) {
   if (_controlsOpen) { _hidePicker(); } else { _showPicker(); }
 }
 
-function _openCategory(key) {
+function _openCategory(action) {
   _hidePicker();
-  const railBtn = document.querySelector('#v3-player-rail [data-rail="' + key + '"]');
-  if (railBtn) railBtn.click();
+  const btn = document.querySelector(action.selector);
+  if (btn) btn.click();
+  if (action.toggle) _syncToggleChips();
+}
+
+function _syncToggleChips() {
+  if (!_controlsPicker) return;
+  const chips = _controlsPicker.querySelectorAll('.mobile-ui-player-controls-option');
+  MORE_ACTIONS.forEach(function (action, i) {
+    if (!action.toggle) return;
+    const btn = document.querySelector(action.selector);
+    const active = btn && (btn.classList.contains('is-active') || btn.getAttribute('aria-pressed') === 'true');
+    if (chips[i]) chips[i].classList.toggle('is-active', !!active);
+  });
 }
 
 function _onControlsOutsideClick(e) {
@@ -121,14 +136,14 @@ function _ensureControls() {
   picker.className = 'mobile-ui-player-controls-picker';
   picker.hidden = true;
 
-  RAIL_CATEGORIES.forEach(function (cat) {
+  MORE_ACTIONS.forEach(function (action) {
     const option = document.createElement('button');
     option.className = 'mobile-ui-player-controls-option';
     option.type = 'button';
-    option.textContent = cat.label;
+    option.textContent = action.label;
     option.addEventListener('click', function (e) {
       e.stopPropagation();
-      _openCategory(cat.key);
+      _openCategory(action);
     });
     picker.appendChild(option);
   });

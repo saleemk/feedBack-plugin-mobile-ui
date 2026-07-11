@@ -1820,6 +1820,12 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   background: rgba(30, 41, 59, 0.9);
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-option.is-active {
+  color: #e0faff;
+  background: rgba(34, 211, 238, 0.18);
+  border-color: rgba(34, 211, 238, 0.5);
+}
+
 /* Hide old vertical rail icons on phone portrait (keep DOM for .click()) */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail {
   display: none !important;
