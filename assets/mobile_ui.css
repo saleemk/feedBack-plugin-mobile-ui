@@ -1675,10 +1675,10 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0.45rem !important;
+  gap: 0.35rem !important;
   flex-wrap: nowrap !important;
   overflow: visible !important;
-  padding: 0.65rem 0.85rem max(0.75rem, env(safe-area-inset-bottom)) !important;
+  padding: 0.6rem 0.75rem max(0.75rem, env(safe-area-inset-bottom)) !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-cluster {
@@ -1686,9 +1686,9 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   flex: 0 1 auto !important;
   position: relative !important;
   box-sizing: border-box !important;
-  width: clamp(5.8rem, 27vw, 7.5rem) !important;
-  min-width: 5.8rem !important;
-  max-width: 7.5rem !important;
+  width: clamp(4.2rem, 20vw, 5.8rem) !important;
+  min-width: 4.2rem !important;
+  max-width: 5.8rem !important;
   padding: 0.35rem 0.55rem !important;
   border: 1px solid rgba(148, 163, 184, 0.22) !important;
   border-radius: 999px !important;
@@ -1750,6 +1750,71 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   display: none !important;
 }
 
+/* Mobile Controls button + category picker — inline in bottom row */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-trigger {
+  position: relative !important;
+  order: 3 !important;
+  flex: 0 0 auto !important;
+  z-index: 25;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-trigger [hidden] {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-button {
+  display: flex;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-picker {
+  position: absolute !important;
+  bottom: calc(100% + 0.5rem) !important;
+  right: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.65rem;
+  background: rgba(15, 23, 42, 0.94);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  border-radius: 0.9rem;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  max-width: calc(100vw - 1.7rem);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-option {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: #94a3b8;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  border-radius: 0.6rem;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-option:active {
+  color: #67e8f9;
+  border-color: rgba(103, 232, 249, 0.5);
+  background: rgba(30, 41, 59, 0.95);
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #section-map {
   height: 34px !important;
 }
@@ -1783,13 +1848,13 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   position: fixed !important;
   left: max(0.5rem, env(safe-area-inset-left)) !important;
   right: max(0.5rem, env(safe-area-inset-right)) !important;
-  bottom: calc(0.5rem + env(safe-area-inset-bottom)) !important;
+  bottom: calc(3.6rem + env(safe-area-inset-bottom)) !important;
   top: auto !important;
   transform: none !important;
   width: auto !important;
   min-width: 0 !important;
   max-width: none !important;
-  max-height: min(62vh, 26rem) !important;
+  max-height: min(50vh, 22rem) !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   box-sizing: border-box !important;
