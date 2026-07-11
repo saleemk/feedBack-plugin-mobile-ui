@@ -237,6 +237,56 @@ function _isPlayerPortraitPhone(state) {
   return vp.deviceClass === 'phone' && vp.isPortrait;
 }
 
+// ── Play/Pause button sync (core bug compatibility) ───────────────────────
+
+let _pbSyncTimers = [];
+let _pbListeners = null;
+
+function _syncPlayButton() {
+  if (typeof setPlayButtonState !== 'function') return;
+  const actuallyPlaying = !!(window.feedBack && window.feedBack.isPlaying);
+  const btn = document.getElementById('btn-play');
+  if (!btn) return;
+  const btnShowsPause = btn.getAttribute('aria-label') === 'Pause';
+  if (actuallyPlaying !== btnShowsPause) {
+    setPlayButtonState(actuallyPlaying);
+  }
+}
+
+function _schedulePlayButtonSync() {
+  _clearPlayButtonSync();
+  [0, 100, 500, 1200].forEach(function (ms) {
+    _pbSyncTimers.push(setTimeout(_syncPlayButton, ms));
+  });
+}
+
+function _clearPlayButtonSync() {
+  _pbSyncTimers.forEach(clearTimeout);
+  _pbSyncTimers = [];
+}
+
+function _installPlayButtonSync() {
+  if (_pbListeners) return;
+  var fb = window.feedBack;
+  if (!fb || !fb.on) return;
+  _pbListeners = [
+    { event: 'song:play', fn: _syncPlayButton },
+    { event: 'song:pause', fn: _syncPlayButton },
+    { event: 'song:ready', fn: _schedulePlayButtonSync },
+  ];
+  _pbListeners.forEach(function (l) { fb.on(l.event, l.fn); });
+}
+
+function _uninstallPlayButtonSync() {
+  _clearPlayButtonSync();
+  if (!_pbListeners) return;
+  var fb = window.feedBack;
+  _pbListeners.forEach(function (l) {
+    if (fb && fb.off) fb.off(l.event, l.fn);
+  });
+  _pbListeners = null;
+}
+
 // ── Feature ───────────────────────────────────────────────────────────────
 
 export function createFeature() {
@@ -245,6 +295,8 @@ export function createFeature() {
     mount(ctx) {
       if (_isPlayerMobileSpeedScope(ctx?.state)) _bind();
       if (_isPlayerPortraitPhone(ctx?.state)) _ensureControls();
+      _installPlayButtonSync();
+      _syncPlayButton();
     },
     refresh(ctx) {
       if (_isPlayerMobileSpeedScope(ctx?.state)) {
@@ -257,10 +309,17 @@ export function createFeature() {
       } else {
         _removeControls();
       }
+      if (ctx?.state?.screen === 'player' && ctx?.state?.isV3) {
+        _installPlayButtonSync();
+        _syncPlayButton();
+      } else {
+        _uninstallPlayButtonSync();
+      }
     },
     unmount() {
       _unbind();
       _removeControls();
+      _uninstallPlayButtonSync();
     }
   };
 }
