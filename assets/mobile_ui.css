@@ -1765,9 +1765,10 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-button {
   display: flex;
   align-items: center;
-  padding: 0.3rem 0.5rem;
-  font-size: 0.7rem;
-  font-weight: 500;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
   color: #cbd5e1;
   background: rgba(15, 23, 42, 0.75);
   border: 1px solid rgba(148, 163, 184, 0.28);
@@ -1776,8 +1777,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   backdrop-filter: blur(8px);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  white-space: nowrap;
-  line-height: 1.2;
+  flex: 0 0 auto;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-picker {
