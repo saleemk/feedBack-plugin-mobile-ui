@@ -80,7 +80,19 @@ function _hidePicker() {
 
 function _togglePicker(e) {
   e.stopPropagation();
-  if (_controlsOpen) { _hidePicker(); } else { _showPicker(); }
+  if (_controlsOpen) { _hidePicker(); } else { _openPicker(); }
+}
+
+function _openPicker() {
+  if (_getPauseOnMoreOpen() && window.feedBack && window.feedBack.isPlaying) {
+    var playBtn = document.getElementById('btn-play');
+    if (playBtn) playBtn.click();
+  }
+  _showPicker();
+}
+
+function _getPauseOnMoreOpen() {
+  try { return window.localStorage.getItem('mobile_ui.pauseOnMoreOpen') === '1'; } catch (_) { return false; }
 }
 
 function _isBtnActive(btn) {
