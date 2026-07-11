@@ -1,0 +1,63 @@
+<style>
+  .mobile-ui-settings-panel { padding: 0; }
+  .mobile-ui-settings-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 0.75rem; cursor: pointer;
+  }
+  .mobile-ui-settings-label {
+    font-size: 0.88rem; font-weight: 500; color: #cbd5e1;
+  }
+  .mobile-ui-settings-toggle {
+    width: 2.6rem; height: 1.5rem; accent-color: #22d3ee;
+    cursor: pointer; flex: 0 0 auto;
+  }
+  .mobile-ui-settings-help {
+    margin: 0.5rem 0 0; font-size: 0.75rem; color: #64748b;
+    line-height: 1.4;
+  }
+</style>
+
+<div class="mobile-ui-settings-panel">
+  <label class="mobile-ui-settings-row">
+    <span class="mobile-ui-settings-label">Enable mobile UI enhancements</span>
+    <input type="checkbox" class="mobile-ui-settings-toggle" id="mobile-ui-toggle">
+  </label>
+  <p class="mobile-ui-settings-help">
+    Applies phone and tablet layout improvements to the player, library, and other
+    screens. Disabling hides mobile-specific styling without unloading the plugin.
+  </p>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var installed = false;
+
+  function init() {
+    var toggle = document.getElementById('mobile-ui-toggle');
+    var api = window.__feedBackMobileUi;
+
+    if (toggle && api && api.isDisabled && api.enable && api.disable) {
+      if (installed) {
+        toggle.checked = !api.isDisabled();
+        return;
+      }
+      installed = true;
+      toggle.checked = !api.isDisabled();
+      toggle.addEventListener('change', function () {
+        if (toggle.checked) {
+          api.enable();
+        } else {
+          api.disable();
+        }
+        setTimeout(function () { toggle.checked = !api.isDisabled(); }, 100);
+      });
+    } else {
+      setTimeout(init, 200);
+    }
+  }
+
+  init();
+})();
+</script>

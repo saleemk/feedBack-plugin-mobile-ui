@@ -7,6 +7,9 @@
   "script": "screen.js",
   "scriptType": "module",
   "styles": "assets/mobile_ui.css",
+  "settings": {
+    "html": "settings.html"
+  },
   "private": false,
   "standards": ["plugin-runtime-idempotent.v1"]
 }
