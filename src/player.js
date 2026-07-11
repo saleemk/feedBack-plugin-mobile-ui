@@ -51,7 +51,7 @@ const MORE_ACTIONS = [
   { label: 'Mixer',    selector: '#v3-player-rail [data-rail="mixer"]' },
   { label: 'Lyrics',   selector: '#v3-player-rail [data-rail-action="lyrics"]', toggle: true },
   { label: 'Plugins',  selector: '#v3-player-rail [data-rail="plugins"]' },
-  { label: 'Practice', selector: '#v3-player-rail #section-practice-pill' },
+  { label: 'Practice', selector: '#section-practice-pill' },
   { label: 'Advanced', selector: '#v3-player-rail [data-rail="advanced"]' },
 ];
 
@@ -59,6 +59,7 @@ let _controlsBtn = null;
 let _controlsPicker = null;
 let _controlsOpen = false;
 let _activeAction = null;
+let _actionClickInProgress = false;
 
 function _showPicker() {
   if (!_controlsPicker) return;
@@ -82,24 +83,37 @@ function _togglePicker(e) {
   if (_controlsOpen) { _hidePicker(); } else { _showPicker(); }
 }
 
+function _isBtnActive(btn) {
+  return btn.classList.contains('is-active') || btn.getAttribute('aria-expanded') === 'true';
+}
+
+function _clickActionButton(btn) {
+  _actionClickInProgress = true;
+  try {
+    btn.click();
+  } finally {
+    _actionClickInProgress = false;
+  }
+}
+
 function _openCategory(action) {
   const btn = document.querySelector(action.selector);
   if (!btn) return;
   if (action.toggle) {
-    btn.click();
+    _clickActionButton(btn);
     _syncToggleChips();
     return;
   }
   // If tapping the already-active action, toggle the sheet closed.
-  if (_activeAction === action && btn.classList.contains('is-active')) {
-    btn.click();
+  if (_activeAction === action && _isBtnActive(btn)) {
+    _clickActionButton(btn);
     _activeAction = null;
     _clearSelection();
     return;
   }
   // Switch to new action: close previous sheet, open new one.
   _closeSheets();
-  btn.click();
+  _clickActionButton(btn);
   _activeAction = action;
   _selectAction(action);
 }
@@ -107,7 +121,7 @@ function _openCategory(action) {
 function _closeSheets() {
   if (!_activeAction) return;
   const btn = document.querySelector(_activeAction.selector);
-  if (btn && btn.classList.contains('is-active')) btn.click();
+  if (btn && _isBtnActive(btn)) _clickActionButton(btn);
   _activeAction = null;
 }
 
@@ -147,6 +161,7 @@ function _syncToggleChips() {
 
 function _onControlsOutsideClick(e) {
   if (!_controlsOpen) return;
+  if (_actionClickInProgress) return;
   if (_controlsBtn && _controlsBtn.contains(e.target)) return;
   if (_controlsPicker && _controlsPicker.contains(e.target)) return;
   _hidePicker();

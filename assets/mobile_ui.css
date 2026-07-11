@@ -1832,9 +1832,50 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   border-color: rgba(148, 163, 184, 0.5);
 }
 
-/* Hide old vertical rail icons on phone portrait (keep DOM for .click()) */
+/* Hide old vertical rail icons on phone portrait (keep DOM for .click()). */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail {
+  opacity: 1 !important;
+  transform: none !important;
+  pointer-events: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > .v3-rail-icon,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > .v3-rail-dot {
   display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > #section-practice-control {
+  display: block !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > #section-practice-control.section-practice-control--hidden,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > #section-practice-control > #section-practice-pill {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > #section-practice-control #section-practice-bar {
+  position: fixed !important;
+  left: max(0.5rem, env(safe-area-inset-left)) !important;
+  right: max(0.5rem, env(safe-area-inset-right)) !important;
+  bottom: calc(9.0rem + env(safe-area-inset-bottom)) !important;
+  top: auto !important;
+  transform: none !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  max-height: min(42vh, 18rem) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+  border-radius: 1rem 1rem 0.75rem 0.75rem !important;
+  z-index: 60 !important;
+  pointer-events: auto !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-railzone::before {
