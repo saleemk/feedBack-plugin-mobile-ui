@@ -58,18 +58,23 @@ const MORE_ACTIONS = [
 let _controlsBtn = null;
 let _controlsPicker = null;
 let _controlsOpen = false;
+let _activeAction = null;
 
 function _showPicker() {
   if (!_controlsPicker) return;
   _controlsPicker.hidden = false;
   _controlsOpen = true;
   _syncToggleChips();
+  _restoreSelection();
 }
 
 function _hidePicker() {
   if (!_controlsPicker) return;
+  _closeSheets();
   _controlsPicker.hidden = true;
   _controlsOpen = false;
+  _activeAction = null;
+  _clearSelection();
 }
 
 function _togglePicker(e) {
@@ -78,10 +83,55 @@ function _togglePicker(e) {
 }
 
 function _openCategory(action) {
-  _hidePicker();
   const btn = document.querySelector(action.selector);
-  if (btn) btn.click();
-  if (action.toggle) _syncToggleChips();
+  if (!btn) return;
+  if (action.toggle) {
+    btn.click();
+    _syncToggleChips();
+    return;
+  }
+  // If tapping the already-active action, toggle the sheet closed.
+  if (_activeAction === action && btn.classList.contains('is-active')) {
+    btn.click();
+    _activeAction = null;
+    _clearSelection();
+    return;
+  }
+  // Switch to new action: close previous sheet, open new one.
+  _closeSheets();
+  btn.click();
+  _activeAction = action;
+  _selectAction(action);
+}
+
+function _closeSheets() {
+  if (!_activeAction) return;
+  const btn = document.querySelector(_activeAction.selector);
+  if (btn && btn.classList.contains('is-active')) btn.click();
+  _activeAction = null;
+}
+
+function _selectAction(action) {
+  if (!_controlsPicker) return;
+  _clearSelection();
+  const chips = _controlsPicker.querySelectorAll('.mobile-ui-player-controls-option');
+  for (let i = 0; i < MORE_ACTIONS.length; i++) {
+    if (MORE_ACTIONS[i] === action && chips[i]) {
+      chips[i].classList.add('is-selected');
+      break;
+    }
+  }
+}
+
+function _clearSelection() {
+  if (!_controlsPicker) return;
+  _controlsPicker.querySelectorAll('.mobile-ui-player-controls-option.is-selected').forEach(function (c) {
+    c.classList.remove('is-selected');
+  });
+}
+
+function _restoreSelection() {
+  if (_activeAction) _selectAction(_activeAction);
 }
 
 function _syncToggleChips() {

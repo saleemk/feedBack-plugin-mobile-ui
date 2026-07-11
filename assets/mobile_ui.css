@@ -1826,6 +1826,12 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   border-color: rgba(34, 211, 238, 0.5);
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-option.is-selected {
+  color: #e2e8f0;
+  background: rgba(148, 163, 184, 0.2);
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
 /* Hide old vertical rail icons on phone portrait (keep DOM for .click()) */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail {
   display: none !important;
@@ -1868,13 +1874,13 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   position: fixed !important;
   left: max(0.5rem, env(safe-area-inset-left)) !important;
   right: max(0.5rem, env(safe-area-inset-right)) !important;
-  bottom: calc(3.6rem + env(safe-area-inset-bottom)) !important;
+  bottom: calc(9.0rem + env(safe-area-inset-bottom)) !important;
   top: auto !important;
   transform: none !important;
   width: auto !important;
   min-width: 0 !important;
   max-width: none !important;
-  max-height: min(50vh, 22rem) !important;
+  max-height: min(42vh, 18rem) !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   box-sizing: border-box !important;
