@@ -75,9 +75,9 @@ function _togglePicker(e) {
 }
 
 function _openCategory(key) {
+  _hidePicker();
   const railBtn = document.querySelector('#v3-player-rail [data-rail="' + key + '"]');
   if (railBtn) railBtn.click();
-  _hidePicker();
 }
 
 function _onControlsOutsideClick(e) {
