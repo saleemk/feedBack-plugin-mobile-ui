@@ -1781,28 +1781,32 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-picker {
-  position: absolute !important;
-  bottom: calc(100% + 0.5rem) !important;
-  right: 0 !important;
+  position: fixed !important;
+  left: 0.5rem !important;
+  right: 0.5rem !important;
+  bottom: calc(3.6rem + env(safe-area-inset-bottom)) !important;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  padding: 0.65rem;
-  background: rgba(15, 23, 42, 0.94);
-  border: 1px solid rgba(51, 65, 85, 0.6);
-  border-radius: 0.9rem;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
-  max-width: calc(100vw - 1.7rem);
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.6rem 0.65rem;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  max-width: none;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-option {
-  padding: 0.4rem 0.7rem;
-  font-size: 0.76rem;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.78rem;
   font-weight: 500;
   color: #94a3b8;
-  background: rgba(30, 41, 59, 0.7);
-  border: 1px solid rgba(51, 65, 85, 0.5);
-  border-radius: 0.6rem;
+  background: rgba(30, 41, 59, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 0.65rem;
   cursor: pointer;
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
@@ -1811,8 +1815,13 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-option:active {
   color: #67e8f9;
-  border-color: rgba(103, 232, 249, 0.5);
-  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(103, 232, 249, 0.45);
+  background: rgba(30, 41, 59, 0.9);
+}
+
+/* Hide old vertical rail icons on phone portrait (keep DOM for .click()) */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail {
+  display: none !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #section-map {
@@ -1859,6 +1868,10 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   overflow-x: hidden !important;
   box-sizing: border-box !important;
   border-radius: 1rem 1rem 0.75rem 0.75rem !important;
+  background: rgba(15, 23, 42, 0.9) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-color: rgba(148, 163, 184, 0.2) !important;
   z-index: 60 !important;
 }
 
