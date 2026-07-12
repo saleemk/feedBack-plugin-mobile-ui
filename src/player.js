@@ -93,6 +93,11 @@ const MORE_ACTIONS = [
   { label: 'Advanced', selector: SELECTORS.rail + ' [data-rail="advanced"]' },
 ];
 
+const PHONE_MORE_ACTIONS = [
+  { label: 'Library', fn: _exitPlayerToLibrary, phoneShelfOnly: true },
+  ...MORE_ACTIONS
+];
+
 let _controlsBtn = null;
 let _controlsPicker = null;
 let _controlsOpen = false;
@@ -148,7 +153,21 @@ function _clickActionButton(btn) {
   }
 }
 
+function _exitPlayerToLibrary() {
+  if (window.feedBack && typeof window.feedBack.requestExitSong === 'function') {
+    window.feedBack.requestExitSong();
+  } else if (_isDebugEnabled()) {
+    console.warn('[mobile_ui] Player Library action target missing', {
+      target: 'window.feedBack.requestExitSong'
+    });
+  }
+}
+
 function _openCategory(action) {
+  if (typeof action?.fn === 'function') {
+    action.fn();
+    return;
+  }
   const btn = _queryActionTarget(action);
   if (!btn) return;
   if (action.toggle) {
@@ -211,7 +230,8 @@ function _createActionButton(action, index, className) {
   const button = document.createElement('button');
   button.className = className;
   button.type = 'button';
-  button.dataset.mobileUiPlayerAction = String(index);
+  const actionIndex = MORE_ACTIONS.indexOf(action);
+  button.dataset.mobileUiPlayerAction = actionIndex >= 0 ? String(actionIndex) : action.label.toLowerCase();
   button.textContent = action.label;
   button.addEventListener('click', function (e) {
     e.stopPropagation();
@@ -267,7 +287,7 @@ function _ensureControls() {
   picker.className = 'mobile-ui-player-controls-picker';
   picker.hidden = true;
 
-  MORE_ACTIONS.forEach(function (action, index) {
+  PHONE_MORE_ACTIONS.forEach(function (action, index) {
     picker.appendChild(_createActionButton(action, index, 'mobile-ui-player-controls-option'));
   });
   container.appendChild(picker);
