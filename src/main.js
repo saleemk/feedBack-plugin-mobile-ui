@@ -31,6 +31,7 @@ const ROOT_CLASSES = [
   'mobile-ui-v3',
   'mobile-ui-disabled',
   'mobile-ui-player-more-shelf-mode',
+  'mobile-ui-player-tablet-direct-controls-mode',
   ...getScreenClassNames()
 ];
 

@@ -61,6 +61,7 @@ let _controlsOpen = false;
 let _activeAction = null;
 let _actionClickInProgress = false;
 let _landscapeControls = null;
+let _tabletControls = null;
 
 function _showPicker() {
   if (!_controlsPicker) return;
@@ -148,7 +149,7 @@ function _selectAction(action) {
 }
 
 function _clearSelection() {
-  document.querySelectorAll('.mobile-ui-player-controls-option.is-selected, .mobile-ui-player-landscape-chip.is-selected').forEach(function (c) {
+  document.querySelectorAll('.mobile-ui-player-controls-option.is-selected, .mobile-ui-player-landscape-chip.is-selected, .mobile-ui-player-tablet-chip.is-selected').forEach(function (c) {
     c.classList.remove('is-selected');
   });
 }
@@ -267,11 +268,54 @@ function _ensureLandscapeControls() {
   _restoreSelection();
 }
 
+function _ensureTabletControls() {
+  const controlsBar = document.getElementById('player-controls');
+  if (!controlsBar) return;
+
+  if (_tabletControls && _tabletControls.isConnected) {
+    if (_tabletControls.parentElement !== controlsBar) controlsBar.appendChild(_tabletControls);
+    _syncToggleChips();
+    _restoreSelection();
+    return;
+  }
+
+  const container = document.createElement('div');
+  container.id = 'mobile-ui-player-tablet-controls';
+  container.className = 'mobile-ui-player-tablet-controls';
+  container.setAttribute('data-v3-native', '');
+
+  MORE_ACTIONS.forEach(function (action, index) {
+    const chip = document.createElement('button');
+    chip.className = 'mobile-ui-player-tablet-chip';
+    chip.type = 'button';
+    chip.dataset.mobileUiPlayerAction = String(index);
+    chip.textContent = action.label;
+    chip.addEventListener('click', function (e) {
+      e.stopPropagation();
+      _openCategory(action);
+    });
+    container.appendChild(chip);
+  });
+
+  controlsBar.appendChild(container);
+  _tabletControls = container;
+  _syncToggleChips();
+  _restoreSelection();
+}
+
 function _removeLandscapeControls() {
-  _closeSheets();
   if (_landscapeControls) {
+    _closeSheets();
     _landscapeControls.remove();
     _landscapeControls = null;
+  }
+}
+
+function _removeTabletControls() {
+  if (_tabletControls) {
+    _closeSheets();
+    _tabletControls.remove();
+    _tabletControls = null;
   }
 }
 
@@ -290,6 +334,10 @@ function _setMoreShelfMode(active) {
   document.documentElement.classList.toggle('mobile-ui-player-more-shelf-mode', !!active);
 }
 
+function _setTabletDirectControlsMode(active) {
+  document.documentElement.classList.toggle('mobile-ui-player-tablet-direct-controls-mode', !!active);
+}
+
 function _isPlayerTouchDevice(state) {
   if (state?.screen !== 'player' || !state?.isV3) return false;
   const vp = state?.viewport;
@@ -301,7 +349,13 @@ function _isPlayerMoreShelfMode(state) {
   const vp = state?.viewport;
   if (!_isPlayerTouchDevice(state) || !vp) return false;
   if (_isPlayerLowHeightLandscape(state)) return false;
-  return vp.deviceClass === 'tablet' || (vp.deviceClass === 'phone' && vp.isPortrait);
+  return vp.deviceClass === 'phone' && vp.isPortrait;
+}
+
+function _isPlayerTabletDirectControlsMode(state) {
+  return state?.screen === 'player' &&
+    state?.isV3 &&
+    state?.viewport?.deviceClass === 'tablet';
 }
 
 function _isPlayerLowHeightLandscape(state) {
@@ -367,40 +421,58 @@ export function createFeature() {
   return {
     name: 'player',
     mount(ctx) {
+      const tabletDirectControlsMode = _isPlayerTabletDirectControlsMode(ctx?.state);
       const moreShelfMode = _isPlayerMoreShelfMode(ctx?.state);
       const lowHeightLandscape = _isPlayerLowHeightLandscape(ctx?.state);
       _setMoreShelfMode(moreShelfMode);
+      _setTabletDirectControlsMode(tabletDirectControlsMode);
       if (_isPlayerMobileSpeedScope(ctx?.state)) _bind();
-      if (moreShelfMode) {
+      if (tabletDirectControlsMode) {
+        _ensureTabletControls();
+        _removeControls();
+        _removeLandscapeControls();
+      } else if (moreShelfMode) {
         _ensureControls();
+        _removeTabletControls();
         _removeLandscapeControls();
       } else if (lowHeightLandscape) {
         _removeControls();
+        _removeTabletControls();
         _ensureLandscapeControls();
       } else {
         _removeControls();
+        _removeTabletControls();
         _removeLandscapeControls();
       }
       _installPlayButtonSync();
       _syncPlayButton();
     },
     refresh(ctx) {
+      const tabletDirectControlsMode = _isPlayerTabletDirectControlsMode(ctx?.state);
       const moreShelfMode = _isPlayerMoreShelfMode(ctx?.state);
       const lowHeightLandscape = _isPlayerLowHeightLandscape(ctx?.state);
       _setMoreShelfMode(moreShelfMode);
+      _setTabletDirectControlsMode(tabletDirectControlsMode);
       if (_isPlayerMobileSpeedScope(ctx?.state)) {
         _bind();
       } else {
         _unbind();
       }
-      if (moreShelfMode) {
+      if (tabletDirectControlsMode) {
+        _ensureTabletControls();
+        _removeControls();
+        _removeLandscapeControls();
+      } else if (moreShelfMode) {
         _ensureControls();
+        _removeTabletControls();
         _removeLandscapeControls();
       } else if (lowHeightLandscape) {
         _removeControls();
+        _removeTabletControls();
         _ensureLandscapeControls();
       } else {
         _removeControls();
+        _removeTabletControls();
         _removeLandscapeControls();
       }
       if (ctx?.state?.screen === 'player' && ctx?.state?.isV3) {
@@ -414,7 +486,9 @@ export function createFeature() {
       _unbind();
       _removeControls();
       _removeLandscapeControls();
+      _removeTabletControls();
       _setMoreShelfMode(false);
+      _setTabletDirectControlsMode(false);
       _uninstallPlayButtonSync();
     }
   };
