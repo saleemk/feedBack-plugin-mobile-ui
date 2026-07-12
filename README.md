@@ -194,11 +194,13 @@ Before accepting Player or layout changes, check:
 
 ## Known Limitations And Deferred Cleanup
 
-- `assets/mobile_ui.css` is large and should be re-sectioned before more visual
-  feature work.
-- Player selector guards and comments should be improved around rail, Practice,
-  and optional Section Map integration.
-- Placeholder modules should be clarified or removed in a small cleanup slice.
+- `assets/mobile_ui.css` is still large. Keep it as the single manifest-loaded
+  stylesheet for now; if it grows further, extract Player first while preserving
+  cascade order.
+- `src/player.js` is the highest-risk module because it bridges core rail,
+  Practice, Lyrics, speed, and touch-mode controls.
 - Further Player JS refactoring should be slice-based only.
+- Keep manual regression coverage strong around phone portrait, low-height
+  landscape, tablet direct controls, Practice, Lyrics, and speed peek.
 - Highway/canvas/camera/core player internals should remain out of scope unless
   a specific bug requires core-side work.
