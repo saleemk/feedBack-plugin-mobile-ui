@@ -8,6 +8,10 @@ The plugin is optimized for phones and tablets in portrait and landscape.
 Desktop is intentionally left unchanged. Browser and device testing is ongoing,
 so the focus is practical touch improvements without core edits.
 
+> **Early testing:** Mobile UI is still being refined for different phones,
+> tablets, browsers, and orientations. Please include your device, browser,
+> orientation, screenshots, and console errors when reporting issues.
+
 ## What You Get
 
 - cleaner mobile/tablet shell, topbar, and drawer navigation
@@ -114,6 +118,39 @@ cd /path/to/feedback/plugins
 git clone https://github.com/saleemk/feedBack-plugin-mobile-ui.git mobile_ui
 ```
 
+### Docker / local mount
+
+If you run fee[dB]ack with Docker, mount the plugin folder into the container:
+
+```yaml
+services:
+  web:
+    volumes:
+      - ../feedBack-plugin-mobile-ui:/app/plugins/mobile_ui
+```
+
+Then restart the container so the server discovers the updated `plugin.json`.
+
+## Testing / Feedback
+
+Help test Mobile UI on your devices.  Areas to try:
+
+- **Phone portrait Player** — More shelf, category panels, speed controls
+- **Phone low-height landscape Player** — direct action chips
+- **Tablet portrait / landscape Player** — direct action chips
+- **Home, Song Library, Progress, Settings, Plugins**
+- **Playlists, Favorites, Saved for Later**
+
+When reporting issues, include:
+
+- device model
+- browser and version (if known)
+- portrait or landscape
+- which screen / page the issue happened on
+- screenshot or short video
+- console errors, if available
+- whether Mobile UI settings were enabled or disabled
+
 ## Compatibility / Known Limits
 
 - Optimized for phone and tablet portrait/landscape layouts.
@@ -121,6 +158,15 @@ git clone https://github.com/saleemk/feedBack-plugin-mobile-ui.git mobile_ui
 - Lessons, FeedBarcade, and Unlockables are mapped/light-touch rather than fully
   restyled.
 - Highway, canvas, camera, renderer, and core Player internals are out of scope.
+
+Planned but not implemented yet:
+
+- quicker mobile Player exit
+- phone-first navigation improvements
+- highway gestures
+- mobile visual / highway presets
+
+See [ROADMAP.md](ROADMAP.md) for the full plan and priorities.
 
 ## Technical Notes
 

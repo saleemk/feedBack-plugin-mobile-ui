@@ -236,7 +236,7 @@ node --check .\screen.js
 - No highway/canvas/camera internals.
 - One slice at a time.
 - No broad refactors while fixing UI bugs.
-- No commits unless the user asks.
+- Do not commit automatically; leave changes for human review unless explicitly asked.
 - Prefer diagnose/report first for risky areas.
 - Preserve the phone/tablet/desktop behavior matrix.
 - Run validation before reporting done.
