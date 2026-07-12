@@ -85,8 +85,8 @@ row (no More shelf).
 
 | Priority | Item | Why | Status |
 |---|---|---|---|
-| **P1** | Mobile Player quick exit | Exit is buried under More → Advanced → Close | Needs design / audit |
-| **P1** | Phone-friendly main navigation | Top-left hamburger is awkward on phone | Needs design / audit |
+| **P1** | Mobile Player quick exit | Exit was buried under More → Advanced → Close | First safe slice done |
+| **P1** | Phone-friendly main navigation | Top-left hamburger is awkward on phone | First safe slice done |
 | **P2** | Viewport profile polish | Better portrait / landscape fit per device | Planned |
 | **P2** | Gesture audit and tap-to-play | Useful mobile highway interaction | Audit first |
 | **P2** | Visual preset audit | Improve bland stock visuals safely | Audit first |
@@ -139,17 +139,21 @@ Add a **Back / Library chip** to the More shelf action list (phone portrait)
 that triggers the same exit behaviour as the Advanced panel's close button.
 Do not move or remove the existing Advanced close button.
 
+**Status:** ✅ Done.  Phone portrait More shelf now shows **Library** as the
+first action.  It calls `window.feedBack.requestExitSong()` and does not appear
+in tablet direct chips, phone low-height landscape chips, or desktop.
+
 ### Done criteria
 
-- [ ] **Near-term:** phone portrait can exit Player from a first-class
+- [x] **Near-term:** phone portrait can exit Player from a first-class
   More shelf action (≤ 2 taps).
 - [ ] **Target:** one-tap visible Back / Library action where space allows
   (e.g. icon in bottom controls row, direct chip on tablet).
 - [ ] Tablet: exit Player without opening the Advanced panel.
-- [ ] Uses the existing core action (no new navigation mechanism).
-- [ ] Desktop unchanged.
-- [ ] No duplicate controls.
-- [ ] No regression to More shelf / direct chips.
+- [x] Uses the existing core action (no new navigation mechanism).
+- [x] Desktop unchanged.
+- [x] No duplicate controls.
+- [x] No regression to More shelf / direct chips.
 
 ### Risks
 
@@ -198,13 +202,19 @@ The main UI uses a **top-left menu / hamburger**.  On phone this is:
 Add a **floating bottom Menu pill** (phone portrait only) that clicks the
 existing hamburger button.  CSS-only pill; JS bridges the click.
 
+**Status:** ✅ Done.  Phone portrait non-Player screens now show a floating
+**Menu** pill that clicks the existing `#v3-hamburger`.  The pill is hidden on
+Player, phone landscape, tablet, and desktop.  The global tour/help affordance
+is hidden on Mobile UI phone/tablet layouts so it does not overlap touch
+controls or the Menu pill.
+
 ### Done criteria
 
-- [ ] Phone has a thumb-friendly navigation entry point.
-- [ ] Existing drawer / navigation remains the source of truth.
-- [ ] Desktop unchanged.
-- [ ] Tablet intentionally handled (may keep current layout).
-- [ ] No route duplication or desync.
+- [x] Phone has a thumb-friendly navigation entry point.
+- [x] Existing drawer / navigation remains the source of truth.
+- [x] Desktop unchanged.
+- [x] Tablet intentionally handled (keeps current layout).
+- [x] No route duplication or desync.
 
 ### Risks
 
