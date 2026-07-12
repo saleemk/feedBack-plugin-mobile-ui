@@ -35,6 +35,8 @@ const ROOT_CLASSES = [
   ...getScreenClassNames()
 ];
 
+const reportedFeatureErrors = new Set();
+
 const existingRuntime = window[GLOBAL_KEY];
 
 if (existingRuntime?.installed) {
@@ -55,7 +57,7 @@ function createRuntime() {
     createPlayerFeature(),
     createHighwayFeature(),
     createSafeAreaFeature()
-  ]);
+  ], { reportError: reportFeatureError });
   const debugOverlay = createDebugOverlay({ state });
 
   const diagnostics = createDiagnostics({
@@ -91,6 +93,9 @@ function createRuntime() {
     state.installed = true;
     state.installedAt = runtime.installedAt;
 
+    // Mount features before the first full refresh so feature boundaries exist
+    // for diagnostics immediately; the install refresh below supplies current
+    // viewport/screen state and lets features settle into their active modes.
     lifecycle.mount(getContext('install'));
     addListeners();
     refresh('install');
@@ -218,6 +223,18 @@ function createRuntime() {
 
     bus.on(type, handler);
     return () => bus.off(type, handler);
+  }
+
+  function reportFeatureError(phase, featureName, error) {
+    if (!isDebugEnabled()) return;
+    const key = `${phase}:${featureName}`;
+    if (reportedFeatureErrors.has(key)) return;
+    reportedFeatureErrors.add(key);
+    console.warn('[mobile_ui] feature lifecycle error', {
+      phase,
+      feature: featureName,
+      error
+    });
   }
 
   runtime.install = install;

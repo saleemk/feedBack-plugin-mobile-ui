@@ -4,6 +4,7 @@ import { PLUGIN_ID, PLUGIN_VERSION } from './state.js';
 export function createDiagnostics({ state, getViewport, getMountedFeatures }) {
   return {
     snapshot() {
+      // Keep snapshots current even if they are called between queued refreshes.
       state.screen = detectScreen();
 
       return {

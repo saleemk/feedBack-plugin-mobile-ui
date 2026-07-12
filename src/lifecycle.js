@@ -1,27 +1,43 @@
-export function createLifecycle(features) {
+export function createLifecycle(features, options = {}) {
   const mounted = new Set();
+  const reportError = typeof options.reportError === 'function'
+    ? options.reportError
+    : () => {};
 
   return {
     mount(ctx) {
       features.forEach((feature) => {
         if (mounted.has(feature.name)) return;
-        feature.mount?.(ctx);
-        mounted.add(feature.name);
+        try {
+          feature.mount?.(ctx);
+          mounted.add(feature.name);
+        } catch (error) {
+          reportError('mount', feature.name, error);
+        }
       });
     },
 
     refresh(ctx) {
       features.forEach((feature) => {
         if (!mounted.has(feature.name)) return;
-        feature.refresh?.(ctx);
+        try {
+          feature.refresh?.(ctx);
+        } catch (error) {
+          reportError('refresh', feature.name, error);
+        }
       });
     },
 
     unmount() {
       [...features].reverse().forEach((feature) => {
         if (!mounted.has(feature.name)) return;
-        feature.unmount?.();
-        mounted.delete(feature.name);
+        try {
+          feature.unmount?.();
+        } catch (error) {
+          reportError('unmount', feature.name, error);
+        } finally {
+          mounted.delete(feature.name);
+        }
       });
     },
 
