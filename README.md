@@ -1,25 +1,75 @@
 # Mobile UI
 
-Standalone mobile and tablet UI improvements for fee[dB]ack v3.
+A touch-optimized mobile and tablet interface plugin for fee[dB]ack v3. Mobile
+UI improves navigation, library screens, collections, settings, plugins, and
+the Player on phones and tablets while leaving desktop behavior to core.
 
-This plugin is developed outside the core fee[dB]ack repo and is mounted into
-the app as a normal plugin. It should not require core file edits. The goal is
-to improve touch layouts while preserving desktop behavior.
+The plugin is optimized for phones and tablets in portrait and landscape.
+Desktop is intentionally left unchanged. Browser and device testing is ongoing,
+so the focus is practical touch improvements without core edits.
 
-## Repository Notes
+## What You Get
 
-- Plugin repo: `D:\Development\GIT\feedBack-plugin-mobile-ui`
-- Core repo reference: `D:\Development\GIT\feedback`
-- Local app: `http://localhost:8000`
-- Entry script: `screen.js`
-- Runtime module: `src/main.js`
-- Stylesheet: `assets/mobile_ui.css`
-- Settings UI: `settings.html`
+- cleaner mobile/tablet shell, topbar, and drawer navigation
+- compact Home, Song Library, Progress, Settings, Plugins, and Collections views
+- touch-friendly Player speed and action controls
+- phone portrait More shelf for secondary Player actions
+- direct tablet action chips with no hidden More layer
+- direct low-height landscape chips for phones
+- mobile/tablet plugin settings polish
+- enable/disable switch, debug view toggle, and optional pause-on-More
 
-`screen.js` stays intentionally small and imports `src/main.js`. The manifest
-uses `"scriptType": "module"` so the runtime can stay split into ES modules.
+## Player Experience
 
-## Current Screen Support
+### Phone
+
+In phone portrait, the Player shows a compact More icon. Tapping it opens a
+persistent shelf with Visuals, Audio, Mixer, Lyrics, Plugins, Practice, and
+Advanced.
+
+In low-height phone landscape, the Player uses direct inline action chips
+instead of the More shelf so the controls stay fast and horizontal.
+
+Speed controls are cleaned up for touch use: duplicate indicators and presets
+are hidden, the slider uses a compact pill style, and a speed value peek appears
+while dragging.
+
+### Tablet
+
+Tablet has enough room for direct access, so it does not use the phone More
+button. Tablet portrait and tablet landscape show inline action chips for
+Visuals, Audio, Mixer, Lyrics, Plugins, Practice, and Advanced.
+
+In touch Player modes, the old v3 rail is visually hidden but kept in the DOM so
+Mobile UI can reuse core rail actions instead of reimplementing them.
+
+### Desktop
+
+Desktop stays with the core fee[dB]ack Player. Mobile UI does not replace the
+desktop Player or change desktop layouts.
+
+| Device/mode | Behavior |
+| --- | --- |
+| Phone portrait | More icon opens a persistent shelf. |
+| Phone low-height landscape | Direct inline action chips. No More shelf. |
+| Tablet portrait | Direct inline action chips. No More button or More shelf. |
+| Tablet landscape | Direct inline action chips. No More button or More shelf. |
+| Desktop | Core Player remains unchanged. |
+
+Player touch features include:
+
+- speed bars, chevrons, and presets hidden in touch modes
+- speed slider pill styling
+- speed value peek while dragging
+- static speed label hidden in touch modes
+- restart/retry hidden in touch modes
+- Lyrics active-state sync
+- Practice special handling
+- glass/translucent panels
+- phone, tablet, and landscape panel positioning
+- optional pause when opening the phone portrait More shelf
+
+## Screen Coverage
 
 | Area | Status | Notes |
 | --- | --- | --- |
@@ -29,178 +79,61 @@ uses `"scriptType": "module"` so the runtime can stay split into ES modules.
 | Progress | active | Mobile/tablet layout polish. |
 | Settings | active | Mobile/tablet spacing, tabs, and forms. |
 | Plugins | active | Phone list mode and row-to-settings bridge. |
-| Playlists | active | Collection layout polish. |
-| Favorites | active | Compact mobile/tablet collection layout. |
-| Saved for Later | active | Compact mobile list rows. |
-| Lessons | mapped only | Screen detection retained; visual styling reverted. |
-| FeedBarcade | mapped only | Screen detection retained; visual styling skipped. |
-| Unlockables | mapped only | Screen detection retained; visual styling skipped. |
+| Playlists/Favorites/Saved for Later | active | Collection layout polish. |
+| Lessons/FeedBarcade/Unlockables | mapped/light-touch | Screen detection retained; visual styling skipped or reverted. |
 | Player | active | Touch controls, speed cleanup, panels, and rail bridge. |
 
-## Player Behavior By Device
+## Usage
 
-| Device/mode | Behavior |
-| --- | --- |
-| Phone portrait | Shows a More icon. More opens a persistent shelf with Visuals, Audio, Mixer, Lyrics, Plugins, Practice, and Advanced. |
-| Phone low-height landscape | Shows direct inline action chips. No More shelf. |
-| Tablet portrait | Shows direct inline action chips. No More button or More shelf. |
-| Tablet landscape | Shows direct inline action chips. No More button or More shelf. |
-| Desktop | Core player remains unchanged. |
+Open fee[dB]ack on a phone or tablet. Mobile UI activates automatically when the
+plugin is enabled.
 
-In touch Player modes, the old v3 rail is visually hidden but kept in the DOM so
-core action targets remain available. Mobile UI does not remove or reimplement
-core rail popovers.
-
-Current Player features include:
-
-- speed bars, chevrons, and presets hidden in touch modes
-- speed slider pill styling
-- speed value peek while dragging the slider
-- static speed label hidden in touch modes
-- restart/retry hidden in touch modes
-- Practice special handling
-- Lyrics active-state sync
-- glass/translucent panel styling
-- phone, tablet, and low-height landscape panel positioning
-- optional pause when opening the phone More shelf
-- enable/disable setting support
-
-Mobile UI intentionally does not touch highway/canvas/camera/renderer internals.
+Use **Settings -> Plugins -> Mobile UI** for plugin options. Desktop users keep
+the core interface.
 
 ## Settings
 
-The plugin settings page currently provides:
+Mobile UI provides:
 
-- Enable mobile UI enhancements
-- Pause song when opening More controls
+- **Enable mobile UI enhancements** - turns the plugin's layout changes on or off
+- **Pause song when opening More controls** - pauses playback when opening the
+  phone portrait More shelf
+- **Show Mobile UI debug view** - displays runtime/device diagnostics while
+  debugging
 
-Pause-on-More applies only when opening the phone portrait More shelf. It does
-not apply to tablet direct action chips or phone low-height landscape chips.
+Pause-on-More applies only to the phone portrait More shelf. It does not apply
+to tablet direct action chips or phone low-height landscape chips.
 
-The enable/disable setting stores a local override. When disabled, Mobile UI
-removes its enabled root classes and injected controls so core behavior returns.
+## Installation
 
-## Runtime And Debug API
+Clone this repo into your fee[dB]ack `plugins/` directory as `mobile_ui`, then
+restart fee[dB]ack or reload the page.
 
-The runtime singleton is exposed at:
-
-```js
-window.__feedBackMobileUi
+```bash
+cd /path/to/feedback/plugins
+git clone https://github.com/saleemk/feedBack-plugin-mobile-ui.git mobile_ui
 ```
 
-Useful commands:
+Mobile UI is a normal standalone plugin. It does not need fee[dB]ack core files
+to be edited.
 
-```js
-window.__feedBackMobileUi.snapshot()
-window.__feedBackMobileUi.refresh('manual')
-window.__feedBackMobileUi.destroy()
-window.__feedBackMobileUi.disable()
-window.__feedBackMobileUi.enable()
-window.__feedBackMobileUi.isDisabled()
-```
+## Compatibility / Known Limits
 
-Visible debug overlay, off by default:
+- Optimized for phone and tablet portrait/landscape layouts.
+- Desktop behavior is intentionally left to core.
+- Lessons, FeedBarcade, and Unlockables are mapped/light-touch rather than fully
+  restyled.
+- Highway, canvas, camera, renderer, and core Player internals are out of scope.
 
-```js
-window.__feedBackMobileUi.enableDebug()
-window.__feedBackMobileUi.disableDebug()
-window.__feedBackMobileUi.toggleDebug()
-```
+## Technical Notes
 
-Useful page checks:
+- Built as a standalone fee[dB]ack plugin.
+- Player controls reuse core actions where practical instead of replacing the
+  underlying Player systems.
+- Detailed architecture and maintenance notes live in `AGENTS.md`.
 
-```js
-document.documentElement.className
-```
+## Maintainers / AI Agents
 
-Player duplicate-control check:
-
-```js
-{
-  moreTrigger: document.querySelectorAll('.mobile-ui-player-controls-trigger').length,
-  morePicker: document.querySelectorAll('.mobile-ui-player-controls-picker').length,
-  tabletControls: document.querySelectorAll('.mobile-ui-player-tablet-controls').length,
-  landscapeControls: document.querySelectorAll('.mobile-ui-player-landscape-controls').length
-}
-```
-
-Expected broad results:
-
-- phone portrait Player: `moreTrigger` is `1`
-- phone low-height landscape Player: `landscapeControls` is `1`
-- tablet Player: `tabletControls` is `1`
-- desktop Player: all injected control counts are `0`
-
-## Architecture Notes
-
-Important files:
-
-- `plugin.json` declares the plugin entry, stylesheet, and settings page.
-- `screen.js` imports `src/main.js`.
-- `src/main.js` owns runtime installation, refresh, root classes, and public API.
-- `src/lifecycle.js` mounts and refreshes feature modules.
-- `src/viewport.js` classifies phone/tablet/desktop and orientation.
-- `src/dom.js` detects the active v3 screen and diagnostic elements.
-- `src/player.js` is the highest-risk module and owns Player touch behavior.
-- `assets/mobile_ui.css` contains all Mobile UI styles.
-
-`src/home.js` and `src/highway.js` are currently no-op/placeholder feature
-modules. They are kept so feature ownership stays explicit, but they should not
-be mistaken for active Highway or Home logic.
-
-`src/safe-area.js` is intentionally tiny but active: it records safe-area and
-standalone context for runtime snapshots while CSS uses `env()` directly.
-
-Core selectors are compatibility points. Treat Player rail selectors, Practice
-selectors, and optional Section Map selectors as fragile integration surfaces.
-
-## Validation Commands
-
-Run from the plugin repo:
-
-```powershell
-cd D:\Development\GIT\feedBack-plugin-mobile-ui
-git status --short
-git diff --stat -- .
-git diff --check -- .
-Get-ChildItem .\src -Filter *.js | ForEach-Object { node --check $_.FullName }
-node --check .\screen.js
-```
-
-## Manual Regression Checklist
-
-Before accepting Player or layout changes, check:
-
-- phone portrait Player
-- phone low-height landscape Player
-- tablet portrait Player
-- tablet landscape Player
-- desktop unchanged
-- Player rotation
-- leave and re-enter Player
-- no duplicate injected controls
-- enable/disable setting
-- pause-on-More setting
-- Practice opens and remains usable
-- Lyrics toggles and active state updates
-- speed slider and speed peek
-- Home
-- Song Library
-- Progress
-- Settings
-- Plugins
-- Playlists/Favorites/Saved for Later
-- no console errors
-
-## Known Limitations And Deferred Cleanup
-
-- `assets/mobile_ui.css` is still large. Keep it as the single manifest-loaded
-  stylesheet for now; if it grows further, extract Player first while preserving
-  cascade order.
-- `src/player.js` is the highest-risk module because it bridges core rail,
-  Practice, Lyrics, speed, and touch-mode controls.
-- Further Player JS refactoring should be slice-based only.
-- Keep manual regression coverage strong around phone portrait, low-height
-  landscape, tablet direct controls, Practice, Lyrics, and speed peek.
-- Highway/canvas/camera/core player internals should remain out of scope unless
-  a specific bug requires core-side work.
+See [AGENTS.md](AGENTS.md) for the detailed maintainer guide, architecture
+notes, selector risks, Player mode map, validation commands, and regression
+checklist.
