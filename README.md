@@ -114,9 +114,6 @@ cd /path/to/feedback/plugins
 git clone https://github.com/saleemk/feedBack-plugin-mobile-ui.git mobile_ui
 ```
 
-Mobile UI is a normal standalone plugin. It does not need fee[dB]ack core files
-to be edited.
-
 ## Compatibility / Known Limits
 
 - Optimized for phone and tablet portrait/landscape layouts.
