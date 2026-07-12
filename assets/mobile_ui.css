@@ -12,6 +12,15 @@
    - Desktop is left to core unless explicitly scoped otherwise.
    - !important is used where core/Tailwind/plugin load order requires it.
 
+   CSS architecture:
+   - plugin.json currently supports one manifest-loaded stylesheet.
+   - Keep this file as the single loaded CSS file for now.
+   - Avoid JS-driven CSS injection unless a feature clearly needs it.
+   - If splitting becomes necessary later, prefer a build-free manifest wrapper
+     that @imports ordered subfiles.
+   - Player CSS is the first extraction candidate.
+   - Preserve cascade order during any future split.
+
    Sections:
    1. Diagnostics / debug
    2. Shell / topbar status rail
