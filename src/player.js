@@ -40,7 +40,7 @@ function _isPlayerMobileSpeedScope(state) {
   if (state?.screen !== 'player' || !state?.isV3) return false;
   const vp = state?.viewport;
   if (!vp) return false;
-  return vp.deviceClass === 'phone' || (vp.isLandscape && vp.height <= 520);
+  return _isPlayerTouchDevice(state) || _isPlayerLowHeightLandscape(state);
 }
 
 // ── Mobile Controls button + category picker ──────────────────────────────
@@ -286,11 +286,22 @@ function _removeControls() {
   }
 }
 
-function _isPlayerPortraitPhone(state) {
+function _setMoreShelfMode(active) {
+  document.documentElement.classList.toggle('mobile-ui-player-more-shelf-mode', !!active);
+}
+
+function _isPlayerTouchDevice(state) {
   if (state?.screen !== 'player' || !state?.isV3) return false;
   const vp = state?.viewport;
   if (!vp) return false;
-  return vp.deviceClass === 'phone' && vp.isPortrait;
+  return vp.deviceClass === 'phone' || vp.deviceClass === 'tablet';
+}
+
+function _isPlayerMoreShelfMode(state) {
+  const vp = state?.viewport;
+  if (!_isPlayerTouchDevice(state) || !vp) return false;
+  if (_isPlayerLowHeightLandscape(state)) return false;
+  return vp.deviceClass === 'tablet' || (vp.deviceClass === 'phone' && vp.isPortrait);
 }
 
 function _isPlayerLowHeightLandscape(state) {
@@ -356,26 +367,40 @@ export function createFeature() {
   return {
     name: 'player',
     mount(ctx) {
+      const moreShelfMode = _isPlayerMoreShelfMode(ctx?.state);
+      const lowHeightLandscape = _isPlayerLowHeightLandscape(ctx?.state);
+      _setMoreShelfMode(moreShelfMode);
       if (_isPlayerMobileSpeedScope(ctx?.state)) _bind();
-      if (_isPlayerPortraitPhone(ctx?.state)) _ensureControls();
-      if (_isPlayerLowHeightLandscape(ctx?.state)) _ensureLandscapeControls();
+      if (moreShelfMode) {
+        _ensureControls();
+        _removeLandscapeControls();
+      } else if (lowHeightLandscape) {
+        _removeControls();
+        _ensureLandscapeControls();
+      } else {
+        _removeControls();
+        _removeLandscapeControls();
+      }
       _installPlayButtonSync();
       _syncPlayButton();
     },
     refresh(ctx) {
+      const moreShelfMode = _isPlayerMoreShelfMode(ctx?.state);
+      const lowHeightLandscape = _isPlayerLowHeightLandscape(ctx?.state);
+      _setMoreShelfMode(moreShelfMode);
       if (_isPlayerMobileSpeedScope(ctx?.state)) {
         _bind();
       } else {
         _unbind();
       }
-      if (_isPlayerPortraitPhone(ctx?.state)) {
+      if (moreShelfMode) {
         _ensureControls();
-      } else {
+        _removeLandscapeControls();
+      } else if (lowHeightLandscape) {
         _removeControls();
-      }
-      if (_isPlayerLowHeightLandscape(ctx?.state)) {
         _ensureLandscapeControls();
       } else {
+        _removeControls();
         _removeLandscapeControls();
       }
       if (ctx?.state?.screen === 'player' && ctx?.state?.isV3) {
@@ -389,6 +414,7 @@ export function createFeature() {
       _unbind();
       _removeControls();
       _removeLandscapeControls();
+      _setMoreShelfMode(false);
       _uninstallPlayButtonSync();
     }
   };

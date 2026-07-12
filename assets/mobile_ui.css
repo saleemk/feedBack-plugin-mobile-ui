@@ -1634,7 +1634,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #favorites .song-card > .p-
 }
 
 /* 10. v3 Player
-   Phone-only speed control cleanup. */
+   Touch player controls, speed cleanup, and mobile/tablet panels. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-speed-bars,
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-chevrons,
@@ -1683,7 +1683,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #pla
   text-align: right !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
@@ -1694,7 +1694,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   padding: 0.6rem 0.75rem max(0.75rem, env(safe-area-inset-bottom)) !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-cluster {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls .v3-speed-cluster {
   order: 2 !important;
   flex: 0 1 auto !important;
   position: relative !important;
@@ -1709,7 +1709,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   backdrop-filter: blur(8px) !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-cluster::after {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls .v3-speed-cluster::after {
   content: attr(data-mobile-speed-value);
   position: absolute !important;
   left: 50% !important;
@@ -1729,11 +1729,11 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   transition: opacity 120ms ease-out !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-cluster.mobile-ui-speed-peek::after {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls .v3-speed-cluster.mobile-ui-speed-peek::after {
   opacity: 1 !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-slider {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls .v3-speed-slider {
   box-sizing: border-box !important;
   flex: 1 1 auto !important;
   width: 100% !important;
@@ -1741,41 +1741,41 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   min-width: 0 !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls #speed-label,
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed-label {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls #speed-label,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls .v3-speed-label {
   display: none !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-speed {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls .v3-speed {
   align-items: center !important;
   flex: 1 1 auto !important;
   min-width: 0 !important;
   width: 100% !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-transport-mid {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls .v3-transport-mid {
   order: 1 !important;
   flex: 0 0 auto !important;
   gap: 0.65rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #player-controls .v3-transport-mid > button[aria-label="Restart song"] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls .v3-transport-mid > button[aria-label="Restart song"] {
   display: none !important;
 }
 
 /* Mobile Controls button + category picker — inline in bottom row */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-trigger {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-trigger {
   position: relative !important;
   order: 3 !important;
   flex: 0 0 auto !important;
   z-index: 35;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-trigger [hidden] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-trigger [hidden] {
   display: none !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-button {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1793,7 +1793,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   flex: 0 0 auto;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-picker {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-picker {
   position: fixed !important;
   left: 0.5rem !important;
   right: 0.5rem !important;
@@ -1813,7 +1813,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   z-index: 36;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-option {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-option {
   padding: 0.45rem 0.8rem;
   font-size: 0.78rem;
   font-weight: 500;
@@ -1827,37 +1827,37 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   touch-action: manipulation;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-option:active {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-option:active {
   color: #67e8f9;
   border-color: rgba(103, 232, 249, 0.45);
   background: rgba(30, 41, 59, 0.9);
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-option.is-active {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-option.is-active {
   color: #e0faff;
   background: rgba(34, 211, 238, 0.18);
   border-color: rgba(34, 211, 238, 0.5);
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait .mobile-ui-player-controls-option.is-selected {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-option.is-selected {
   color: #e2e8f0;
   background: rgba(148, 163, 184, 0.2);
   border-color: rgba(148, 163, 184, 0.5);
 }
 
-/* Hide old vertical rail icons on phone portrait (keep DOM for .click()). */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail {
+/* Hide old vertical rail icons in More shelf mode (keep DOM for .click()). */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-player-rail {
   opacity: 1 !important;
   transform: none !important;
   pointer-events: none !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > .v3-rail-icon,
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > .v3-rail-dot {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-player-rail > .v3-rail-icon,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-player-rail > .v3-rail-dot {
   display: none !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > #section-practice-control {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-player-rail > #section-practice-control {
   display: block !important;
   width: 0 !important;
   height: 0 !important;
@@ -1867,12 +1867,12 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   pointer-events: none !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > #section-practice-control.section-practice-control--hidden,
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > #section-practice-control > #section-practice-pill {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-player-rail > #section-practice-control.section-practice-control--hidden,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-player-rail > #section-practice-control > #section-practice-pill {
   display: none !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-player-rail > #section-practice-control #section-practice-bar {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-player-rail > #section-practice-control #section-practice-bar {
   position: fixed !important;
   left: max(0.5rem, env(safe-area-inset-left)) !important;
   right: max(0.5rem, env(safe-area-inset-right)) !important;
@@ -1895,7 +1895,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   pointer-events: auto !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-railzone::before {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-railzone::before {
   pointer-events: none !important;
 }
 
@@ -1922,13 +1922,13 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   top: 34px !important;
 }
 
-/* Rail popovers → bottom sheets (phone portrait).
+/* Rail popovers → bottom sheets (More shelf mode).
    Popovers are siblings of #v3-player-rail inside #v3-railzone.
    #v3-railzone is only ~100px wide (content-sized flex container), so
    position:absolute popovers are confined to that narrow box.
    Switching to position:fixed makes the viewport the containing block,
    so left/right/bottom span the full screen width. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #v3-railzone .v3-rail-pop {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-railzone .v3-rail-pop {
   position: fixed !important;
   left: max(0.5rem, env(safe-area-inset-left)) !important;
   right: max(0.5rem, env(safe-area-inset-right)) !important;
@@ -1948,6 +1948,41 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   -webkit-backdrop-filter: blur(18px) !important;
   border-color: rgba(148, 163, 184, 0.24) !important;
   z-index: 60 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode.mobile-ui-tablet #player-controls {
+  gap: 0.55rem !important;
+  padding-inline: 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode.mobile-ui-tablet #player-controls .v3-speed-cluster {
+  width: clamp(9rem, 20vw, 14rem) !important;
+  min-width: 9rem !important;
+  max-width: 14rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode.mobile-ui-tablet .mobile-ui-player-controls-picker {
+  left: 50% !important;
+  right: auto !important;
+  width: min(34rem, calc(100vw - 2rem)) !important;
+  max-width: none !important;
+  transform: translateX(-50%) !important;
+  padding: 0.7rem 0.85rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode.mobile-ui-tablet .mobile-ui-player-controls-option {
+  padding: 0.5rem 0.95rem !important;
+  font-size: 0.84rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode.mobile-ui-tablet #v3-player-rail > #section-practice-control #section-practice-bar,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode.mobile-ui-tablet #v3-railzone .v3-rail-pop {
+  left: 50% !important;
+  right: auto !important;
+  width: min(28rem, calc(100vw - 2rem)) !important;
+  max-width: none !important;
+  max-height: min(46vh, 22rem) !important;
+  transform: translateX(-50%) !important;
 }
 
 @media (orientation: landscape) and (max-height: 520px) {
