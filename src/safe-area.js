@@ -1,3 +1,6 @@
+// Tiny active diagnostics feature.
+// CSS reads safe-area env() directly; this only records standalone/safe-area
+// context for runtime snapshots.
 export function createFeature() {
   return {
     name: 'safe-area',

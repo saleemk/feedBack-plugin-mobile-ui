@@ -148,6 +148,9 @@ Important files:
 modules. They are kept so feature ownership stays explicit, but they should not
 be mistaken for active Highway or Home logic.
 
+`src/safe-area.js` is intentionally tiny but active: it records safe-area and
+standalone context for runtime snapshots while CSS uses `env()` directly.
+
 Core selectors are compatibility points. Treat Player rail selectors, Practice
 selectors, and optional Section Map selectors as fragile integration surfaces.
 
