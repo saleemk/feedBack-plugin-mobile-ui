@@ -7,19 +7,31 @@
    - mobile-ui-v3
    - mobile-ui-screen-*
 
+   Conventions:
+   - Most rules are scoped under html.mobile-ui-enabled.mobile-ui-v3.
+   - Desktop is left to core unless explicitly scoped otherwise.
+   - !important is used where core/Tailwind/plugin load order requires it.
+
    Sections:
-   1. Diagnostics
-   2. v3 Top Status Rail
-   3. v3 Mobile Drawer
-   4. v3 Song Library
-   5. v3 Home
-   6. v3 Progress
-   7. v3 Settings
-   8. v3 Plugins
-   9. v3 Collections
+   1. Diagnostics / debug
+   2. Shell / topbar status rail
+   3. Shell / mobile drawer
+   4. Song Library
+   5. Home
+   6. Progress
+   7. Settings
+   8. Plugins
+   9. Collections
+   10. Lessons / FeedBarcade / Unlockables
+   11. Player shared cleanup
+   12. Player phone portrait More shelf
+   13. Player panels / Practice
+   14. Player tablet direct controls
+   15. Player phone low-height landscape
+   16. Optional integrations: Section Map / tour
 */
 
-/* 1. Diagnostics */
+/* 1. Diagnostics / debug */
 
 .mobile-ui-debug-overlay {
   position: fixed;
@@ -43,7 +55,7 @@
   color: #7dd3fc;
 }
 
-/* 2. v3 Top Status Rail
+/* 2. Shell / topbar status rail
    Compact the global v3 status widgets on phone/tablet while leaving desktop intact. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone .mobile-ui-topbar-status-row {
@@ -236,7 +248,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet.mobile-ui-portrait #v3-topb
   flex: none !important;
 }
 
-/* 3. v3 Mobile Drawer
+/* 3. Shell / mobile drawer
    Core owns drawer open/close behavior; mobile_ui only softens mobile/tablet shell styling. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-sidebar {
@@ -305,7 +317,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-sidebar-backdrop {
   backdrop-filter: blur(2px);
 }
 
-/* 4. v3 Song Library
+/* 4. Song Library
    Toolbar, content, and sticky behavior are scoped to the library screen. */
 
 /* Song Library base mobile/tablet layout. */
@@ -917,7 +929,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v
   top: auto !important;
 }
 
-/* 5. v3 Home
+/* 5. Home
    Compact the mobile/tablet hero and follow-on dashboard content without changing desktop. */
 
 /* Home hero and primary dashboard grid. */
@@ -1095,7 +1107,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-c
   overflow: hidden !important;
 }
 
-/* 6. v3 Progress
+/* 6. Progress
    Compact phone progress cards and let tablet progress content use more width. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-phone #v3-progress > .max-w-5xl {
@@ -1175,7 +1187,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-progress.mobile-ui-tablet #
   grid-template-columns: minmax(0, 1fr) !important;
 }
 
-/* 7. v3 Settings
+/* 7. Settings
    Compact the legacy settings screen inside the v3 shell on phone/tablet. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings .fb-settings {
@@ -1263,7 +1275,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-tablet #
   flex-wrap: wrap !important;
 }
 
-/* 8. v3 Plugins
+/* 8. Plugins
    Present the phone pedalboard as a compact category list while tablet/desktop keep the core board. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3-plugins .v3-pedalboards-wrap {
@@ -1426,7 +1438,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-plugins.mobile-ui-phone #v3
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 12px rgba(248, 113, 113, 0.2);
 }
 
-/* 9. v3 Collections
+/* 9. Collections
    Compact Playlists/Favorites/Saved collection screens on phone/tablet only. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-playlists > .max-w-5xl,
@@ -1633,8 +1645,12 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #favorites .song-card > .p-
   padding: 0.8rem !important;
 }
 
-/* 10. v3 Player
-   Touch player controls, speed cleanup, and mobile/tablet panels. */
+/* 10. Lessons / FeedBarcade / Unlockables
+   These screens are mapped for diagnostics/root classes, but currently have no visual overrides here. */
+
+/* 11. Player shared cleanup
+   Touch player controls, speed cleanup, and mobile/tablet panels.
+   Highway/canvas/camera sizing is intentionally left to core/plugins. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-speed-bars,
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #player-controls .v3-chevrons,
@@ -1648,6 +1664,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet #pl
   display: none !important;
 }
 
+/* Optional integration: hide the global tour affordance only on touch Player screens. */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone .feedBack-tour-menu-btn,
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #feedBack-tour-menu-popover,
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone .feedBack-tour-menu-popover,
@@ -1682,6 +1699,9 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #pla
   font-size: 0.78rem !important;
   text-align: right !important;
 }
+
+/* 12. Player phone portrait More shelf
+   More shelf mode is phone portrait only; tablet uses direct chips instead. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls {
   display: flex !important;
@@ -1845,7 +1865,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-mor
   border-color: rgba(148, 163, 184, 0.5);
 }
 
-/* Hide old vertical rail icons in More shelf mode (keep DOM for .click()). */
+/* Old rail is hidden visually in More shelf mode, but kept in DOM for core .click() targets. */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-player-rail {
   opacity: 1 !important;
   transform: none !important;
@@ -1857,6 +1877,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-mor
   display: none !important;
 }
 
+/* Practice is special: it is not a normal .v3-rail-pop panel. */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-player-rail > #section-practice-control {
   display: block !important;
   width: 0 !important;
@@ -1899,6 +1920,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-mor
   pointer-events: none !important;
 }
 
+/* Optional integration: Section Map plugin is absent-safe. Offsets match the taller phone map. */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #section-map {
   height: 34px !important;
 }
@@ -1922,7 +1944,8 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   top: 34px !important;
 }
 
-/* Rail popovers → bottom sheets (More shelf mode).
+/* 13. Player panels / Practice
+   Rail popovers → bottom sheets (More shelf mode).
    Popovers are siblings of #v3-player-rail inside #v3-railzone.
    #v3-railzone is only ~100px wide (content-sized flex container), so
    position:absolute popovers are confined to that narrow box.
@@ -1949,6 +1972,9 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-mor
   border-color: rgba(148, 163, 184, 0.24) !important;
   z-index: 60 !important;
 }
+
+/* 14. Player tablet direct controls
+   Tablet intentionally uses always-visible chips, not the phone More shelf. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode #player-controls {
   display: flex !important;
@@ -2081,6 +2107,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   border-color: rgba(148, 163, 184, 0.5) !important;
 }
 
+/* Old rail is hidden visually in tablet direct mode, but kept for core action targets. */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode #v3-player-rail {
   opacity: 1 !important;
   transform: none !important;
@@ -2092,6 +2119,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   display: none !important;
 }
 
+/* Practice shares tablet panel placement but still uses its own core/plugin DOM. */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode #v3-player-rail > #section-practice-control {
   display: block !important;
   width: 0 !important;
@@ -2135,6 +2163,9 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   z-index: 60 !important;
   pointer-events: auto !important;
 }
+
+/* 15. Player phone low-height landscape
+   Separate from tablet direct controls: compact row, scrollable chips, and landscape panel placement. */
 
 @media (orientation: landscape) and (max-height: 520px) {
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #player-controls {

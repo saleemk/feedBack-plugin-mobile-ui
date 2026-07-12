@@ -2,6 +2,39 @@ let _slider = null;
 let _cluster = null;
 let _peekTimer = null;
 
+// Core v3 compatibility points. Keep these centralized because Mobile UI uses
+// existing core/player DOM as action targets instead of reimplementing controls.
+const SELECTORS = {
+  player: '#player',
+  controls: '#player-controls',
+  speedSlider: '#player-controls .v3-speed-slider',
+  speedCluster: '.v3-speed-cluster',
+  playButton: '#btn-play',
+  rail: '#v3-player-rail',
+  practicePill: '#section-practice-pill'
+};
+
+const _missingActionTargets = new Set();
+
+function _isDebugEnabled() {
+  try { return window.localStorage.getItem('mobile_ui.debug') === '1'; } catch (_) { return false; }
+}
+
+function _debugMissingActionTarget(action) {
+  if (!_isDebugEnabled() || !action || _missingActionTargets.has(action.selector)) return;
+  _missingActionTargets.add(action.selector);
+  console.warn('[mobile_ui] Player action target missing', {
+    label: action.label,
+    selector: action.selector
+  });
+}
+
+function _queryActionTarget(action) {
+  const btn = document.querySelector(action.selector);
+  if (!btn) _debugMissingActionTarget(action);
+  return btn;
+}
+
 function _handleInput() {
   if (!_slider || !_cluster) return;
   const value = Number(_slider.value).toFixed(2) + 'x';
@@ -16,9 +49,11 @@ function _handleInput() {
 
 function _bind() {
   if (_slider) return;
-  _slider = document.querySelector('#player-controls .v3-speed-slider');
+  // Core exposes the speed input via .v3-speed-slider; the visible label is
+  // separate and hidden by CSS in touch modes.
+  _slider = document.querySelector(SELECTORS.speedSlider);
   if (!_slider) return;
-  _cluster = _slider.closest('.v3-speed-cluster');
+  _cluster = _slider.closest(SELECTORS.speedCluster);
   _slider.addEventListener('input', _handleInput);
 }
 
@@ -44,15 +79,18 @@ function _isPlayerMobileSpeedScope(state) {
 }
 
 // ── Mobile Controls button + category picker ──────────────────────────────
+// Rail actions depend on core v3 rail buttons staying in the DOM. CSS may hide
+// the old rail visually in touch modes, but JS still clicks these core targets.
+// Practice is special: it is not a normal .v3-rail-pop rail panel.
 
 const MORE_ACTIONS = [
-  { label: 'Visuals',  selector: '#v3-player-rail [data-rail="viz"]' },
-  { label: 'Audio',    selector: '#v3-player-rail [data-rail="audio"]' },
-  { label: 'Mixer',    selector: '#v3-player-rail [data-rail="mixer"]' },
-  { label: 'Lyrics',   selector: '#v3-player-rail [data-rail-action="lyrics"]', toggle: true },
-  { label: 'Plugins',  selector: '#v3-player-rail [data-rail="plugins"]' },
-  { label: 'Practice', selector: '#section-practice-pill' },
-  { label: 'Advanced', selector: '#v3-player-rail [data-rail="advanced"]' },
+  { label: 'Visuals',  selector: SELECTORS.rail + ' [data-rail="viz"]' },
+  { label: 'Audio',    selector: SELECTORS.rail + ' [data-rail="audio"]' },
+  { label: 'Mixer',    selector: SELECTORS.rail + ' [data-rail="mixer"]' },
+  { label: 'Lyrics',   selector: SELECTORS.rail + ' [data-rail-action="lyrics"]', toggle: true },
+  { label: 'Plugins',  selector: SELECTORS.rail + ' [data-rail="plugins"]' },
+  { label: 'Practice', selector: SELECTORS.practicePill },
+  { label: 'Advanced', selector: SELECTORS.rail + ' [data-rail="advanced"]' },
 ];
 
 let _controlsBtn = null;
@@ -87,7 +125,7 @@ function _togglePicker(e) {
 
 function _openPicker() {
   if (_getPauseOnMoreOpen() && window.feedBack && window.feedBack.isPlaying) {
-    var playBtn = document.getElementById('btn-play');
+    var playBtn = document.querySelector(SELECTORS.playButton);
     if (playBtn) playBtn.click();
   }
   _showPicker();
@@ -111,7 +149,7 @@ function _clickActionButton(btn) {
 }
 
 function _openCategory(action) {
-  const btn = document.querySelector(action.selector);
+  const btn = _queryActionTarget(action);
   if (!btn) return;
   if (action.toggle) {
     _clickActionButton(btn);
@@ -134,7 +172,7 @@ function _openCategory(action) {
 
 function _closeSheets() {
   if (!_activeAction) return;
-  const btn = document.querySelector(_activeAction.selector);
+  const btn = _queryActionTarget(_activeAction);
   if (btn && _isBtnActive(btn)) _clickActionButton(btn);
   _activeAction = null;
 }
@@ -161,7 +199,7 @@ function _restoreSelection() {
 function _syncToggleChips() {
   MORE_ACTIONS.forEach(function (action, i) {
     if (!action.toggle) return;
-    const btn = document.querySelector(action.selector);
+    const btn = _queryActionTarget(action);
     const active = btn && (btn.classList.contains('is-active') || btn.getAttribute('aria-pressed') === 'true');
     document.querySelectorAll('[data-mobile-ui-player-action="' + i + '"]').forEach(function (chip) {
       chip.classList.toggle('is-active', !!active);
@@ -178,9 +216,9 @@ function _onControlsOutsideClick(e) {
 }
 
 function _ensureControls() {
-  const player = document.getElementById('player');
+  const player = document.querySelector(SELECTORS.player);
   if (!player) return;
-  const controlsBar = document.getElementById('player-controls');
+  const controlsBar = document.querySelector(SELECTORS.controls);
 
   if (_controlsBtn && _controlsBtn.isConnected) {
     const existing = _controlsBtn.closest('.mobile-ui-player-controls-trigger');
@@ -232,7 +270,7 @@ function _ensureControls() {
 }
 
 function _ensureLandscapeControls() {
-  const controlsBar = document.getElementById('player-controls');
+  const controlsBar = document.querySelector(SELECTORS.controls);
   if (!controlsBar) return;
 
   if (_landscapeControls && _landscapeControls.isConnected) {
@@ -269,7 +307,7 @@ function _ensureLandscapeControls() {
 }
 
 function _ensureTabletControls() {
-  const controlsBar = document.getElementById('player-controls');
+  const controlsBar = document.querySelector(SELECTORS.controls);
   if (!controlsBar) return;
 
   if (_tabletControls && _tabletControls.isConnected) {
@@ -338,6 +376,11 @@ function _setTabletDirectControlsMode(active) {
   document.documentElement.classList.toggle('mobile-ui-player-tablet-direct-controls-mode', !!active);
 }
 
+// Player touch modes are intentionally mutually exclusive:
+// - phone portrait: More shelf mode
+// - phone low-height landscape: inline landscape controls
+// - tablet portrait/landscape: direct tablet controls
+// - desktop: no Mobile UI Player controls
 function _isPlayerTouchDevice(state) {
   if (state?.screen !== 'player' || !state?.isV3) return false;
   const vp = state?.viewport;
@@ -366,6 +409,8 @@ function _isPlayerLowHeightLandscape(state) {
 }
 
 // ── Play/Pause button sync (core bug compatibility) ───────────────────────
+// Core owns #btn-play and setPlayButtonState(). This bounded sync only nudges
+// the icon back into line when a song starts before the v3 chrome catches up.
 
 let _pbSyncTimers = [];
 let _pbListeners = null;
@@ -373,7 +418,7 @@ let _pbListeners = null;
 function _syncPlayButton() {
   if (typeof setPlayButtonState !== 'function') return;
   const actuallyPlaying = !!(window.feedBack && window.feedBack.isPlaying);
-  const btn = document.getElementById('btn-play');
+  const btn = document.querySelector(SELECTORS.playButton);
   if (!btn) return;
   const btnShowsPause = btn.getAttribute('aria-label') === 'Pause';
   if (actuallyPlaying !== btnShowsPause) {
