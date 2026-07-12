@@ -2302,6 +2302,11 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
     position: relative !important;
   }
 
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-controls {
+    flex: 1 1 0 !important;
+    max-width: clamp(8rem, calc(100vw - 20rem), 18rem) !important;
+  }
+
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-controls::after {
     content: "";
     position: absolute !important;
@@ -2328,6 +2333,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
     overflow-y: hidden !important;
     scrollbar-width: none !important;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
     white-space: nowrap !important;
     padding-inline: 0.2rem !important;
     mask-image: linear-gradient(90deg, transparent 0, #000 1.15rem, #000 calc(100% - 1.6rem), transparent 100%);
