@@ -207,6 +207,23 @@ function _syncToggleChips() {
   });
 }
 
+function _createActionButton(action, index, className) {
+  const button = document.createElement('button');
+  button.className = className;
+  button.type = 'button';
+  button.dataset.mobileUiPlayerAction = String(index);
+  button.textContent = action.label;
+  button.addEventListener('click', function (e) {
+    e.stopPropagation();
+    _openCategory(action);
+  });
+  return button;
+}
+
+function _removeNode(node) {
+  if (node) node.remove();
+}
+
 function _onControlsOutsideClick(e) {
   if (!_controlsOpen) return;
   if (_actionClickInProgress) return;
@@ -251,16 +268,7 @@ function _ensureControls() {
   picker.hidden = true;
 
   MORE_ACTIONS.forEach(function (action, index) {
-    const option = document.createElement('button');
-    option.className = 'mobile-ui-player-controls-option';
-    option.type = 'button';
-    option.dataset.mobileUiPlayerAction = String(index);
-    option.textContent = action.label;
-    option.addEventListener('click', function (e) {
-      e.stopPropagation();
-      _openCategory(action);
-    });
-    picker.appendChild(option);
+    picker.appendChild(_createActionButton(action, index, 'mobile-ui-player-controls-option'));
   });
   container.appendChild(picker);
   _controlsPicker = picker;
@@ -287,16 +295,7 @@ function _ensureLandscapeControls() {
   row.className = 'mobile-ui-player-landscape-chip-row';
 
   MORE_ACTIONS.forEach(function (action, index) {
-    const chip = document.createElement('button');
-    chip.className = 'mobile-ui-player-landscape-chip';
-    chip.type = 'button';
-    chip.dataset.mobileUiPlayerAction = String(index);
-    chip.textContent = action.label;
-    chip.addEventListener('click', function (e) {
-      e.stopPropagation();
-      _openCategory(action);
-    });
-    row.appendChild(chip);
+    row.appendChild(_createActionButton(action, index, 'mobile-ui-player-landscape-chip'));
   });
   container.appendChild(row);
 
@@ -323,16 +322,7 @@ function _ensureTabletControls() {
   container.setAttribute('data-v3-native', '');
 
   MORE_ACTIONS.forEach(function (action, index) {
-    const chip = document.createElement('button');
-    chip.className = 'mobile-ui-player-tablet-chip';
-    chip.type = 'button';
-    chip.dataset.mobileUiPlayerAction = String(index);
-    chip.textContent = action.label;
-    chip.addEventListener('click', function (e) {
-      e.stopPropagation();
-      _openCategory(action);
-    });
-    container.appendChild(chip);
+    container.appendChild(_createActionButton(action, index, 'mobile-ui-player-tablet-chip'));
   });
 
   controlsBar.appendChild(container);
@@ -344,7 +334,7 @@ function _ensureTabletControls() {
 function _removeLandscapeControls() {
   if (_landscapeControls) {
     _closeSheets();
-    _landscapeControls.remove();
+    _removeNode(_landscapeControls);
     _landscapeControls = null;
   }
 }
@@ -352,7 +342,7 @@ function _removeLandscapeControls() {
 function _removeTabletControls() {
   if (_tabletControls) {
     _closeSheets();
-    _tabletControls.remove();
+    _removeNode(_tabletControls);
     _tabletControls = null;
   }
 }
@@ -362,7 +352,7 @@ function _removeControls() {
   _hidePicker();
   if (_controlsBtn) {
     const container = _controlsBtn.closest('.mobile-ui-player-controls-trigger');
-    if (container) container.remove();
+    _removeNode(container);
     _controlsBtn = null;
     _controlsPicker = null;
   }
