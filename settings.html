@@ -35,6 +35,15 @@
     Pauses playback when you open the mobile More controls shelf.
     Playback will not resume automatically when you close the shelf.
   </p>
+
+  <label class="mobile-ui-settings-row" style="margin-top:1rem;">
+    <span class="mobile-ui-settings-label">Show Mobile UI debug view</span>
+    <input type="checkbox" class="mobile-ui-settings-toggle" id="mobile-ui-debug-toggle">
+  </label>
+  <p class="mobile-ui-settings-help">
+    Shows a small diagnostic overlay with current viewport, orientation, screen,
+    and runtime state.
+  </p>
 </div>
 
 <script>
@@ -42,6 +51,7 @@
   'use strict';
 
   var PAUSE_KEY = 'mobile_ui.pauseOnMoreOpen';
+  var DEBUG_KEY = 'mobile_ui.debug';
   var installed = false;
 
   function readFlag(key) {
@@ -54,17 +64,20 @@
   function init() {
     var toggle = document.getElementById('mobile-ui-toggle');
     var pauseToggle = document.getElementById('mobile-ui-pause-toggle');
+    var debugToggle = document.getElementById('mobile-ui-debug-toggle');
     var api = window.__feedBackMobileUi;
 
-    if (toggle && pauseToggle && api && api.isDisabled && api.enable && api.disable) {
+    if (toggle && pauseToggle && debugToggle && api && api.isDisabled && api.enable && api.disable) {
       if (installed) {
         toggle.checked = !api.isDisabled();
         pauseToggle.checked = readFlag(PAUSE_KEY);
+        debugToggle.checked = readFlag(DEBUG_KEY);
         return;
       }
       installed = true;
       toggle.checked = !api.isDisabled();
       pauseToggle.checked = readFlag(PAUSE_KEY);
+      debugToggle.checked = readFlag(DEBUG_KEY);
 
       toggle.addEventListener('change', function () {
         if (toggle.checked) { api.enable(); } else { api.disable(); }
@@ -73,6 +86,18 @@
 
       pauseToggle.addEventListener('change', function () {
         writeFlag(PAUSE_KEY, pauseToggle.checked);
+      });
+
+      debugToggle.addEventListener('change', function () {
+        if (debugToggle.checked && api.enableDebug) {
+          api.enableDebug();
+        } else if (!debugToggle.checked && api.disableDebug) {
+          api.disableDebug();
+        } else {
+          writeFlag(DEBUG_KEY, debugToggle.checked);
+          if (api.refresh) api.refresh('settings:debug');
+        }
+        setTimeout(function () { debugToggle.checked = readFlag(DEBUG_KEY); }, 100);
       });
     } else {
       setTimeout(init, 200);
