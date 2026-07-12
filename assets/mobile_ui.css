@@ -326,6 +326,34 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-sidebar-backdrop {
   backdrop-filter: blur(2px);
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-portrait .mobile-ui-menu-pill {
+  position: fixed;
+  right: max(0.85rem, env(safe-area-inset-right));
+  bottom: max(0.9rem, env(safe-area-inset-bottom));
+  z-index: 35;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.72);
+  color: rgba(241, 245, 249, 0.94);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.34);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  backdrop-filter: blur(14px) saturate(1.1);
+  font-size: 1.05rem;
+  line-height: 1;
+  pointer-events: auto;
+}
+
+html.mobile-ui-screen-player .mobile-ui-menu-pill,
+html:not(.mobile-ui-phone) .mobile-ui-menu-pill,
+html:not(.mobile-ui-portrait) .mobile-ui-menu-pill {
+  display: none !important;
+}
+
 /* 4. Song Library
    Toolbar, content, and sticky behavior are scoped to the library screen. */
 
@@ -1673,18 +1701,19 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet #pl
   display: none !important;
 }
 
-/* Optional integration: hide the global tour affordance only on touch Player screens. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone .feedBack-tour-menu-btn,
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone #feedBack-tour-menu-popover,
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone .feedBack-tour-menu-popover,
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone .feedBack-tour-prompt {
+/* Optional integration: hide the global tour affordance on touch layouts.
+   It overlaps Mobile UI's floating phone menu pill and touch Player controls. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone .feedBack-tour-menu-btn,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #feedBack-tour-menu-popover,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone .feedBack-tour-menu-popover,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone .feedBack-tour-prompt {
   display: none !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet .feedBack-tour-menu-btn,
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet #feedBack-tour-menu-popover,
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet .feedBack-tour-menu-popover,
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet .feedBack-tour-prompt {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet .feedBack-tour-menu-btn,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #feedBack-tour-menu-popover,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet .feedBack-tour-menu-popover,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet .feedBack-tour-prompt {
   display: none !important;
 }
 
