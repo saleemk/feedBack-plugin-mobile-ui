@@ -309,8 +309,11 @@ concrete spacing / crowding issue is visible.
   More shelf, direct chips).
 - No double-tap loop, haptics, audio feedback, gesture settings, or visual
   scrub overlay implemented yet.
-- **Remaining:** verify behaviour with custom / 3D Highway overlays that may
-  cover the `#highway` canvas.
+- **Verified:** the current 3D Highway wrapper (`.h3d-wrap`) and its child
+  canvases use `pointer-events: none`, so touch / pen events pass through
+  to `#highway`.  Tap-to-play and vertical scrub work with the observed
+  3D setup — no code change needed.  Other custom visual plugins may need
+  verification in the future if they capture pointer events.
 
 ### Inspiration only
 
@@ -508,8 +511,10 @@ These are worth doing but depend on earlier work or audits:
 - **Section map enhancement** — after audit of current behaviour.
 - **Haptic / audio feedback** — optional setting; requires Web Audio
   cleanup.
-- **Custom / 3D Highway overlay support** — only if overlays capture pointer
-  events and prevent current canvas-targeted gestures.
+- **Custom visual overlay support** — only if a future visual plugin
+  captures pointer events and prevents current canvas-targeted gestures.
+  The current 3D Highway overlay is verified as pass-through (no fix
+  needed).
 - **Visual preset implementation** — after P2 audit.
 - **Background image presets** — after visual audit confirms support.
 - **Visual theme packs** — low priority; brainstorming only.
