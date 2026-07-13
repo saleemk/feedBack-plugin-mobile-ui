@@ -561,6 +561,109 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-playe
 
 /* Song Library base mobile/tablet layout. */
 
+/* Song Library touch topbar layout.
+   Search remains in the core topbar DOM, but visually belongs below the
+   Library title/status rows on touch layouts. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-rows: auto auto auto !important;
+  align-items: center !important;
+  gap: 0.35rem 0.6rem !important;
+  padding: 0.45rem 0.55rem 0.6rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar > .flex:first-child,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar > .flex:last-child {
+  display: contents !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-hamburger {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar-title {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: auto !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar a[href*="patreon"] {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-self: center !important;
+  margin-left: 0 !important;
+  white-space: nowrap !important;
+  font-size: 0.66rem !important;
+  line-height: 1 !important;
+  padding: 0.28rem 0.5rem !important;
+  gap: 0.25rem !important;
+  border-radius: 0.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar a[href*="patreon"] svg {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) .mobile-ui-topbar-status-rail {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-search-wrap {
+  grid-column: 1 / -1 !important;
+  grid-row: 3 !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: min(36rem, 100%) !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-search {
+  min-height: 2.35rem !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-tuner [data-open-tuner],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-instrument [data-inst-toggle],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-profile [data-v3-open-profile] {
+  box-sizing: border-box !important;
+  height: 2.85rem !important;
+  min-height: 2.85rem !important;
+  max-height: 2.85rem !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-badge-tuner [data-open-tuner],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-badge-instrument [data-inst-toggle],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-tablet #v3-badge-profile [data-v3-open-profile] {
+  height: 3rem !important;
+  min-height: 3rem !important;
+  max-height: 3rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) {
+  display: none !important;
+}
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone #v3-songs > .max-w-7xl {
   padding-left: 1rem !important;
   padding-right: 2.25rem !important;
