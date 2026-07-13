@@ -3,10 +3,30 @@ export function createFeature() {
   let statusRail = null;
   let bottomNav = null;
   let moreSheet = null;
+  let _excludedNavKeys = ['home', 'songs', 'progress', 'plugins'];
+  var _bottomNavMode = null;   // 'compact' | 'wide' | null
 
-  // Nav keys that have dedicated bottom-nav tabs and should be excluded
-  // from the More sheet.
-  var PRIMARY_NAV_KEYS = ['home', 'songs', 'progress', 'plugins'];
+  // Compact: phone portrait (5 items).  Wide: phone landscape / tablet (8 items).
+  var COMPACT_ITEMS = [
+    { key: 'home', label: 'Home', screen: 'v3-home' },
+    { key: 'library', label: 'Library', screen: 'v3-songs' },
+    { key: 'progress', label: 'Progress', screen: 'v3-progress' },
+    { key: 'plugins', label: 'Plugins', screen: 'v3-plugins' },
+    { key: 'more', label: 'More', screen: null }
+  ];
+
+  var WIDE_ITEMS = [
+    { key: 'home', label: 'Home', screen: 'v3-home' },
+    { key: 'library', label: 'Library', screen: 'v3-songs' },
+    { key: 'progress', label: 'Progress', screen: 'v3-progress' },
+    { key: 'unlockables', label: 'Unlockables', screen: 'v3-shop' },
+    { key: 'feedbarcade', label: 'FeedBarcade', screen: 'v3-feedbarcade' },
+    { key: 'plugins', label: 'Plugins', screen: 'v3-plugins' },
+    { key: 'settings', label: 'Settings', screen: 'settings' },
+    { key: 'more', label: 'More', screen: null }
+  ];
+
+  var WIDE_EXCLUDED_KEYS = ['home', 'songs', 'progress', 'shop', 'feedbarcade', 'plugins', 'settings'];
 
   return {
     name: 'shell',
@@ -20,7 +40,7 @@ export function createFeature() {
   function refresh(ctx) {
     clearStatusClasses();
     if (_shouldShowBottomNav(ctx?.state)) {
-      _ensureBottomNav();
+      _ensureBottomNav(ctx?.state);
     } else {
       _removeBottomNav();
       _closeMoreSheet();
@@ -67,25 +87,45 @@ export function createFeature() {
   function _shouldShowBottomNav(state) {
     if (state?.disabled || !state?.isV3 || state?.screen === 'player') return false;
     var vp = state?.viewport;
-    return !!(vp && vp.deviceClass === 'phone' && vp.isPortrait);
+    if (!vp) return false;
+    var cls = vp.deviceClass;
+    return cls === 'phone' || cls === 'tablet';
   }
 
   // --- Bottom navigation bar -----------------------------------------------
 
-  function _ensureBottomNav() {
-    if (bottomNav && bottomNav.isConnected) return;
+  function _isWideMode(state) {
+    if (!state || !state.viewport) return false;
+    var cls = state.viewport.deviceClass;
+    if (cls === 'tablet') return true;
+    if (cls === 'phone' && !state.viewport.isPortrait) return true;
+    return false;
+  }
+
+  function _ensureBottomNav(state) {
+    var wantWide = _isWideMode(state);
+    var wantMode = wantWide ? 'wide' : 'compact';
+
+    // Same mode, same nav — just keep exclusion keys fresh.
+    if (bottomNav && bottomNav.isConnected && _bottomNavMode === wantMode) {
+      _excludedNavKeys = wantWide ? WIDE_EXCLUDED_KEYS : ['home', 'songs', 'progress', 'plugins'];
+      return;
+    }
+
+    // Mode changed or nav missing — tear down and rebuild.
+    if (bottomNav && bottomNav.isConnected) {
+      _closeMoreSheet();
+      bottomNav.remove();
+      bottomNav = null;
+    }
+
+    var items = wantWide ? WIDE_ITEMS : COMPACT_ITEMS;
+    _excludedNavKeys = wantWide ? WIDE_EXCLUDED_KEYS : ['home', 'songs', 'progress', 'plugins'];
+    _bottomNavMode = wantMode;
 
     var nav = document.createElement('nav');
     nav.className = 'mobile-ui-bottom-nav';
     nav.setAttribute('aria-label', 'Primary mobile navigation');
-
-    var items = [
-      { key: 'home', label: 'Home', screen: 'v3-home' },
-      { key: 'library', label: 'Library', screen: 'v3-songs' },
-      { key: 'progress', label: 'Progress', screen: 'v3-progress' },
-      { key: 'plugins', label: 'Plugins', screen: 'v3-plugins' },
-      { key: 'more', label: 'More', screen: null }
-    ];
 
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
@@ -128,6 +168,7 @@ export function createFeature() {
     }
     document.querySelectorAll('.mobile-ui-bottom-nav').forEach(function (el) { el.remove(); });
     document.documentElement.classList.remove('mobile-ui-has-bottom-nav');
+    _bottomNavMode = null;
   }
 
   // --- More sheet ----------------------------------------------------------
@@ -204,7 +245,7 @@ export function createFeature() {
       var el = links[i];
       var key = el.getAttribute('data-v3-nav');
       if (!key || seen[key]) continue;
-      if (PRIMARY_NAV_KEYS.indexOf(key) !== -1) continue;
+      if (_excludedNavKeys.indexOf(key) !== -1) continue;
 
       var label = (el.textContent || '').trim();
       if (!label) continue;

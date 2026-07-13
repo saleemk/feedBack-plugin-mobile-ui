@@ -326,12 +326,12 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-sidebar-backdrop {
   backdrop-filter: blur(2px);
 }
 
-/* 3.1  Phone bottom navigation bar
-   Replaces the floating Menu pill with a fixed 5-tab bar on phone portrait
-   non-Player screens.  Active-state highlighting uses the root screen classes
-   that main.js already maintains on <html>. */
+/* 3.1  Bottom navigation bar
+   Fixed 5-tab bar on phone and tablet non-Player screens, portrait and
+   landscape.  Active-state highlighting uses the root screen classes that
+   main.js already maintains on <html>. */
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-portrait:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone,.mobile-ui-tablet):not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
   position: fixed;
   left: max(0.5rem, env(safe-area-inset-left));
   right: max(0.5rem, env(safe-area-inset-right));
@@ -352,9 +352,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-portrait:not(.mobi
   pointer-events: auto;
 }
 
-html.mobile-ui-screen-player .mobile-ui-bottom-nav,
-html:not(.mobile-ui-phone) .mobile-ui-bottom-nav,
-html:not(.mobile-ui-portrait) .mobile-ui-bottom-nav {
+html.mobile-ui-screen-player .mobile-ui-bottom-nav {
   display: none !important;
 }
 
@@ -389,17 +387,23 @@ html:not(.mobile-ui-portrait) .mobile-ui-bottom-nav {
 html.mobile-ui-screen-home .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="home"],
 html.mobile-ui-screen-library .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="library"],
 html.mobile-ui-screen-progress .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="progress"],
-html.mobile-ui-screen-plugins .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="plugins"] {
+html.mobile-ui-screen-plugins .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="plugins"],
+html.mobile-ui-screen-unlockables .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="unlockables"],
+html.mobile-ui-screen-feedbarcade .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="feedbarcade"],
+html.mobile-ui-screen-settings .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="settings"] {
   color: #67e8f9 !important;
   background: rgba(34, 211, 238, 0.15) !important;
 }
 
-/* "More" tab neutral styling (no active state). */
+/* "More" tab neutral styling (no active state) — applies on all screens. */
 
 html.mobile-ui-screen-home .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
 html.mobile-ui-screen-library .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
 html.mobile-ui-screen-progress .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
-html.mobile-ui-screen-plugins .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"] {
+html.mobile-ui-screen-plugins .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
+html.mobile-ui-screen-unlockables .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
+html.mobile-ui-screen-feedbarcade .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
+html.mobile-ui-screen-settings .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"] {
   color: rgba(148, 163, 184, 0.55) !important;
   background: transparent !important;
 }
@@ -414,7 +418,7 @@ html.mobile-ui-bottom-nav-more-open .mobile-ui-bottom-nav [data-mobile-ui-bottom
 /* More sheet — translucent panel that opens above the bottom nav.
    Populated dynamically from remaining core sidebar nav items. */
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-portrait:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet {
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone,.mobile-ui-tablet):not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet {
   position: fixed;
   left: max(0.5rem, env(safe-area-inset-left));
   right: max(0.5rem, env(safe-area-inset-right));
@@ -433,9 +437,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-portrait:not(.mobi
   pointer-events: auto;
 }
 
-html.mobile-ui-screen-player .mobile-ui-bottom-nav-more-sheet,
-html:not(.mobile-ui-phone) .mobile-ui-bottom-nav-more-sheet,
-html:not(.mobile-ui-portrait) .mobile-ui-bottom-nav-more-sheet {
+html.mobile-ui-screen-player .mobile-ui-bottom-nav-more-sheet {
   display: none !important;
 }
 
@@ -480,12 +482,60 @@ html:not(.mobile-ui-portrait) .mobile-ui-bottom-nav-more-sheet {
   font-size: 0.72rem;
 }
 
-/* 3.2  Content padding when bottom nav is present.
+/* 3.2  Content padding and core chrome hiding when bottom nav is present.
    shell.js adds `mobile-ui-has-bottom-nav` to <html> when the nav is created
    and removes it when destroyed. */
 
 html.mobile-ui-has-bottom-nav #v3-main {
   padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
+}
+
+/* Hide the old core hamburger and sidebar when the bottom nav is the
+   primary navigation.  The sidebar DOM stays intact so the More sheet can
+   still read #v3-nav a[data-v3-nav] as its data source. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-has-bottom-nav #v3-hamburger {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-has-bottom-nav #v3-sidebar {
+  display: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-has-bottom-nav #v3-sidebar-backdrop {
+  display: none !important;
+}
+
+/* 3.3  Landscape / tablet compact variants.
+   Phone landscape has limited vertical space — shrink the nav and More sheet
+   so they don't crowd content.  Tablet gets a slightly wider, centered island. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
+  height: 2.6rem;
+  padding: 0 0.15rem;
+  gap: 0.05rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-item {
+  height: 2rem;
+  font-size: 0.65rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet {
+  bottom: calc(3.2rem + max(0.45rem, env(safe-area-inset-bottom)));
+  max-height: min(38vh, 16rem);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet-inner {
+  padding: 0.45rem;
+  gap: 0.3rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  width: min(32rem, calc(100vw - 2rem));
 }
 
 /* 4. Song Library
