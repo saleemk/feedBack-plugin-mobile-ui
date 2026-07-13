@@ -87,7 +87,7 @@ row (no More shelf).
 |---|---|---|---|
 | **P1** | Mobile Player quick exit | Exit was buried under More → Advanced → Close | First safe slice done |
 | **P1** | Phone-friendly main navigation | Top-left hamburger is awkward on phone | First safe slice done |
-| **P2** | Viewport profile polish | Better portrait / landscape fit per device | Planned |
+| **P2** | Viewport profile polish | Better portrait / landscape fit per device | First phone landscape slice done; tablet portrait audited; broader review remains |
 | **P2** | Mobile Highway Gestures | Useful mobile highway interaction | Tap-to-play and vertical scrub implemented; advanced gestures remain later |
 | **P2** | Visual preset audit | Improve bland stock visuals safely | Audit first |
 | **P3** | Double-tap loop markers | Useful after single-tap gesture is stable | Later |
@@ -246,19 +246,36 @@ Treat each viewport profile as a separate layout target.  No one-size-fits-all.
 | **Tablet landscape** | Preserve highway space.  Direct actions accessible.  Avoid panel placement issues.  Direct chip row readable and scroll-safe. |
 | **Standalone / app-like** | Detect `display-mode: standalone`.  Adjust safe-area / overscroll behaviour if needed. |
 
+### Implemented / Audited
+
+- **Implemented:** phone low-height landscape Player chip strip polish.
+  The direct chip strip remains a scroll-safe horizontal strip with fade
+  masks on the edges.  Scoped to phone low-height landscape Player only.
+  Tablet and desktop unaffected.
+- **Audited:** tablet portrait Player controls.  Layout math shows
+  transport + speed slider + 7 chips fit at ~768 px width with ~70 px of
+  slack.  No code change was made.  A real-device screenshot is still
+  useful for visual confirmation.
+
 ### Audit / screenshots needed
 
 - Current screenshots of each profile on the Player screen.
 - Identify specific areas that feel cramped, wasted, or misaligned.
 
-### First safe slice
+### First safe slice (completed)
 
-Pick **one profile** (recommend phone portrait Player) and fix the most
-obvious spacing / crowding issue with CSS-only changes.
+Phone low-height landscape Player chip strip polish (CSS-only).
+
+### Next possible slice
+
+Screenshot-led phone portrait or tablet portrait polish, **only if** a
+concrete spacing / crowding issue is visible.
 
 ### Done criteria
 
-- [ ] Each profile independently reviewed and adjusted.
+- [x] Phone low-height landscape Player reviewed and adjusted.
+- [x] Tablet portrait Player audited — no change made; layout appears to fit.
+- [ ] Each remaining profile independently reviewed and adjusted.
 - [ ] No regressions to desktop.
 - [ ] No regressions to other profiles.
 
