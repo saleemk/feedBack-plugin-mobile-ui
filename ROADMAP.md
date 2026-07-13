@@ -88,7 +88,7 @@ row (no More shelf).
 | **P1** | Mobile Player quick exit | Exit was buried under More → Advanced → Close | First safe slice done |
 | **P1** | Phone-friendly main navigation | Top-left hamburger is awkward on phone | First safe slice done |
 | **P2** | Viewport profile polish | Better portrait / landscape fit per device | Planned |
-| **P2** | Gesture audit and tap-to-play | Useful mobile highway interaction | Audit first |
+| **P2** | Gesture audit and tap-to-play | Useful mobile highway interaction | First tap-to-play slice implemented; advanced gestures remain later |
 | **P2** | Visual preset audit | Improve bland stock visuals safely | Audit first |
 | **P3** | Double-tap loop markers | Useful after single-tap gesture is stable | Later |
 | **P3** | Vertical scrub | High-value but risky | Later |
@@ -270,10 +270,26 @@ obvious spacing / crowding issue with CSS-only changes.
 
 ## P2 — Mobile Highway Gestures
 
+### Implemented — tap-to-play
+
+- **Mobile / tablet tap-to-play gesture.**  Touch or pen tap on the actual
+  `#highway` canvas toggles play / pause.
+- Player screen only.  Phone / tablet only.  Desktop / mouse excluded.
+- Uses delegated `pointer` listeners from `#player`.
+- Clicks `#btn-play` via the safe core play / pause path — does not call
+  `audio.play()` / `audio.pause()` directly.
+- Does **not** touch highway renderer or canvas internals.
+- Ignores taps on interactive targets (buttons, inputs, selects, sliders,
+  panels, More shelf, direct chips).
+- No double-tap loop, vertical scrub, haptics, audio feedback, or gesture
+  settings implemented yet.
+- **Remaining:** verify behaviour with custom / 3D Highway overlays that
+  may cover the `#highway` canvas.
+
 ### Inspiration only
 
-The old **Slopsmith Mobile Note Highway** plugin had gesture ideas (tap to
-play/pause, double-tap loop, vertical scrub).  Those are **ideas**, not
+The old **Slopsmith Mobile Note Highway** plugin had additional gesture
+ideas (double-tap loop, vertical scrub).  Those are **ideas**, not
 code to copy.  fee[dB]ack APIs and DOM structure are different.
 
 ### Gesture candidates
@@ -351,12 +367,12 @@ code to copy.  fee[dB]ack APIs and DOM structure are different.
 
 ### Done criteria (for G2, the first implementation slice)
 
-- [ ] G0 audit complete.
-- [ ] Tap highway → play / pause works.
-- [ ] Does not conflict with double-tap (delayed execution).
-- [ ] Does not fire on panels, buttons, sliders, chips, shelf.
-- [ ] Cleanup on disable / screen change / rotation.
-- [ ] Desktop unaffected.
+- [x] G0 audit complete.
+- [x] Tap highway → play / pause works (touch / pen only, phone / tablet only).
+- [x] Does not fire on panels, buttons, sliders, chips, shelf.
+- [x] Cleanup on disable / screen change / rotation.
+- [x] Desktop unaffected.
+- [ ] Does not conflict with double-tap (deferred — double-tap not yet implemented).
 
 ### Risks
 
