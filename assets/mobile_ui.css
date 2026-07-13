@@ -1588,6 +1588,110 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile
   height: 0.75rem !important;
 }
 
+/* Shared touch topbar status-card contract.
+   Keep tuner, instrument, and profile cards equal-height on every non-Player
+   touch screen while preserving the profile mini graph in compact form. */
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) .mobile-ui-topbar-status-rail {
+  align-items: stretch !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-tuner [data-open-tuner],
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-instrument [data-inst-toggle],
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] {
+  box-sizing: border-box !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone:not(.mobile-ui-screen-player) #v3-badge-tuner [data-open-tuner],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone:not(.mobile-ui-screen-player) #v3-badge-instrument [data-inst-toggle],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] {
+  height: 2.85rem !important;
+  min-height: 2.85rem !important;
+  max-height: 2.85rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-tuner [data-open-tuner],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-instrument [data-inst-toggle],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] {
+  height: 2.6rem !important;
+  min-height: 2.6rem !important;
+  max-height: 2.6rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-tuner [data-open-tuner],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-instrument [data-inst-toggle],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] {
+  height: 3rem !important;
+  min-height: 3rem !important;
+  max-height: 3rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] {
+  max-width: min(8rem, 44vw) !important;
+  gap: 0.3rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:first-child {
+  gap: 0.18rem !important;
+  margin-bottom: 0.1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:first-child span {
+  font-size: 0.68rem !important;
+  white-space: nowrap !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) {
+  align-items: flex-end !important;
+  gap: 0.3rem !important;
+  min-width: 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:first-child span:last-child {
+  display: inline !important;
+  font-size: 0.86rem !important;
+  line-height: 1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) {
+  display: flex !important;
+  align-items: flex-end !important;
+  gap: 1px !important;
+  max-height: 0.78rem !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div {
+  display: block !important;
+  width: 2px !important;
+  min-width: 2px !important;
+  max-width: 2px !important;
+  max-height: 0.78rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:first-child span {
+  font-size: 0.62rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:first-child span:last-child {
+  font-size: 0.78rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) {
+  max-height: 0.62rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div {
+  max-height: 0.62rem !important;
+}
 /* Home stat cards: tighter on tablet. */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-home .grid.md\:grid-cols-3 > div {
   padding: 0.6rem 0.75rem !important;
