@@ -85,8 +85,8 @@ row (no More shelf).
 
 | Priority | Item | Why | Status |
 |---|---|---|---|
-| **P1** | Mobile Player quick exit | Exit was buried under More → Advanced → Close | First safe slice done |
-| **P1** | Phone-friendly main navigation | Top-left hamburger is awkward on phone | First safe slice done |
+| **P1** | Mobile Player quick exit | Exit was buried under More → Advanced → Close | Visible Home/Library exit implemented across phone/tablet Player modes |
+| **P1** | Phone-friendly main navigation | Top-left hamburger is awkward on phone | Phone portrait bottom nav implemented; More sheet replaces floating menu pill |
 | **P2** | Viewport profile polish | Better portrait / landscape fit per device | First phone landscape slice done; tablet portrait audited; broader review remains |
 | **P2** | Mobile Highway Gestures | Useful mobile highway interaction | Tap-to-play and vertical scrub implemented; advanced gestures remain later |
 | **P2** | Visual preset audit | Improve bland stock visuals safely | Audit first |
@@ -143,22 +143,43 @@ Do not move or remove the existing Advanced close button.
 first action.  It calls `window.feedBack.requestExitSong()` and does not appear
 in tablet direct chips, phone low-height landscape chips, or desktop.
 
+### Second slice — Visible Home / Library icon button
+
+Add a compact **Home / Library icon button** directly in the bottom controls
+row, visually separated to the left of the transport controls, so exiting the
+Player is a one-tap visible action on every mobile/tablet layout.
+
+**Status:** ✅ Done.
+
+- **Phone portrait** Player: Home icon button in the bottom controls row
+  (leftmost, `order: 0; margin-inline-end: auto`).
+- **Phone low-height landscape** Player: same Home icon button.
+- **Tablet portrait** Player: same Home icon button.
+- **Tablet landscape** Player: same Home icon button.
+- All call `window.feedBack.requestExitSong()` — the safe core exit path.
+- Phone portrait More shelf still retains Library as the first shelf action.
+- No Library text chip was added to phone landscape or tablet direct chips.
+  Direct chips remain: Visuals, Audio, Mixer, Lyrics, Plugins, Practice, Advanced.
+- Desktop unchanged.
+- Advanced close button still exists as core fallback.
+
 ### Done criteria
 
 - [x] **Near-term:** phone portrait can exit Player from a first-class
   More shelf action (≤ 2 taps).
-- [ ] **Target:** one-tap visible Back / Library action where space allows
-  (e.g. icon in bottom controls row, direct chip on tablet).
-- [ ] Tablet: exit Player without opening the Advanced panel.
-- [x] Uses the existing core action (no new navigation mechanism).
+- [x] **Target:** one-tap visible Back / Library action where space allows
+  (icon in bottom controls row on phone portrait, phone landscape,
+  tablet portrait, tablet landscape).
+- [x] Tablet: exit Player without opening the Advanced panel.
+- [x] Uses the existing core action (`window.feedBack.requestExitSong()`).
 - [x] Desktop unchanged.
 - [x] No duplicate controls.
 - [x] No regression to More shelf / direct chips.
 
 ### Risks
 
-- **Low.**  This is a new chip that bridges into an existing core action.
-  The core exit path already exists and works.
+- **Low.**  This bridges into an existing core action.  The core exit path
+  already exists and works.
 
 ---
 
@@ -182,9 +203,10 @@ The main UI uses a **top-left menu / hamburger**.  On phone this is:
 
 ### Possible designs
 
-1. **Bottom navigation bar** with icons for key screens:
-   Home · Library · Player (if active) · Progress · More.
-2. **Floating bottom Menu pill** that opens the existing drawer.
+1. **Bottom navigation bar** with tabs for key screens:
+   Home · Library · Progress · Plugins · More.
+2. **Floating bottom Menu pill** that opens the existing drawer
+   (superseded — was the first safe slice, now replaced).
 3. **Bottom drawer handle** that triggers the existing menu.
 
 ### Audit questions (before implementation)
@@ -197,30 +219,68 @@ The main UI uses a **top-left menu / hamburger**.  On phone this is:
 - Does the current drawer update its active-item state when we navigate
   via other means?
 
-### First safe slice
+### First safe slice (superseded)
 
-Add a **floating bottom Menu pill** (phone portrait only) that clicks the
-existing hamburger button.  CSS-only pill; JS bridges the click.
+A **floating bottom-right Menu pill** (phone portrait only) that clicked the
+existing hamburger button.  This was the initial safe bridge — it proved the
+concept while leaving the core drawer untouched.
 
-**Status:** ✅ Done.  Phone portrait non-Player screens now show a floating
-**Menu** pill that clicks the existing `#v3-hamburger`.  The pill is hidden on
-Player, phone landscape, tablet, and desktop.  The global tour/help affordance
-is hidden on Mobile UI phone/tablet layouts so it does not overlap touch
-controls or the Menu pill.
+**Status:** ✅ Done, then removed.  The floating Menu pill has been replaced
+by the bottom navigation bar (see below).
+
+### Second slice — Phone portrait bottom navigation bar
+
+A proper 5-tab **bottom navigation bar** on phone portrait non-Player screens:
+
+**Home | Library | Progress | Plugins | More**
+
+- **Home** → `window.showScreen('v3-home')`
+- **Library** → `window.showScreen('v3-songs')`
+- **Progress** → `window.showScreen('v3-progress')`
+- **Plugins** → `window.showScreen('v3-plugins')`
+- **More** → opens a Mobile UI translucent bottom sheet (does **not** open
+  the core drawer)
+
+**More sheet:**
+- Built dynamically from remaining core nav items in `#v3-nav a[data-v3-nav]`.
+- Excludes the four primary tabs (home, songs, progress, plugins).
+- Includes all other available core/plugin nav items: Settings, Playlists,
+  Favorites, Saved for Later, Lessons, FeedBarcade, Unlockables/Shop, and
+  any plugin-added nav items present in the core sidebar.
+- Item clicks use the original core nav `<a>` element, preserving core and
+  plugin nav behaviour.
+- Two-column grid layout, glass styling matching the bottom nav.
+
+**Status:** ✅ Done.
+
+- The old floating Menu pill is removed (zero references in code).
+- Bottom nav is hidden on Player, phone landscape, tablet, and desktop.
+- Core drawer is never opened by bottom nav More.
+- Core `#v3-nav` remains the source of truth for available More sheet items.
+- Active state on primary tabs uses CSS-only via existing
+  `mobile-ui-screen-*` root classes.
+- Content padding on `#v3-main` via `mobile-ui-has-bottom-nav` root class.
 
 ### Done criteria
 
 - [x] Phone has a thumb-friendly navigation entry point.
-- [x] Existing drawer / navigation remains the source of truth.
+- [x] Existing core nav remains source of truth for available More items.
 - [x] Desktop unchanged.
-- [x] Tablet intentionally handled (keeps current layout).
+- [x] Tablet intentionally unchanged for this slice.
 - [x] No route duplication or desync.
 
 ### Risks
 
-- **Low-Medium.**  If the drawer state is not idempotent (open/close
-  toggle), clicking the hamburger when already open would close it.  Must
-  verify drawer toggle behaviour before bridging.
+- **Low-Medium.**
+  - More sheet item collection depends on core nav DOM (`#v3-nav a[data-v3-nav]`).
+    If core restructures its sidebar markup, `_collectRemainingNavItems()` must
+    be updated.
+  - Outside-tap / Escape key close for the More sheet is future polish.
+  - Keyboard / `visualViewport` overlap with the bottom nav on iOS is future
+    polish.
+  - Five tabs on very narrow screens (≤ 320 px) should be visually checked;
+    labels are compact (0.7rem font) and the pill shape provides ample tap
+    targets.
 
 ---
 
@@ -506,8 +566,6 @@ touching renderer internals.
 These are worth doing but depend on earlier work or audits:
 
 - **Double-tap loop markers** — after single-tap gesture (G2) is stable.
-- **Visual scrub feedback** — optional overlay / indicator if scrub needs
-  visible feedback.
 - **Section map enhancement** — after audit of current behaviour.
 - **Haptic / audio feedback** — optional setting; requires Web Audio
   cleanup.
@@ -520,6 +578,13 @@ These are worth doing but depend on earlier work or audits:
 - **Visual theme packs** — low priority; brainstorming only.
 - **Optional gesture settings** — sensitivity, enable / disable per gesture.
 - **README screenshots** — once the UI is visually stable.
+- **Bottom nav icon / label polish** — if text-only labels feel too sparse.
+- **More sheet outside-tap / Escape close** — small UX polish for the
+  bottom nav More sheet.
+- **Bottom nav keyboard / visualViewport handling** — handle iOS keyboard
+  overlap gracefully.
+- **Tablet bottom nav** — only if real-device testing shows tablets need
+  the same treatment as phones.
 
 ---
 
