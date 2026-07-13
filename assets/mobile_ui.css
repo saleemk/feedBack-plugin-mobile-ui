@@ -404,6 +404,82 @@ html.mobile-ui-screen-plugins .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="
   background: transparent !important;
 }
 
+/* More tab open state — highlight when the More sheet is visible. */
+
+html.mobile-ui-bottom-nav-more-open .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"] {
+  color: #67e8f9 !important;
+  background: rgba(34, 211, 238, 0.15) !important;
+}
+
+/* More sheet — translucent panel that opens above the bottom nav.
+   Populated dynamically from remaining core sidebar nav items. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-portrait:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet {
+  position: fixed;
+  left: max(0.5rem, env(safe-area-inset-left));
+  right: max(0.5rem, env(safe-area-inset-right));
+  bottom: calc(3.8rem + max(0.45rem, env(safe-area-inset-bottom)));
+  z-index: 34;
+  max-height: min(52vh, 22rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 1rem;
+  background: rgba(15, 23, 42, 0.72);
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.28), 0 12px 32px rgba(0, 0, 0, 0.34);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  backdrop-filter: blur(14px) saturate(1.1);
+  pointer-events: auto;
+}
+
+html.mobile-ui-screen-player .mobile-ui-bottom-nav-more-sheet,
+html:not(.mobile-ui-phone) .mobile-ui-bottom-nav-more-sheet,
+html:not(.mobile-ui-portrait) .mobile-ui-bottom-nav-more-sheet {
+  display: none !important;
+}
+
+.mobile-ui-bottom-nav-more-sheet-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  padding: 0.65rem;
+}
+
+.mobile-ui-bottom-nav-more-sheet-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 0.75rem;
+  background: rgba(30, 41, 59, 0.55);
+  color: rgba(226, 232, 240, 0.85);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.mobile-ui-bottom-nav-more-sheet-item:active {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: #67e8f9;
+}
+
+.mobile-ui-bottom-nav-more-sheet-empty {
+  grid-column: 1 / -1;
+  padding: 1.5rem 0.5rem;
+  text-align: center;
+  color: rgba(148, 163, 184, 0.5);
+  font-size: 0.72rem;
+}
+
 /* 3.2  Content padding when bottom nav is present.
    shell.js adds `mobile-ui-has-bottom-nav` to <html> when the nav is created
    and removes it when destroyed. */
