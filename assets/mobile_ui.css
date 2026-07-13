@@ -1218,6 +1218,49 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3
   opacity: 0.72;
 }
 
+/* Phone landscape Library density: shorter art and tighter card chrome leave
+   more rows visible above the bottom nav while keeping the A-Z rail usable. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone.mobile-ui-landscape #v3-songs > .max-w-7xl {
+  padding-left: 0.65rem !important;
+  padding-right: 2rem !important;
+  padding-bottom: 0.65rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone.mobile-ui-landscape #v3-songs-grid {
+  gap: 0.45rem !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone.mobile-ui-landscape #v3-songs-grid [data-fn] > div:first-child,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone.mobile-ui-landscape #v3-songs-grid .v3-card-skel > div:first-child {
+  aspect-ratio: 16 / 9 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone.mobile-ui-landscape #v3-songs-grid [data-fn] > div:nth-of-type(2) {
+  margin-top: 0.15rem !important;
+  font-size: 0.74rem !important;
+  line-height: 1.05 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone.mobile-ui-landscape #v3-songs-grid [data-v3-artist],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone.mobile-ui-landscape #v3-songs-grid [data-fn] > div.text-xs {
+  font-size: 0.62rem !important;
+  line-height: 1.05 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone.mobile-ui-landscape .v3-card-chips {
+  height: 0.9rem !important;
+  min-height: 0.9rem !important;
+  max-height: 0.95rem !important;
+  gap: 0.15rem !important;
+  margin-top: 0.15rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone.mobile-ui-landscape .v3-card-chips > * {
+  font-size: 0.5rem !important;
+  padding: 0.12rem 0.25rem !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library.mobile-ui-phone .v3-azrail {
   opacity: 0.72;
 }
@@ -1746,6 +1789,59 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-pi
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-continue-pick {
   max-height: 260px !important;
   overflow: hidden !important;
+}
+
+/* Phone landscape Home density: keep the accepted topbar, but make content
+   cards shorter so more of the dashboard sits above the bottom nav. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-hero {
+  min-height: 165px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-continue,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-pick {
+  max-height: 170px !important;
+  aspect-ratio: 16 / 7 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-continue > div.relative,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-pick > div.relative {
+  padding: 0.65rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-continue .text-sm,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-pick .text-sm {
+  font-size: 0.68rem !important;
+  line-height: 1.05 !important;
+  margin-bottom: 0.35rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-home section.mt-10 {
+  margin-top: 0.75rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-home section.mt-10 h3 {
+  font-size: 0.98rem !important;
+  margin-bottom: 0.35rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-home section.mt-10 > .grid {
+  gap: 0.5rem !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-home button[data-recent] > div:first-child {
+  aspect-ratio: 16 / 9 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-home button[data-recent] > .mt-1 {
+  margin-top: 0.15rem !important;
+  font-size: 0.72rem !important;
+  line-height: 1.05 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-home button[data-recent] > .text-xs {
+  font-size: 0.62rem !important;
+  line-height: 1.05 !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-hero {
