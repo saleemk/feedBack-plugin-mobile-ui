@@ -1,7 +1,7 @@
 export function createFeature() {
   let statusRow = null;
   let statusRail = null;
-  let menuPill = null;
+  let bottomNav = null;
 
   return {
     name: 'shell',
@@ -14,10 +14,10 @@ export function createFeature() {
 
   function refresh(ctx) {
     clearStatusClasses();
-    if (_shouldShowMenuPill(ctx?.state)) {
-      ensureMenuPill();
+    if (_shouldShowBottomNav(ctx?.state)) {
+      _ensureBottomNav();
     } else {
-      removeMenuPill();
+      _removeBottomNav();
     }
 
     if (ctx?.state?.disabled || !ctx?.state?.isV3) return;
@@ -41,7 +41,7 @@ export function createFeature() {
 
   function unmount() {
     clearStatusClasses();
-    removeMenuPill();
+    _removeBottomNav();
   }
 
   function clearStatusClasses() {
@@ -57,35 +57,65 @@ export function createFeature() {
     statusRow = null;
   }
 
-  function _shouldShowMenuPill(state) {
+  function _shouldShowBottomNav(state) {
     if (state?.disabled || !state?.isV3 || state?.screen === 'player') return false;
     const vp = state?.viewport;
     return !!(vp && vp.deviceClass === 'phone' && vp.isPortrait);
   }
 
-  function ensureMenuPill() {
-    if (menuPill && menuPill.isConnected) return;
+  // --- Bottom navigation bar -----------------------------------------------
 
-    const button = document.createElement('button');
-    button.className = 'mobile-ui-menu-pill';
-    button.type = 'button';
-    button.setAttribute('aria-label', 'Menu');
-    button.title = 'Menu';
-    button.textContent = '☰';
-    button.addEventListener('click', function () {
-      const hamburger = document.getElementById('v3-hamburger');
-      if (hamburger) hamburger.click();
-    });
+  function _ensureBottomNav() {
+    if (bottomNav && bottomNav.isConnected) return;
 
-    document.body.appendChild(button);
-    menuPill = button;
+    const nav = document.createElement('nav');
+    nav.className = 'mobile-ui-bottom-nav';
+    nav.setAttribute('aria-label', 'Primary mobile navigation');
+
+    const items = [
+      { key: 'home', label: 'Home', screen: 'v3-home' },
+      { key: 'library', label: 'Library', screen: 'v3-songs' },
+      { key: 'progress', label: 'Progress', screen: 'v3-progress' },
+      { key: 'plugins', label: 'Plugins', screen: 'v3-plugins' },
+      { key: 'more', label: 'More', screen: null }
+    ];
+
+    for (const item of items) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mobile-ui-bottom-nav-item';
+      btn.setAttribute('data-mobile-ui-bottom-nav', item.key);
+      btn.setAttribute('aria-label', item.label);
+      btn.textContent = item.label;
+
+      btn.addEventListener('click', function () {
+        if (item.screen) {
+          if (typeof window.showScreen === 'function') {
+            window.showScreen(item.screen);
+          }
+        } else {
+          const hamburger = document.getElementById('v3-hamburger');
+          if (hamburger) hamburger.click();
+        }
+      });
+
+      nav.appendChild(btn);
+    }
+
+    document.body.appendChild(nav);
+    bottomNav = nav;
+
+    // Signal to CSS that bottom nav is present for content padding.
+    document.documentElement.classList.add('mobile-ui-has-bottom-nav');
   }
 
-  function removeMenuPill() {
-    if (menuPill) {
-      menuPill.remove();
-      menuPill = null;
+  function _removeBottomNav() {
+    if (bottomNav) {
+      bottomNav.remove();
+      bottomNav = null;
     }
-    document.querySelectorAll('.mobile-ui-menu-pill').forEach((el) => el.remove());
+    // Clean up any leaked instances.
+    document.querySelectorAll('.mobile-ui-bottom-nav').forEach((el) => el.remove());
+    document.documentElement.classList.remove('mobile-ui-has-bottom-nav');
   }
 }

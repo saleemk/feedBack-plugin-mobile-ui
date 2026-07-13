@@ -326,32 +326,90 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-sidebar-backdrop {
   backdrop-filter: blur(2px);
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-portrait .mobile-ui-menu-pill {
+/* 3.1  Phone bottom navigation bar
+   Replaces the floating Menu pill with a fixed 5-tab bar on phone portrait
+   non-Player screens.  Active-state highlighting uses the root screen classes
+   that main.js already maintains on <html>. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-portrait:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
   position: fixed;
-  right: max(0.85rem, env(safe-area-inset-right));
-  bottom: max(0.9rem, env(safe-area-inset-bottom));
+  left: max(0.5rem, env(safe-area-inset-left));
+  right: max(0.5rem, env(safe-area-inset-right));
+  bottom: max(0.45rem, env(safe-area-inset-bottom));
   z-index: 35;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 2.4rem;
-  height: 2.4rem;
-  border: 1px solid rgba(148, 163, 184, 0.24);
+  justify-content: space-evenly;
+  gap: 0.15rem;
+  height: 3.2rem;
+  padding: 0 0.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 999px;
   background: rgba(15, 23, 42, 0.72);
-  color: rgba(241, 245, 249, 0.94);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.34);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.38);
   -webkit-backdrop-filter: blur(14px) saturate(1.1);
   backdrop-filter: blur(14px) saturate(1.1);
-  font-size: 1.05rem;
-  line-height: 1;
   pointer-events: auto;
 }
 
-html.mobile-ui-screen-player .mobile-ui-menu-pill,
-html:not(.mobile-ui-phone) .mobile-ui-menu-pill,
-html:not(.mobile-ui-portrait) .mobile-ui-menu-pill {
+html.mobile-ui-screen-player .mobile-ui-bottom-nav,
+html:not(.mobile-ui-phone) .mobile-ui-bottom-nav,
+html:not(.mobile-ui-portrait) .mobile-ui-bottom-nav {
   display: none !important;
+}
+
+.mobile-ui-bottom-nav-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 2.5rem;
+  padding: 0 0.25rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(148, 163, 184, 0.75);
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: color 150ms ease, background 150ms ease;
+}
+
+.mobile-ui-bottom-nav-item:active {
+  color: rgba(226, 232, 240, 0.85);
+  background: rgba(56, 189, 248, 0.12);
+}
+
+/* Active tab — uses root classes set by main.js */
+
+html.mobile-ui-screen-home .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="home"],
+html.mobile-ui-screen-library .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="library"],
+html.mobile-ui-screen-progress .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="progress"],
+html.mobile-ui-screen-plugins .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="plugins"] {
+  color: #67e8f9 !important;
+  background: rgba(34, 211, 238, 0.15) !important;
+}
+
+/* "More" tab neutral styling (no active state). */
+
+html.mobile-ui-screen-home .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
+html.mobile-ui-screen-library .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
+html.mobile-ui-screen-progress .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
+html.mobile-ui-screen-plugins .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"] {
+  color: rgba(148, 163, 184, 0.55) !important;
+  background: transparent !important;
+}
+
+/* 3.2  Content padding when bottom nav is present.
+   shell.js adds `mobile-ui-has-bottom-nav` to <html> when the nav is created
+   and removes it when destroyed. */
+
+html.mobile-ui-has-bottom-nav #v3-main {
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom)) !important;
 }
 
 /* 4. Song Library
