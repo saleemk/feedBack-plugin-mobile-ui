@@ -1387,6 +1387,74 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-playe
   height: 1.8rem !important;
 }
 
+/* Profile badge equalizer bars: shrink so the card doesn't force extra
+   height beyond the other two badges. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div {
+  max-height: 0.75rem !important;
+}
+
+/* Profile badge text: tighten. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] .text-base {
+  font-size: 0.7rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] .text-xl {
+  font-size: 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] svg.w-5 {
+  width: 0.9rem !important;
+  height: 0.9rem !important;
+}
+
+/* 5.3  Phone landscape badge / status card normalization.
+   Match the tablet compaction for phone landscape — shrink the tuner,
+   instrument, and profile badges to consistent heights and trim the
+   profile equalizer bars. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-tuner [data-open-tuner] {
+  width: 3.2rem !important;
+  height: 2.6rem !important;
+  padding: 0.25rem 0.35rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-tuner [data-tuner-note] {
+  font-size: 0.9rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-instrument [data-inst-toggle] {
+  width: 2.5rem !important;
+  height: 2.6rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] {
+  min-height: 2.6rem !important;
+  padding: 0.25rem 0.35rem !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-avatar-tile] {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div {
+  max-height: 0.6rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] .text-base {
+  font-size: 0.62rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] .text-xl {
+  font-size: 0.85rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] svg.w-5 {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+}
+
 /* Home stat cards: tighter on tablet. */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-home .grid.md\:grid-cols-3 > div {
   padding: 0.6rem 0.75rem !important;
