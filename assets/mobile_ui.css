@@ -1793,12 +1793,27 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-co
 
 /* Phone landscape Home density: keep the accepted topbar, but make content
    cards shorter so more of the dashboard sits above the bottom nav. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-home > .max-w-7xl > .grid.lg\:grid-cols-3 {
+  grid-template-columns: minmax(0, 1.25fr) minmax(11rem, 0.85fr) !important;
+  gap: 0.65rem !important;
+  align-items: stretch !important;
+  margin-top: 0.6rem !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-hero {
+  grid-column: auto !important;
   min-height: 165px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-home > .max-w-7xl > .grid.lg\:grid-cols-3 > :not(#v3-hero) {
+  align-self: stretch !important;
+  min-width: 0 !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-continue,
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-pick {
+  width: 100% !important;
+  height: 100% !important;
   max-height: 170px !important;
   aspect-ratio: 16 / 7 !important;
 }
