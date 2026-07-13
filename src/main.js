@@ -102,6 +102,10 @@ function createRuntime() {
     addListeners();
     refresh('install');
 
+    // Preboot class is no longer needed — the real bottom-nav CSS rules
+    // (mobile-ui-has-bottom-nav) are now in place.
+    document.documentElement.classList.remove('mobile-ui-preboot-touch-nav');
+
     console.info('[mobile_ui] loaded', runtime.snapshot());
   }
 
