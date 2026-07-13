@@ -1850,6 +1850,30 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   margin-inline-end: auto !important;
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-library-button {
+  order: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 2.2rem !important;
+  height: 2.2rem !important;
+  padding: 0 !important;
+  color: #cbd5e1 !important;
+  background: rgba(15, 23, 42, 0.75) !important;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  border-radius: 999px !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  flex: 0 0 auto !important;
+  margin-inline-end: auto !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet.mobile-ui-landscape.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-library-button {
+  margin-inline-end: 0.85rem !important;
+}
+
 /* Mobile Controls button + category picker — inline in bottom row */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-trigger {
   position: relative !important;

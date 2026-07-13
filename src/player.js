@@ -520,7 +520,7 @@ export function createFeature() {
       if (_isPlayerMobileSpeedScope(ctx?.state)) _bind();
       if (tabletDirectControlsMode) {
         _ensureTabletControls();
-        _removeLibraryButton();
+        _ensureLibraryButton();
         _removeControls();
         _removeLandscapeControls();
       } else if (moreShelfMode) {
@@ -556,7 +556,7 @@ export function createFeature() {
       }
       if (tabletDirectControlsMode) {
         _ensureTabletControls();
-        _removeLibraryButton();
+        _ensureLibraryButton();
         _removeControls();
         _removeLandscapeControls();
       } else if (moreShelfMode) {
