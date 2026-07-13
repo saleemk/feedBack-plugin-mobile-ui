@@ -4,12 +4,41 @@
 // once the real bottom-nav classes are in place.
 (function () {
   var disabled = false;
-  try { disabled = localStorage.getItem('mobile_ui.disabled') === 'true'; } catch (_) { /* private mode */ }
-  if (!disabled) {
-    var w = window.innerWidth || document.documentElement.clientWidth || 0;
-    if (w > 0 && w <= 1024) {
-      document.documentElement.classList.add('mobile-ui-preboot-touch-nav');
-    }
+  try { disabled = localStorage.getItem('mobile_ui.disabled') === '1'; } catch (_) { /* private mode */ }
+  if (!disabled && looksTouchLayout()) {
+    injectPrebootStyle();
+    document.documentElement.classList.add('mobile-ui-preboot-touch-nav');
+  }
+
+  function looksTouchLayout() {
+    var width = window.innerWidth || document.documentElement.clientWidth || 0;
+    var height = window.innerHeight || document.documentElement.clientHeight || 0;
+    if (!width || !height) return false;
+
+    var shortSide = Math.min(width, height);
+    var longSide = Math.max(width, height);
+    var coarsePointer = false;
+    try { coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches === true; } catch (_) { /* ignore */ }
+    var maxTouchPoints = navigator.maxTouchPoints || 0;
+    var hasTouch = coarsePointer || maxTouchPoints > 1 || 'ontouchstart' in window;
+
+    var looksPhone = hasTouch && shortSide < 768 && longSide <= 1024;
+    var looksTablet = hasTouch && shortSide >= 600 && longSide <= 1366;
+    return looksPhone || looksTablet;
+  }
+
+  function injectPrebootStyle() {
+    if (document.getElementById('mobile-ui-preboot-style')) return;
+    var style = document.createElement('style');
+    style.id = 'mobile-ui-preboot-style';
+    style.textContent = [
+      'html.mobile-ui-preboot-touch-nav #v3-sidebar,',
+      'html.mobile-ui-preboot-touch-nav #v3-sidebar-backdrop,',
+      'html.mobile-ui-preboot-touch-nav #v3-hamburger {',
+      '  display: none !important;',
+      '}'
+    ].join('\n');
+    document.head.appendChild(style);
   }
 })();
 

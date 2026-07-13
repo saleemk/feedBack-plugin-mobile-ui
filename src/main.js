@@ -42,6 +42,7 @@ const existingRuntime = window[GLOBAL_KEY];
 
 if (existingRuntime?.installed) {
   existingRuntime.refresh?.('module-reloaded');
+  cleanupPreboot();
 } else {
   const runtime = createRuntime();
   window[GLOBAL_KEY] = runtime;
@@ -102,9 +103,9 @@ function createRuntime() {
     addListeners();
     refresh('install');
 
-    // Preboot class is no longer needed — the real bottom-nav CSS rules
+    // Preboot is no longer needed — the real bottom-nav CSS rules
     // (mobile-ui-has-bottom-nav) are now in place.
-    document.documentElement.classList.remove('mobile-ui-preboot-touch-nav');
+    cleanupPreboot();
 
     console.info('[mobile_ui] loaded', runtime.snapshot());
   }
@@ -273,6 +274,11 @@ function applyRootClasses(state) {
 
 function removeRootClasses() {
   document.documentElement.classList.remove(...ROOT_CLASSES);
+}
+
+function cleanupPreboot() {
+  document.documentElement.classList.remove('mobile-ui-preboot-touch-nav');
+  document.getElementById('mobile-ui-preboot-style')?.remove();
 }
 
 function readStorageFlag(key) {
