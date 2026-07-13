@@ -14,7 +14,10 @@ so the focus is practical touch improvements without core edits.
 
 ## What You Get
 
-- cleaner mobile/tablet shell, topbar, and drawer navigation
+- phone portrait bottom navigation bar with More sheet for remaining screens
+- visible Home/Library Player exit button on phone and tablet
+- tap-to-play and vertical scrub gestures on phone/tablet Player
+- cleaner mobile/tablet shell, topbar, and status rail polish
 - compact Home, Song Library, Progress, Settings, Plugins, and Collections views
 - touch-friendly Player speed and action controls
 - phone portrait More shelf for secondary Player actions
@@ -23,16 +26,36 @@ so the focus is practical touch improvements without core edits.
 - mobile/tablet plugin settings polish
 - enable/disable switch, debug view toggle, and optional pause-on-More
 
+## Navigation
+
+On phone portrait (non-Player screens), Mobile UI provides a bottom
+navigation bar:
+
+**Home · Library · Progress · Plugins · More**
+
+- **More** opens a Mobile UI translucent sheet with the remaining app and
+  plugin screens (Settings, Playlists, Favorites, Saved for Later, Lessons,
+  FeedBarcade, Unlockables, and any plugin-added screens present in the app).
+- The Player hides the bottom nav and uses its own controls.
+- Tablet and desktop keep their existing navigation patterns.
+
 ## Player Experience
 
 ### Phone
 
-In phone portrait, the Player shows a compact More icon. Tapping it opens a
-persistent shelf with Visuals, Audio, Mixer, Lyrics, Plugins, Practice, and
-Advanced.
+In phone portrait, the Player shows a compact **Home/Library exit button** on
+the left side of the controls row so you can leave the Player in one tap.
+Tapping the More icon opens a persistent shelf with Visuals, Audio, Mixer,
+Lyrics, Plugins, Practice, and Advanced (Library is the first shelf action).
 
-In low-height phone landscape, the Player uses direct inline action chips
-instead of the More shelf so the controls stay fast and horizontal.
+In low-height phone landscape, the Player also shows the Home/Library exit
+button and uses direct inline action chips instead of the More shelf so the
+controls stay fast and horizontal.
+
+**Gestures on phone/tablet Player:**
+- **Tap the highway** to play or pause.
+- **Drag vertically on the highway** to scrub through the song (drag down
+  seeks forward, drag up seeks backward).
 
 Speed controls are cleaned up for touch use: duplicate indicators and presets
 are hidden, the slider uses a compact pill style, and a speed value peek appears
@@ -41,8 +64,11 @@ while dragging.
 ### Tablet
 
 Tablet has enough room for direct access, so it does not use the phone More
-button. Tablet portrait and tablet landscape show inline action chips for
-Visuals, Audio, Mixer, Lyrics, Plugins, Practice, and Advanced.
+button. Tablet portrait and tablet landscape show the **Home/Library exit
+button** and inline action chips for Visuals, Audio, Mixer, Lyrics, Plugins,
+Practice, and Advanced.
+
+Tap-to-play and vertical scrub gestures also work on tablet Player.
 
 In touch Player modes, the old v3 rail is visually hidden but kept in the DOM so
 Mobile UI can reuse core rail actions instead of reimplementing them.
@@ -54,10 +80,10 @@ desktop Player or change desktop layouts.
 
 | Device/mode | Behavior |
 | --- | --- |
-| Phone portrait | More icon opens a persistent shelf. |
-| Phone low-height landscape | Direct inline action chips. No More shelf. |
-| Tablet portrait | Direct inline action chips. No More button or More shelf. |
-| Tablet landscape | Direct inline action chips. No More button or More shelf. |
+| Phone portrait | Home/Library exit button + More icon opens a persistent shelf. |
+| Phone low-height landscape | Home/Library exit button + direct inline action chips. No More shelf. |
+| Tablet portrait | Home/Library exit button + direct inline action chips. No More button or More shelf. |
+| Tablet landscape | Home/Library exit button + direct inline action chips. No More button or More shelf. |
 | Desktop | Core Player remains unchanged. |
 
 Player touch features include:
@@ -77,7 +103,7 @@ Player touch features include:
 
 | Area | Status | Notes |
 | --- | --- | --- |
-| Shell/topbar/drawer | active | Mobile drawer and status rail polish. |
+| Shell/topbar/drawer | active | Phone bottom nav, More sheet, topbar/status rail polish. |
 | Home | active | Mobile/tablet layout polish. |
 | Song Library | active | Toolbar, options, and content polish. |
 | Progress | active | Mobile/tablet layout polish. |
@@ -135,9 +161,12 @@ Then restart the container so the server discovers the updated `plugin.json`.
 
 Help test Mobile UI on your devices.  Areas to try:
 
-- **Phone portrait Player** — More shelf, category panels, speed controls
-- **Phone low-height landscape Player** — direct action chips
-- **Tablet portrait / landscape Player** — direct action chips
+- **Phone portrait Player** — Home/Library exit button, More shelf, category panels, speed controls
+- **Phone low-height landscape Player** — Home/Library exit button, direct action chips
+- **Tablet portrait / landscape Player** — Home/Library exit button, direct action chips
+- **Phone portrait bottom nav** — Home, Library, Progress, Plugins, More sheet
+- **Highway gestures** — tap to play/pause, vertical drag to scrub
+- **3D Highway** — verify gestures work with 3D Highway if available
 - **Home, Song Library, Progress, Settings, Plugins**
 - **Playlists, Favorites, Saved for Later**
 
@@ -161,10 +190,12 @@ When reporting issues, include:
 
 Planned but not implemented yet:
 
-- quicker mobile Player exit
-- phone-first navigation improvements
-- highway gestures
+- double-tap loop markers
+- optional gesture settings
+- haptic / audio feedback
 - mobile visual / highway presets
+- visual preset audit / implementation
+- README screenshots
 
 See [ROADMAP.md](ROADMAP.md) for the full plan and priorities.
 
