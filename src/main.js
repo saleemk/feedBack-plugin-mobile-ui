@@ -31,11 +31,13 @@ const ROOT_CLASSES = [
   'mobile-ui-portrait',
   'mobile-ui-v3',
   'mobile-ui-disabled',
-  'mobile-ui-rotation-reflow',
   'mobile-ui-player-more-shelf-mode',
   'mobile-ui-player-tablet-direct-controls-mode',
   ...getScreenClassNames()
 ];
+
+const IOS_VIEWPORT_FIX_CLASS = 'mobile-ui-ios-vv-offset-bug';
+const IOS_VIEWPORT_FIX_VAR = '--mobile-ui-ios-vv-offset-fix';
 
 const reportedFeatureErrors = new Set();
 
@@ -52,7 +54,7 @@ if (existingRuntime?.installed) {
 
 function createRuntime() {
   const state = createState();
-  const rotationRecoveryTimers = new Set();
+  const iosViewportRepairTimers = new Set();
   let lastOrientation = null;
   const lifecycle = createLifecycle([
     createShellFeature(),
@@ -125,6 +127,7 @@ function createRuntime() {
     state.screen = detectScreen();
 
     applyRootClasses(state);
+    clearIosViewportOriginFixIfNeeded();
     lifecycle.refresh(getContext(reason));
     debugOverlay.refresh(getContext(reason));
     return runtime.snapshot();
@@ -132,6 +135,8 @@ function createRuntime() {
 
   function destroy() {
     clearRefreshTimer();
+    clearIosViewportRepairTimers();
+    clearIosViewportOriginFix();
     removeListeners();
     lifecycle.unmount();
     debugOverlay.remove();
@@ -190,24 +195,37 @@ function createRuntime() {
   function addListeners() {
     if (state.listeners.length) return;
 
-    state.listeners.push(addWindowListener('resize', () => queueRefresh('resize')));
+    state.listeners.push(addWindowListener('resize', () => {
+      queueRefresh('resize');
+      queueIosViewportOriginRepair('resize');
+    }));
     state.listeners.push(addWindowListener('orientationchange', () => {
       const previousOrientation = lastOrientation;
       queueRefresh('orientationchange');
-      queueStandaloneRotationRecovery(previousOrientation);
+      queueIosViewportOriginRepair('orientationchange', previousOrientation);
     }));
     state.listeners.push(addFeedBackListener('screen:changed', () => queueRefresh('screen:changed')));
 
     if (window.visualViewport?.addEventListener) {
-      const handler = () => queueRefresh('visualViewport.resize');
-      window.visualViewport.addEventListener('resize', handler, { passive: true });
-      state.listeners.push(() => window.visualViewport.removeEventListener('resize', handler));
+      const resizeHandler = () => {
+        queueRefresh('visualViewport.resize');
+        queueIosViewportOriginRepair('visualViewport.resize');
+      };
+      const scrollHandler = () => {
+        queueIosViewportOriginRepair('visualViewport.scroll');
+      };
+      window.visualViewport.addEventListener('resize', resizeHandler, { passive: true });
+      window.visualViewport.addEventListener('scroll', scrollHandler, { passive: true });
+      state.listeners.push(() => {
+        window.visualViewport.removeEventListener('resize', resizeHandler);
+        window.visualViewport.removeEventListener('scroll', scrollHandler);
+      });
     }
   }
 
   function removeListeners() {
     state.listeners.splice(0).forEach((remove) => remove());
-    clearRotationRecoveryTimers();
+    clearIosViewportRepairTimers();
   }
 
   function queueRefresh(reason) {
@@ -229,37 +247,140 @@ function createRuntime() {
     }
   }
 
-  function queueStandaloneRotationRecovery(previousOrientation) {
+  function queueIosViewportOriginRepair(reason, previousOrientation = null) {
     const viewport = getViewportInfo();
+    const isPortraitToLandscape = previousOrientation === 'portrait' && viewport.orientation === 'landscape';
+    const origin = detectNegativeViewportOrigin();
+    const hasActiveFix = document.documentElement.classList.contains(IOS_VIEWPORT_FIX_CLASS);
+
+    if (!isIosViewportOriginRepairScope(viewport)) {
+      clearIosViewportOriginFix();
+      return;
+    }
+
     if (
-      previousOrientation !== 'portrait' ||
-      viewport.orientation !== 'landscape' ||
-      !viewport.standalone ||
-      viewport.deviceClass !== 'phone'
+      !isPortraitToLandscape &&
+      !origin.broken &&
+      !hasActiveFix
     ) return;
 
-    scheduleRotationRecovery(120);
-    scheduleRotationRecovery(360);
+    clearIosViewportRepairTimers();
+    scheduleIosViewportOriginRepair(reason, 90);
+    if (isPortraitToLandscape) {
+      scheduleIosViewportOriginRepair(`${reason}:settled`, 360);
+    }
   }
 
-  function scheduleRotationRecovery(delay) {
+  function scheduleIosViewportOriginRepair(reason, delay) {
     const timer = window.setTimeout(() => {
-      rotationRecoveryTimers.delete(timer);
-      const viewport = getViewportInfo();
-      if (viewport.standalone && viewport.deviceClass === 'phone' && viewport.orientation === 'landscape') {
-        resetStandaloneScrollState();
-        forceFixedLayerReflow();
-        refresh('standalone-rotation-recovery');
-        lastOrientation = viewport.orientation;
-      }
+      iosViewportRepairTimers.delete(timer);
+      repairIosStandaloneViewportOrigin(reason);
     }, delay);
 
-    rotationRecoveryTimers.add(timer);
+    iosViewportRepairTimers.add(timer);
   }
 
-  function clearRotationRecoveryTimers() {
-    rotationRecoveryTimers.forEach((timer) => window.clearTimeout(timer));
-    rotationRecoveryTimers.clear();
+  function clearIosViewportRepairTimers() {
+    iosViewportRepairTimers.forEach((timer) => window.clearTimeout(timer));
+    iosViewportRepairTimers.clear();
+  }
+
+  function repairIosStandaloneViewportOrigin(reason) {
+    if (!isIosViewportOriginRepairScope()) {
+      clearIosViewportOriginFix();
+      return;
+    }
+
+    const before = detectNegativeViewportOrigin();
+    if (!before.broken && !document.documentElement.classList.contains(IOS_VIEWPORT_FIX_CLASS)) {
+      return;
+    }
+
+    if (before.broken) {
+      resetStandaloneScrollState();
+      forceShellLayoutRead();
+    }
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        if (!isIosViewportOriginRepairScope()) {
+          clearIosViewportOriginFix();
+          return;
+        }
+
+        const after = detectNegativeViewportOrigin();
+        if (after.broken) {
+          applyIosViewportOriginFix(after.offset);
+          forceShellLayoutRead();
+          refresh(`ios-vv-origin-fix:${reason}`);
+        } else {
+          const cleared = clearIosViewportOriginFix();
+          if (before.broken || cleared) {
+            refresh(`ios-vv-origin-normalized:${reason}`);
+          }
+        }
+
+        lastOrientation = getViewportInfo().orientation;
+      });
+    });
+  }
+
+  function isIosViewportOriginRepairScope(viewport = getViewportInfo()) {
+    return (
+      !isDisabled() &&
+      isV3Ui() &&
+      viewport.standalone &&
+      viewport.deviceClass === 'phone' &&
+      viewport.orientation === 'landscape'
+    );
+  }
+
+  function clearIosViewportOriginFixIfNeeded() {
+    if (!isIosViewportOriginRepairScope(state.viewport) || !detectNegativeViewportOrigin().broken) {
+      clearIosViewportOriginFix();
+    }
+  }
+
+  function detectNegativeViewportOrigin() {
+    const viewport = window.visualViewport;
+    const root = document.documentElement;
+    const body = document.body;
+    const values = [
+      toFiniteNumber(viewport?.offsetTop),
+      toFiniteNumber(viewport?.pageTop),
+      toFiniteNumber(window.scrollY),
+      toFiniteNumber(root.scrollTop),
+      toFiniteNumber(body?.scrollTop)
+    ];
+    const minY = Math.min(...values);
+    const broken = minY < -1;
+
+    return {
+      broken,
+      offset: broken ? Math.ceil(Math.abs(minY)) : 0,
+      minY,
+      values
+    };
+  }
+
+  function toFiniteNumber(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : 0;
+  }
+
+  function applyIosViewportOriginFix(offset) {
+    const root = document.documentElement;
+    root.style.setProperty(IOS_VIEWPORT_FIX_VAR, `${Math.max(0, offset)}px`);
+    root.classList.add(IOS_VIEWPORT_FIX_CLASS);
+  }
+
+  function clearIosViewportOriginFix() {
+    const root = document.documentElement;
+    const hadFix = root.classList.contains(IOS_VIEWPORT_FIX_CLASS) ||
+      root.style.getPropertyValue(IOS_VIEWPORT_FIX_VAR);
+    root.classList.remove(IOS_VIEWPORT_FIX_CLASS);
+    root.style.removeProperty(IOS_VIEWPORT_FIX_VAR);
+    return !!hadFix;
   }
 
   function resetStandaloneScrollState() {
@@ -269,13 +390,13 @@ function createRuntime() {
     document.getElementById('v3-main')?.scrollTo?.(0, 0);
   }
 
-  function forceFixedLayerReflow() {
-    const root = document.documentElement;
-    root.classList.add('mobile-ui-rotation-reflow');
-    void root.offsetHeight;
-    window.requestAnimationFrame(() => {
-      root.classList.remove('mobile-ui-rotation-reflow');
-    });
+  function forceShellLayoutRead() {
+    void document.documentElement.getBoundingClientRect();
+    void document.body.getBoundingClientRect();
+    void document.getElementById('v3-main')?.getBoundingClientRect();
+    void document.getElementById('v3-topbar')?.getBoundingClientRect();
+    void document.querySelector('.screen.active')?.getBoundingClientRect();
+    void document.querySelector('.mobile-ui-bottom-nav')?.getBoundingClientRect();
   }
 
   function addWindowListener(type, handler) {

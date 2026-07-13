@@ -59,7 +59,9 @@ html.mobile-ui-preboot-touch-nav #v3-hamburger {
   right: 8px;
   bottom: 8px;
   z-index: 2147483000;
-  max-width: min(220px, calc(100vw - 16px));
+  max-width: min(390px, calc(100vw - 16px));
+  max-height: min(70vh, 34rem);
+  overflow: auto;
   padding: 8px 10px;
   border: 1px solid rgba(148, 163, 184, 0.35);
   border-radius: 8px;
@@ -67,13 +69,96 @@ html.mobile-ui-preboot-touch-nav #v3-hamburger {
   color: rgba(248, 250, 252, 0.94);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   font: 11px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  pointer-events: none;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+
+html.mobile-ui-has-bottom-nav .mobile-ui-debug-overlay {
+  bottom: calc(4rem + env(safe-area-inset-bottom));
+}
+
+.mobile-ui-debug-overlay-collapsed {
+  max-width: min(280px, calc(100vw - 16px));
+  overflow: hidden;
+  padding: 0;
+  border-radius: 999px;
+}
+
+.mobile-ui-debug-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  width: 100%;
+  min-height: 2rem;
+  padding: 0.45rem 0.65rem;
+  border: 0;
+  border-radius: inherit;
+  background: rgba(15, 23, 42, 0.92);
+  color: rgba(248, 250, 252, 0.94);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-ui-debug-toggle span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-ui-debug-toggle span:last-child {
+  color: #7dd3fc;
+  font-weight: 700;
+}
+
+.mobile-ui-debug-body {
+  padding-top: 0.45rem;
+}
+
+.mobile-ui-debug-overlay-collapsed .mobile-ui-debug-body {
+  display: none;
+}
+
+.mobile-ui-debug-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.mobile-ui-debug-copy {
+  flex: 0 0 auto;
+  min-height: 1.7rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid rgba(125, 211, 252, 0.34);
+  border-radius: 999px;
+  background: rgba(14, 165, 233, 0.16);
+  color: #7dd3fc;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-ui-debug-overlay pre {
+  margin: 0;
+  font: inherit;
+  white-space: pre;
 }
 
 .mobile-ui-debug-overlay strong {
   display: block;
   margin-bottom: 2px;
   color: #7dd3fc;
+}
+
+.mobile-ui-debug-overlay hr {
+  border: 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.22);
+  margin: 4px 0;
 }
 
 /* 2. Shell / topbar status rail
@@ -543,9 +628,24 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-standalone.mobile-ui-phone.mobile-
   background: rgba(15, 23, 42, 0.9) !important;
 }
 
+/* iOS standalone can report a negative visual viewport origin after rotating
+   from portrait to landscape.  main.js measures the live offset and applies
+   this class only while that bug is present. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-standalone.mobile-ui-phone.mobile-ui-landscape.mobile-ui-ios-vv-offset-bug:not(.mobile-ui-screen-player) #v3-main {
+  transform: translateY(calc(-1 * var(--mobile-ui-ios-vv-offset-fix, 0px))) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-standalone.mobile-ui-phone.mobile-ui-landscape.mobile-ui-ios-vv-offset-bug:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
+  bottom: calc(max(0.45rem, env(safe-area-inset-bottom)) + var(--mobile-ui-ios-vv-offset-fix, 0px)) !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet {
   bottom: calc(3.2rem + max(0.45rem, env(safe-area-inset-bottom)));
   max-height: min(38vh, 16rem);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-standalone.mobile-ui-phone.mobile-ui-landscape.mobile-ui-ios-vv-offset-bug:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet {
+  bottom: calc(3.2rem + max(0.45rem, env(safe-area-inset-bottom)) + var(--mobile-ui-ios-vv-offset-fix, 0px)) !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet-inner {
