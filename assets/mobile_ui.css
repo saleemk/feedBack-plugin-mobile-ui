@@ -1335,6 +1335,73 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile
   padding-bottom: 0.75rem !important;
 }
 
+/* 5.2  Tablet topbar / status / Home compaction.
+   Tablet has more room than phone, but the default badge cluster and
+   heading are oversized — trim them so content starts higher.  Tablet
+   portrait keeps a compact two-row layout; landscape may fit one row. */
+
+/* Topbar rows: reduce padding on tablet. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-topbar > .flex:first-child {
+  padding-top: 0.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-topbar > .flex:last-child {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+/* Title: smaller on tablet. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-topbar-title {
+  font-size: 1.15rem !important;
+}
+
+/* Support Us: keep compact. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-topbar a[href*="patreon"] {
+  font-size: 0.7rem !important;
+  padding: 0.3rem 0.6rem !important;
+}
+
+/* Badge cluster: reduce the oversized tablet badges. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-tuner [data-open-tuner] {
+  width: 3.5rem !important;
+  height: 3rem !important;
+  padding: 0.3rem 0.4rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-tuner [data-tuner-note] {
+  font-size: 1rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-instrument [data-inst-toggle] {
+  width: 2.8rem !important;
+  height: 3rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] {
+  min-height: 3rem !important;
+  padding: 0.3rem 0.45rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-avatar-tile] {
+  width: 1.8rem !important;
+  height: 1.8rem !important;
+}
+
+/* Home stat cards: tighter on tablet. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-home .grid.md\:grid-cols-3 > div {
+  padding: 0.6rem 0.75rem !important;
+}
+
+/* Home section spacing: reduce gap before song cards. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-home section.mt-10 {
+  margin-top: 1.25rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-home section.mt-10 h3 {
+  font-size: 1.3rem !important;
+  margin-bottom: 0.6rem !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-hero {
   min-height: 380px !important;
 }
