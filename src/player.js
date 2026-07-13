@@ -105,6 +105,7 @@ let _activeAction = null;
 let _actionClickInProgress = false;
 let _landscapeControls = null;
 let _tabletControls = null;
+let _libraryButton = null;
 
 function _showPicker() {
   if (!_controlsPicker) return;
@@ -297,6 +298,32 @@ function _ensureControls() {
   document.addEventListener('click', _onControlsOutsideClick);
 }
 
+function _ensureLibraryButton() {
+  const controlsBar = document.querySelector(SELECTORS.controls);
+  if (!controlsBar) return;
+
+  if (_libraryButton && _libraryButton.isConnected) {
+    if (_libraryButton.parentElement !== controlsBar) controlsBar.appendChild(_libraryButton);
+    return;
+  }
+
+  const button = document.createElement('button');
+  button.id = 'mobile-ui-player-library-button';
+  button.className = 'mobile-ui-player-library-button';
+  button.type = 'button';
+  button.setAttribute('aria-label', 'Back to library');
+  button.title = 'Back to library';
+  button.setAttribute('data-v3-native', '');
+  button.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7.2 8 2.8l5.5 4.4"/><path d="M4 6.6v6.1h8V6.6"/><path d="M6.6 12.7V9.1h2.8v3.6"/></svg>';
+  button.addEventListener('click', function (e) {
+    e.stopPropagation();
+    _exitPlayerToLibrary();
+  });
+
+  controlsBar.appendChild(button);
+  _libraryButton = button;
+}
+
 function _ensureLandscapeControls() {
   const controlsBar = document.querySelector(SELECTORS.controls);
   if (!controlsBar) return;
@@ -367,6 +394,11 @@ function _removeTabletControls() {
   }
 }
 
+function _removeLibraryButton() {
+  _removeNode(_libraryButton);
+  _libraryButton = null;
+}
+
 function _removeControls() {
   document.removeEventListener('click', _onControlsOutsideClick);
   _hidePicker();
@@ -416,6 +448,10 @@ function _isPlayerLowHeightLandscape(state) {
   const vp = state?.viewport;
   if (!vp) return false;
   return vp.isLandscape && vp.height <= 520;
+}
+
+function _isPlayerPhoneLowHeightLandscape(state) {
+  return _isPlayerLowHeightLandscape(state) && state?.viewport?.deviceClass === 'phone';
 }
 
 // ── Play/Pause button sync (core bug compatibility) ───────────────────────
@@ -484,17 +520,22 @@ export function createFeature() {
       if (_isPlayerMobileSpeedScope(ctx?.state)) _bind();
       if (tabletDirectControlsMode) {
         _ensureTabletControls();
+        _removeLibraryButton();
         _removeControls();
         _removeLandscapeControls();
       } else if (moreShelfMode) {
+        _ensureLibraryButton();
         _ensureControls();
         _removeTabletControls();
         _removeLandscapeControls();
       } else if (lowHeightLandscape) {
+        if (_isPlayerPhoneLowHeightLandscape(ctx?.state)) _ensureLibraryButton();
+        else _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
         _ensureLandscapeControls();
       } else {
+        _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
         _removeLandscapeControls();
@@ -515,17 +556,22 @@ export function createFeature() {
       }
       if (tabletDirectControlsMode) {
         _ensureTabletControls();
+        _removeLibraryButton();
         _removeControls();
         _removeLandscapeControls();
       } else if (moreShelfMode) {
+        _ensureLibraryButton();
         _ensureControls();
         _removeTabletControls();
         _removeLandscapeControls();
       } else if (lowHeightLandscape) {
+        if (_isPlayerPhoneLowHeightLandscape(ctx?.state)) _ensureLibraryButton();
+        else _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
         _ensureLandscapeControls();
       } else {
+        _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
         _removeLandscapeControls();
@@ -539,6 +585,7 @@ export function createFeature() {
     },
     unmount() {
       _unbind();
+      _removeLibraryButton();
       _removeControls();
       _removeLandscapeControls();
       _removeTabletControls();
