@@ -1230,57 +1230,99 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-ho
   margin-top: 1rem !important;
 }
 
-/* 5.1  Phone landscape Home / topbar / chrome compaction.
-   Landscape has limited vertical height — merge the two topbar rows into one,
-   shrink the Support Us button, and compact the hero, stat cards, and
-   section spacing so the song grid moves upward. */
+/* 5.1  Home touch topbar layout.
+   Touch Home uses two explicit rows:
+   row 1 = welcome/title left + Support Us right;
+   row 2 = status cards grouped left. */
 
-/* Merge topbar rows: Welcome heading + badges on the left, Support Us on the right. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-topbar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: nowrap;
-  padding: 0.35rem 0.5rem;
-  gap: 0.5rem;
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-rows: auto auto !important;
+  align-items: center !important;
+  gap: 0.35rem 0.6rem !important;
+  padding: 0.45rem 0.55rem 0.6rem !important;
 }
 
-/* Row 1 wrapper: collapse via display:contents so its children (hamburger,
-   search, Support Us) participate directly in the topbar flex row.  Hidden
-   children (hamburger when bottom-nav is active, search on non-Library
-   screens) don't take up space. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-topbar > .flex:first-child {
-  display: contents;
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar > .flex:first-child,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar > .flex:last-child {
+  display: contents !important;
 }
 
-/* Row 2 (title + badge cluster): sit first in the row, take available space. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-topbar > .flex:last-child {
-  order: 1;
-  flex: 1 1 auto;
-  min-width: 0;
-  padding: 0 !important;
-  gap: 0.5rem !important;
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-hamburger,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-search-wrap {
+  display: none !important;
 }
 
-/* Support Us button: smaller, order after title row, pushed to the right. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-topbar a[href*="patreon"] {
-  order: 2;
-  margin-left: auto;
-  font-size: 0.65rem !important;
-  padding: 0.25rem 0.55rem !important;
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar-title {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: auto !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar a[href*="patreon"] {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-self: center !important;
+  margin-left: 0 !important;
+  white-space: nowrap !important;
+  font-size: 0.66rem !important;
+  line-height: 1 !important;
+  padding: 0.28rem 0.5rem !important;
   gap: 0.25rem !important;
-  border-radius: 0.45rem !important;
+  border-radius: 0.5rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-topbar a[href*="patreon"] svg {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar a[href*="patreon"] svg {
   width: 0.75rem !important;
   height: 0.75rem !important;
 }
 
-/* Topbar title: smaller in landscape. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-topbar-title {
-  font-size: 0.9rem !important;
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) .mobile-ui-topbar-status-rail {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+  overflow: hidden !important;
 }
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-tuner [data-open-tuner],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-instrument [data-inst-toggle],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-profile [data-v3-open-profile] {
+  box-sizing: border-box !important;
+  height: 2.85rem !important;
+  min-height: 2.85rem !important;
+  max-height: 2.85rem !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-tuner [data-open-tuner],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-instrument [data-inst-toggle],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-profile [data-v3-open-profile] {
+  height: 3rem !important;
+  min-height: 3rem !important;
+  max-height: 3rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) {
+  display: none !important;
+}
+
+/* 5.2  Phone landscape Home / chrome compaction.
+   Landscape has limited vertical height — compact the Home content without
+   changing Library/search topbar behavior. */
 
 /* Home hero: reduce vertical footprint. */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-hero {
@@ -1335,122 +1377,110 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile
   padding-bottom: 0.75rem !important;
 }
 
-/* 5.2  Tablet topbar / status / Home compaction.
+/* 5.3  Tablet Home / status compaction.
    Tablet has more room than phone, but the default badge cluster and
-   heading are oversized — trim them so content starts higher.  Tablet
-   portrait keeps a compact two-row layout; landscape may fit one row. */
+   heading are oversized on Home. */
 
-/* Topbar rows: reduce padding on tablet. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-topbar > .flex:first-child {
-  padding-top: 0.5rem !important;
-}
-
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-topbar > .flex:last-child {
-  padding-top: 0.25rem !important;
-  padding-bottom: 0.5rem !important;
-}
-
-/* Title: smaller on tablet. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-topbar-title {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-topbar-title {
   font-size: 1.15rem !important;
 }
 
-/* Support Us: keep compact. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-topbar a[href*="patreon"] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-topbar a[href*="patreon"] {
   font-size: 0.7rem !important;
   padding: 0.3rem 0.6rem !important;
 }
 
-/* Badge cluster: reduce the oversized tablet badges. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-tuner [data-open-tuner] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-tuner [data-open-tuner] {
   width: 3.5rem !important;
   height: 3rem !important;
   padding: 0.3rem 0.4rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-tuner [data-tuner-note] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-tuner [data-tuner-note] {
   font-size: 1rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-instrument [data-inst-toggle] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-instrument [data-inst-toggle] {
   width: 2.8rem !important;
   height: 3rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-profile [data-v3-open-profile] {
   min-height: 3rem !important;
   padding: 0.3rem 0.45rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-avatar-tile] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-profile [data-v3-avatar-tile] {
   width: 1.8rem !important;
   height: 1.8rem !important;
 }
 
 /* Profile badge equalizer bars: shrink so the card doesn't force extra
    height beyond the other two badges. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div {
   max-height: 0.75rem !important;
 }
 
 /* Profile badge text: tighten. */
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] .text-base {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-profile [data-v3-open-profile] .text-base {
   font-size: 0.7rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] .text-xl {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-profile [data-v3-open-profile] .text-xl {
   font-size: 1rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] svg.w-5 {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-badge-profile [data-v3-open-profile] svg.w-5 {
   width: 0.9rem !important;
   height: 0.9rem !important;
 }
 
-/* 5.3  Phone landscape badge / status card normalization.
+/* 5.4  Phone landscape badge / status card normalization.
    Match the tablet compaction for phone landscape — shrink the tuner,
    instrument, and profile badges to consistent heights and trim the
    profile equalizer bars. */
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-tuner [data-open-tuner] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-badge-tuner [data-open-tuner] {
   width: 3.2rem !important;
   height: 2.6rem !important;
   padding: 0.25rem 0.35rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-tuner [data-tuner-note] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-badge-tuner [data-tuner-note] {
   font-size: 0.9rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-instrument [data-inst-toggle] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-badge-instrument [data-inst-toggle] {
   width: 2.5rem !important;
   height: 2.6rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-badge-profile [data-v3-open-profile] {
+  height: 2.6rem !important;
   min-height: 2.6rem !important;
+  max-height: 2.6rem !important;
   padding: 0.25rem 0.35rem !important;
   overflow: hidden !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-avatar-tile] {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-badge-profile [data-v3-avatar-tile] {
   width: 1.5rem !important;
   height: 1.5rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-badge-profile [data-v3-open-profile] > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div {
   max-height: 0.6rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] .text-base {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-badge-profile [data-v3-open-profile] .text-base {
   font-size: 0.62rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] .text-xl {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-badge-profile [data-v3-open-profile] .text-xl {
   font-size: 0.85rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) #v3-badge-profile [data-v3-open-profile] svg.w-5 {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape #v3-badge-profile [data-v3-open-profile] svg.w-5 {
   width: 0.75rem !important;
   height: 0.75rem !important;
 }
