@@ -534,6 +534,15 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mob
   font-size: 0.65rem;
 }
 
+/* iOS standalone can mis-hit-test blurred fixed layers after portrait →
+   landscape rotation.  Keep the nav fixed and visually close, but avoid the
+   backdrop-filter path only in standalone phone landscape. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-standalone.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: rgba(15, 23, 42, 0.9) !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet {
   bottom: calc(3.2rem + max(0.45rem, env(safe-area-inset-bottom)));
   max-height: min(38vh, 16rem);

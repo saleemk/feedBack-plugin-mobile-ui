@@ -31,6 +31,7 @@ const ROOT_CLASSES = [
   'mobile-ui-portrait',
   'mobile-ui-v3',
   'mobile-ui-disabled',
+  'mobile-ui-rotation-reflow',
   'mobile-ui-player-more-shelf-mode',
   'mobile-ui-player-tablet-direct-controls-mode',
   ...getScreenClassNames()
@@ -51,7 +52,8 @@ if (existingRuntime?.installed) {
 
 function createRuntime() {
   const state = createState();
-  const rotationSettleTimers = new Set();
+  const rotationRecoveryTimers = new Set();
+  let lastOrientation = null;
   const lifecycle = createLifecycle([
     createShellFeature(),
     createHomeFeature(),
@@ -96,6 +98,7 @@ function createRuntime() {
     runtime.installedAt = new Date().toISOString();
     state.installed = true;
     state.installedAt = runtime.installedAt;
+    lastOrientation = getViewportInfo().orientation;
 
     // Mount features before the first full refresh so feature boundaries exist
     // for diagnostics immediately; the install refresh below supplies current
@@ -189,8 +192,9 @@ function createRuntime() {
 
     state.listeners.push(addWindowListener('resize', () => queueRefresh('resize')));
     state.listeners.push(addWindowListener('orientationchange', () => {
+      const previousOrientation = lastOrientation;
       queueRefresh('orientationchange');
-      queueStandaloneRotationSettleRefresh();
+      queueStandaloneRotationRecovery(previousOrientation);
     }));
     state.listeners.push(addFeedBackListener('screen:changed', () => queueRefresh('screen:changed')));
 
@@ -203,7 +207,7 @@ function createRuntime() {
 
   function removeListeners() {
     state.listeners.splice(0).forEach((remove) => remove());
-    clearRotationSettleTimers();
+    clearRotationRecoveryTimers();
   }
 
   function queueRefresh(reason) {
@@ -214,6 +218,7 @@ function createRuntime() {
       state.refreshTimer = null;
       state.pendingRefreshReason = null;
       refresh(queuedReason);
+      lastOrientation = state.viewport?.orientation || lastOrientation;
     }, 80);
   }
 
@@ -224,28 +229,53 @@ function createRuntime() {
     }
   }
 
-  function queueStandaloneRotationSettleRefresh() {
+  function queueStandaloneRotationRecovery(previousOrientation) {
     const viewport = getViewportInfo();
-    if (!viewport.standalone || !isTouchLayout(viewport)) return;
+    if (
+      previousOrientation !== 'portrait' ||
+      viewport.orientation !== 'landscape' ||
+      !viewport.standalone ||
+      viewport.deviceClass !== 'phone'
+    ) return;
 
+    scheduleRotationRecovery(120);
+    scheduleRotationRecovery(360);
+  }
+
+  function scheduleRotationRecovery(delay) {
     const timer = window.setTimeout(() => {
-      rotationSettleTimers.delete(timer);
-      const settledViewport = getViewportInfo();
-      if (settledViewport.standalone && isTouchLayout(settledViewport)) {
-        refresh('orientationchange-settled');
+      rotationRecoveryTimers.delete(timer);
+      const viewport = getViewportInfo();
+      if (viewport.standalone && viewport.deviceClass === 'phone' && viewport.orientation === 'landscape') {
+        resetStandaloneScrollState();
+        forceFixedLayerReflow();
+        refresh('standalone-rotation-recovery');
+        lastOrientation = viewport.orientation;
       }
-    }, 350);
+    }, delay);
 
-    rotationSettleTimers.add(timer);
+    rotationRecoveryTimers.add(timer);
   }
 
-  function clearRotationSettleTimers() {
-    rotationSettleTimers.forEach((timer) => window.clearTimeout(timer));
-    rotationSettleTimers.clear();
+  function clearRotationRecoveryTimers() {
+    rotationRecoveryTimers.forEach((timer) => window.clearTimeout(timer));
+    rotationRecoveryTimers.clear();
   }
 
-  function isTouchLayout(viewport) {
-    return viewport?.deviceClass === 'phone' || viewport?.deviceClass === 'tablet';
+  function resetStandaloneScrollState() {
+    try { window.scrollTo(0, 0); } catch (_) { /* ignore */ }
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    document.getElementById('v3-main')?.scrollTo?.(0, 0);
+  }
+
+  function forceFixedLayerReflow() {
+    const root = document.documentElement;
+    root.classList.add('mobile-ui-rotation-reflow');
+    void root.offsetHeight;
+    window.requestAnimationFrame(() => {
+      root.classList.remove('mobile-ui-rotation-reflow');
+    });
   }
 
   function addWindowListener(type, handler) {
