@@ -18,6 +18,7 @@ import { createFeature as createLibraryFeature } from './library.js';
 import { createFeature as createPlayerFeature } from './player.js';
 import { createFeature as createPluginsFeature } from './plugins.js';
 import { createFeature as createHighwayFeature } from './highway.js';
+import { createFeature as createGesturesFeature } from './gestures.js';
 import { createFeature as createSafeAreaFeature } from './safe-area.js';
 
 const ROOT_CLASSES = [
@@ -56,6 +57,7 @@ function createRuntime() {
     createPluginsFeature(),
     createPlayerFeature(),
     createHighwayFeature(),
+    createGesturesFeature(),
     createSafeAreaFeature()
   ], { reportError: reportFeatureError });
   const debugOverlay = createDebugOverlay({ state });
