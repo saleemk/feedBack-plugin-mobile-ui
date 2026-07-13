@@ -88,10 +88,10 @@ row (no More shelf).
 | **P1** | Mobile Player quick exit | Exit was buried under More → Advanced → Close | First safe slice done |
 | **P1** | Phone-friendly main navigation | Top-left hamburger is awkward on phone | First safe slice done |
 | **P2** | Viewport profile polish | Better portrait / landscape fit per device | Planned |
-| **P2** | Gesture audit and tap-to-play | Useful mobile highway interaction | First tap-to-play slice implemented; advanced gestures remain later |
+| **P2** | Mobile Highway Gestures | Useful mobile highway interaction | Tap-to-play and vertical scrub implemented; advanced gestures remain later |
 | **P2** | Visual preset audit | Improve bland stock visuals safely | Audit first |
 | **P3** | Double-tap loop markers | Useful after single-tap gesture is stable | Later |
-| **P3** | Vertical scrub | High-value but risky | Later |
+| **P3** | Visual scrub feedback | Optional polish if scrub needs visible feedback | Later |
 | **P3** | Section map enhancement | Only if current behaviour is lacking | Audit first |
 | **P3** | Audio / haptic feedback | Nice polish; more cleanup risk | Later |
 | **P3** | Visual preset implementation | High impact but cross-plugin risk | After audit |
@@ -270,21 +270,30 @@ obvious spacing / crowding issue with CSS-only changes.
 
 ## P2 — Mobile Highway Gestures
 
-### Implemented — tap-to-play
+### Implemented
 
-- **Mobile / tablet tap-to-play gesture.**  Touch or pen tap on the actual
-  `#highway` canvas toggles play / pause.
+- **Tap-to-play:** touch or pen tap on the actual current `#highway` canvas
+  toggles play / pause.
+- **Vertical scrub:** touch or pen vertical drag on the actual current
+  `#highway` canvas scrubs through the song.
 - Player screen only.  Phone / tablet only.  Desktop / mouse excluded.
 - Uses delegated `pointer` listeners from `#player`.
-- Clicks `#btn-play` via the safe core play / pause path — does not call
-  `audio.play()` / `audio.pause()` directly.
+- Uses safe core paths:
+  - `#btn-play.click()` for play / pause.
+  - `window.seekBy()` for relative scrub steps.
+- Scrub direction:
+  - drag down seeks forward.
+  - drag up seeks backward.
+  - one second per step.
+- Uses scoped `touch-action` CSS on phone / tablet Player `#highway` so the
+  browser does not cancel the pointer stream before scrub activates.
 - Does **not** touch highway renderer or canvas internals.
-- Ignores taps on interactive targets (buttons, inputs, selects, sliders,
-  panels, More shelf, direct chips).
-- No double-tap loop, vertical scrub, haptics, audio feedback, or gesture
-  settings implemented yet.
-- **Remaining:** verify behaviour with custom / 3D Highway overlays that
-  may cover the `#highway` canvas.
+- Ignores interactive targets (buttons, inputs, selects, sliders, panels,
+  More shelf, direct chips).
+- No double-tap loop, haptics, audio feedback, gesture settings, or visual
+  scrub overlay implemented yet.
+- **Remaining:** verify behaviour with custom / 3D Highway overlays that may
+  cover the `#highway` canvas.
 
 ### Inspiration only
 
@@ -349,8 +358,12 @@ code to copy.  fee[dB]ack APIs and DOM structure are different.
 - Start only after movement threshold.
 - Prevent accidental page scroll only after scrub mode is confirmed.
 - Update position through safe core seek path.
-- Restore previous play / pause state carefully.
 - No audio / whoosh feedback in first scrub slice.
+
+**Status:** ✅ Done.  Uses `window.seekBy()` in one-second relative steps.
+Drag down seeks forward; drag up seeks backward.  Scoped `touch-action` CSS
+keeps the browser from cancelling the pointer stream on phone / tablet Player
+`#highway`.
 
 #### G5 — Section map
 
@@ -373,6 +386,16 @@ code to copy.  fee[dB]ack APIs and DOM structure are different.
 - [x] Cleanup on disable / screen change / rotation.
 - [x] Desktop unaffected.
 - [ ] Does not conflict with double-tap (deferred — double-tap not yet implemented).
+
+### Done criteria (for G4, vertical scrub)
+
+- [x] G0 audit confirmed safe `window.seekBy()` path.
+- [x] Drag down on highway seeks forward.
+- [x] Drag up on highway seeks backward.
+- [x] Scrub uses stepped relative seeking, not absolute seek mutation.
+- [x] Scrub does not also trigger tap-to-play on release.
+- [x] Desktop unaffected.
+- [x] Does not touch highway renderer or canvas internals.
 
 ### Risks
 
@@ -463,10 +486,13 @@ touching renderer internals.
 These are worth doing but depend on earlier work or audits:
 
 - **Double-tap loop markers** — after single-tap gesture (G2) is stable.
-- **Vertical scrub** — after API audit (G0) confirms safe seek path.
+- **Visual scrub feedback** — optional overlay / indicator if scrub needs
+  visible feedback.
 - **Section map enhancement** — after audit of current behaviour.
 - **Haptic / audio feedback** — optional setting; requires Web Audio
   cleanup.
+- **Custom / 3D Highway overlay support** — only if overlays capture pointer
+  events and prevent current canvas-targeted gestures.
 - **Visual preset implementation** — after P2 audit.
 - **Background image presets** — after visual audit confirms support.
 - **Visual theme packs** — low priority; brainstorming only.
