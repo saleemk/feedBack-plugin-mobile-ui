@@ -518,9 +518,10 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-has-bottom-nav #v3-sidebar-backdro
   display: none !important;
 }
 
-/* 3.3  Landscape / tablet compact variants.
+/* 3.3  Landscape / tablet variants.
    Phone landscape has limited vertical space — shrink the nav and More sheet
-   so they don't crowd content.  Tablet gets a slightly wider, centered island. */
+   so they don't crowd content.  Tablet gets a wider centered island so the
+   8-item labels have breathing room. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
   height: 2.6rem;
@@ -547,7 +548,12 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-playe
   left: 50%;
   right: auto;
   transform: translateX(-50%);
-  width: min(32rem, calc(100vw - 2rem));
+  width: min(56rem, calc(100vw - 2rem));
+  gap: 0.35rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-item {
+  font-size: 0.72rem;
 }
 
 /* 4. Song Library
