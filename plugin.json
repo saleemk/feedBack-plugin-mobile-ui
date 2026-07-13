@@ -1,7 +1,7 @@
 {
   "id": "mobile_ui",
   "name": "Mobile UI",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Mobile-first layout and player UI improvements for FeedBack.",
   "category": "practice",
   "script": "screen.js",

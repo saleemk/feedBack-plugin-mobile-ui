@@ -1,117 +1,128 @@
 # Mobile UI
 
-A touch-optimized mobile and tablet interface plugin for fee[dB]ack v3. Mobile
-UI improves navigation, library screens, collections, settings, plugins, and
-the Player on phones and tablets while leaving desktop behavior to core.
+A touch-optimized phone and tablet interface plugin for fee[dB]ack. Mobile
+UI improves shell navigation, Home, Song Library, Progress, Settings, Plugins,
+Collections, Player controls, and touch gestures while leaving desktop behavior
+to core.
 
 The plugin is optimized for phones and tablets in portrait and landscape.
-Desktop is intentionally left unchanged. Browser and device testing is ongoing,
-so the focus is practical touch improvements without core edits.
+Browser and device testing is ongoing, so the focus is practical touch
+improvements with honest limits.
 
-> **Early testing:** Mobile UI is still being refined for different phones,
-> tablets, browsers, and orientations. Please include your device, browser,
-> orientation, screenshots, and console errors when reporting issues.
+> **Early testing:** Please include your device, browser, orientation,
+> screenshots, and console errors when reporting issues.
 
 ## What You Get
 
-- phone portrait bottom navigation bar with More sheet for remaining screens
+- touch bottom navigation on phone/tablet non-Player screens
+- compact phone portrait nav: **Home · Library · Progress · Plugins · More**
+- wide touch nav for phone landscape/tablet:
+  **Home · Library · Progress · Unlockables · FeedBarcade · Plugins · Settings · More**
+- translucent More sheet for remaining screens, built from the app's nav
 - visible Home/Library Player exit button on phone and tablet
-- tap-to-play and vertical scrub gestures on phone/tablet Player
-- cleaner mobile/tablet shell, topbar, and status rail polish
-- compact Home, Song Library, Progress, Settings, Plugins, and Collections views
-- touch-friendly Player speed and action controls
-- phone portrait More shelf for secondary Player actions
-- direct tablet action chips with no hidden More layer
-- direct low-height landscape chips for phones
-- mobile/tablet plugin settings polish
-- enable/disable switch, debug view toggle, and optional pause-on-More
+- phone portrait Player More shelf
+- phone landscape/tablet direct Player action chips
+- tap-to-play and vertical highway scrub gestures
+- Home and non-Home topbar/status rail polish
+- Song Library search below the title/status rail
+- compact aligned status cards with the streak mini graph preserved
+- enable/disable, debug, and optional pause-on-More settings
 
 ## Navigation
 
-On phone portrait (non-Player screens), Mobile UI provides a bottom
-navigation bar:
+On phone portrait non-Player screens, Mobile UI shows:
 
 **Home · Library · Progress · Plugins · More**
 
-- **More** opens a Mobile UI translucent sheet with the remaining app and
-  plugin screens (Settings, Playlists, Favorites, Saved for Later, Lessons,
-  FeedBarcade, Unlockables, and any plugin-added screens present in the app).
-- The Player hides the bottom nav and uses its own controls.
-- Tablet and desktop keep their existing navigation patterns.
+On phone landscape and tablet non-Player screens, Mobile UI shows:
+
+**Home · Library · Progress · Unlockables · FeedBarcade · Plugins · Settings · More**
+
+**More** opens a Mobile UI translucent sheet for the remaining screens. The
+sheet uses the existing app/plugin navigation entries, so fee[dB]ack's own nav
+remains the source of truth.
+
+The Player hides the bottom nav and uses Player-specific controls. Desktop keeps
+the core navigation. While the Mobile UI bottom nav is active, the old core
+sidebar/hamburger is hidden after Mobile UI initializes.
+
+On some devices, a tiny refresh flash of the old core menu/sidebar may still
+appear because plugins load after the core shell can paint. Runtime layout
+corrects once Mobile UI initializes.
+
+## Topbar and Screens
+
+Home uses a touch-friendly topbar with the welcome/title on the left, Support Us
+on the right, and compact status cards below.
+
+Non-Home screens use the same pattern: screen title left, Support Us right, and
+status cards below. Song Library adds search below the title/status area.
+
+The tuning, instrument, and streak/rank status cards are compact and aligned.
+The streak/rank card can be wider, but it should not be taller, and its mini
+signal graph remains visible.
 
 ## Player Experience
 
 ### Phone
 
 In phone portrait, the Player shows a compact **Home/Library exit button** on
-the left side of the controls row so you can leave the Player in one tap.
-Tapping the More icon opens a persistent shelf with Visuals, Audio, Mixer,
-Lyrics, Plugins, Practice, and Advanced (Library is the first shelf action).
+the left side of the controls row. Tapping More opens a persistent shelf with
+Library first, followed by Visuals, Audio, Mixer, Lyrics, Plugins, Practice,
+and Advanced.
 
-In low-height phone landscape, the Player also shows the Home/Library exit
-button and uses direct inline action chips instead of the More shelf so the
-controls stay fast and horizontal.
+In low-height phone landscape, the Player shows the same Home/Library exit
+button and direct inline action chips instead of a More shelf.
 
-**Gestures on phone/tablet Player:**
-- **Tap the highway** to play or pause.
-- **Drag vertically on the highway** to scrub through the song (drag down
-  seeks forward, drag up seeks backward).
-
-Speed controls are cleaned up for touch use: duplicate indicators and presets
-are hidden, the slider uses a compact pill style, and a speed value peek appears
-while dragging.
+Pause-on-More applies only to the phone portrait More shelf.
 
 ### Tablet
 
-Tablet has enough room for direct access, so it does not use the phone More
-button. Tablet portrait and tablet landscape show the **Home/Library exit
-button** and inline action chips for Visuals, Audio, Mixer, Lyrics, Plugins,
-Practice, and Advanced.
+Tablet portrait and tablet landscape show the **Home/Library exit button** and
+direct inline action chips for Visuals, Audio, Mixer, Lyrics, Plugins,
+Practice, and Advanced. Tablet does not use the phone More shelf.
 
-Tap-to-play and vertical scrub gestures also work on tablet Player.
+### Gestures
 
-In touch Player modes, the old v3 rail is visually hidden but kept in the DOM so
-Mobile UI can reuse core rail actions instead of reimplementing them.
+On phone/tablet Player:
+
+- tap the highway to play or pause
+- drag vertically on the highway to scrub
+- drag down seeks forward
+- drag up seeks backward
+
+Desktop/mouse behavior is excluded.
 
 ### Desktop
 
 Desktop stays with the core fee[dB]ack Player. Mobile UI does not replace the
-desktop Player or change desktop layouts.
+desktop Player or desktop layouts.
 
 | Device/mode | Behavior |
 | --- | --- |
-| Phone portrait | Home/Library exit button + More icon opens a persistent shelf. |
+| Phone portrait | Home/Library exit button + More shelf with Library first. |
 | Phone low-height landscape | Home/Library exit button + direct inline action chips. No More shelf. |
-| Tablet portrait | Home/Library exit button + direct inline action chips. No More button or More shelf. |
-| Tablet landscape | Home/Library exit button + direct inline action chips. No More button or More shelf. |
+| Tablet portrait | Home/Library exit button + direct inline action chips. No More shelf. |
+| Tablet landscape | Home/Library exit button + direct inline action chips. No More shelf. |
 | Desktop | Core Player remains unchanged. |
 
-Player touch features include:
-
-- speed bars, chevrons, and presets hidden in touch modes
-- speed slider pill styling
-- speed value peek while dragging
-- static speed label hidden in touch modes
-- restart/retry hidden in touch modes
-- Lyrics active-state sync
-- Practice special handling
-- glass/translucent panels
-- phone, tablet, and landscape panel positioning
-- optional pause when opening the phone portrait More shelf
+Player touch features include speed cleanup, speed slider pill styling, speed
+value peek while dragging, Lyrics active-state sync, Practice handling, and
+glass/translucent panels.
 
 ## Screen Coverage
 
 | Area | Status | Notes |
 | --- | --- | --- |
-| Shell/topbar/drawer | active | Phone bottom nav, More sheet, topbar/status rail polish. |
-| Home | active | Mobile/tablet layout polish. |
-| Song Library | active | Toolbar, options, and content polish. |
-| Progress | active | Mobile/tablet layout polish. |
+| Shell/topbar/nav | active | Touch bottom nav, More sheet, shared topbar/status rail polish. |
+| Home | active | Mobile/tablet layout and status rail polish. |
+| Song Library | active | Title/status/search layout, toolbar, options, and content polish. |
+| Progress | active | Mobile/tablet layout and status rail polish. |
 | Settings | active | Mobile/tablet spacing, tabs, and forms. |
-| Plugins | active | Phone list mode and row-to-settings bridge. |
+| Plugins | active | Touch layout and plugin screen polish. |
 | Playlists/Favorites/Saved for Later | active | Collection layout polish. |
-| Lessons/FeedBarcade/Unlockables | mapped/light-touch | Screen detection retained; visual styling skipped or reverted. |
-| Player | active | Touch controls, speed cleanup, panels, and rail bridge. |
+| Lessons/FeedBarcade/Unlockables | mapped/light-touch | Available in navigation; lighter-touch than main screens. |
+| Player | active | Touch controls, quick exit, gestures, speed cleanup, panels. |
 
 ## Usage
 
@@ -131,8 +142,8 @@ Mobile UI provides:
 - **Show Mobile UI debug view** - displays runtime/device diagnostics while
   debugging
 
-Pause-on-More applies only to the phone portrait More shelf. It does not apply
-to tablet direct action chips or phone low-height landscape chips.
+Pause-on-More does not apply to tablet direct chips or phone low-height
+landscape chips.
 
 ## Installation
 
@@ -159,23 +170,28 @@ Then restart the container so the server discovers the updated `plugin.json`.
 
 ## Testing / Feedback
 
-Help test Mobile UI on your devices.  Areas to try:
+Help test Mobile UI on your devices. Areas to try:
 
-- **Phone portrait Player** — Home/Library exit button, More shelf, category panels, speed controls
-- **Phone low-height landscape Player** — Home/Library exit button, direct action chips
-- **Tablet portrait / landscape Player** — Home/Library exit button, direct action chips
-- **Phone portrait bottom nav** — Home, Library, Progress, Plugins, More sheet
-- **Highway gestures** — tap to play/pause, vertical drag to scrub
-- **3D Highway** — verify gestures work with 3D Highway if available
-- **Home, Song Library, Progress, Settings, Plugins**
-- **Playlists, Favorites, Saved for Later**
+- phone portrait bottom nav
+- phone landscape/tablet wide bottom nav
+- More sheet navigation
+- old sidebar/hamburger stays hidden after Mobile UI initializes
+- known tiny refresh flash, if your device still shows it
+- Home topbar/status cards
+- Library title/status/search layout
+- Progress, Plugins, and Settings topbar/status layout
+- Player Home/Library exit button
+- Player More shelf and direct chips
+- highway tap-to-play and vertical scrub gestures
+- enable/disable setting
+- desktop unchanged
 
 When reporting issues, include:
 
 - device model
-- browser and version (if known)
+- browser and version, if known
 - portrait or landscape
-- which screen / page the issue happened on
+- which screen/page the issue happened on
 - screenshot or short video
 - console errors, if available
 - whether Mobile UI settings were enabled or disabled
@@ -184,18 +200,23 @@ When reporting issues, include:
 
 - Optimized for phone and tablet portrait/landscape layouts.
 - Desktop behavior is intentionally left to core.
-- Lessons, FeedBarcade, and Unlockables are mapped/light-touch rather than fully
-  restyled.
+- Lessons, FeedBarcade, and Unlockables are lighter-touch than Home, Library,
+  Progress, Settings, Plugins, and Player.
 - Highway, canvas, camera, renderer, and core Player internals are out of scope.
+- A tiny old menu/sidebar flash can still appear during refresh on some devices
+  because the core shell can paint before plugins load. Runtime layout corrects
+  after Mobile UI initializes. A true zero-frame fix likely needs core support.
 
 Planned but not implemented yet:
 
 - double-tap loop markers
 - optional gesture settings
-- haptic / audio feedback
-- mobile visual / highway presets
-- visual preset audit / implementation
+- haptic/audio feedback
+- mobile visual/highway preset audit
+- visual preset implementation
 - README screenshots
+- More sheet outside-tap/Escape polish
+- keyboard/visualViewport handling for bottom nav
 
 See [ROADMAP.md](ROADMAP.md) for the full plan and priorities.
 
@@ -204,7 +225,7 @@ See [ROADMAP.md](ROADMAP.md) for the full plan and priorities.
 - Built as a standalone fee[dB]ack plugin.
 - Player controls reuse core actions where practical instead of replacing the
   underlying Player systems.
-- Detailed architecture and maintenance notes live in `AGENTS.md`.
+- Detailed architecture and maintenance notes live in [AGENTS.md](AGENTS.md).
 
 ## Maintainers / AI Agents
 

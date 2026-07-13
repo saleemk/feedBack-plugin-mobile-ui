@@ -38,13 +38,13 @@ guide, and [`README.md`](README.md) for the user-facing overview.
 
 ### Player behaviour by device / mode
 
-| Device / mode          | More shelf | Direct chips | Old v3 rail | Pause-on-More |
-|------------------------|-----------|-------------|-------------|---------------|
-| Phone portrait         | ✅         | —           | hidden      | ✅ (opt-in)    |
-| Phone low-height landscape | —     | ✅ (inline)  | hidden      | ❌             |
-| Tablet portrait        | —         | ✅ (inline)  | hidden      | ❌             |
-| Tablet landscape       | —         | ✅ (inline)  | hidden      | ❌             |
-| Desktop                | —         | —           | visible     | ❌             |
+| Device / mode          | More shelf | Direct chips | Home / Library exit | Old v3 rail | Pause-on-More |
+|------------------------|-----------|-------------|---------------------|-------------|---------------|
+| Phone portrait         | ✅         | —           | ✅ icon + More action | hidden      | ✅ (opt-in)    |
+| Phone low-height landscape | —     | ✅ (inline)  | ✅ icon              | hidden      | ❌             |
+| Tablet portrait        | —         | ✅ (inline)  | ✅ icon              | hidden      | ❌             |
+| Tablet landscape       | —         | ✅ (inline)  | ✅ icon              | hidden      | ❌             |
+| Desktop                | —         | —           | —                   | visible     | ❌             |
 
 **Direct chips** are the Visuals / Audio / Mixer / Lyrics / Plugins /
 Practice / Advanced category chips rendered inline in the bottom controls
@@ -85,9 +85,9 @@ row (no More shelf).
 
 | Priority | Item | Why | Status |
 |---|---|---|---|
-| **P1** | Mobile Player quick exit | Exit was buried under More → Advanced → Close | Visible Home/Library exit implemented across phone/tablet Player modes |
-| **P1** | Phone-friendly main navigation | Top-left hamburger is awkward on phone | Phone portrait bottom nav implemented; More sheet replaces floating menu pill |
-| **P2** | Viewport profile polish | Better portrait / landscape fit per device | First phone landscape slice done; tablet portrait audited; broader review remains |
+| **P1** | Mobile Player quick exit | Exit was buried under More → Advanced → Close | Done |
+| **P1** | Touch main navigation | Top-left hamburger/sidebar is awkward on touch layouts | Done — compact/wide bottom nav implemented |
+| **P2** | Viewport profile polish | Better portrait / landscape fit per device | Partially done — shell topbar/status polish done; broader review remains |
 | **P2** | Mobile Highway Gestures | Useful mobile highway interaction | Tap-to-play and vertical scrub implemented; advanced gestures remain later |
 | **P2** | Visual preset audit | Improve bland stock visuals safely | Audit first |
 | **P3** | Double-tap loop markers | Useful after single-tap gesture is stable | Later |
@@ -119,10 +119,8 @@ This is too slow for a common action.
 ### Possible designs
 
 1. **Back / Library icon directly in the bottom controls row**
-   (alongside rewind / play / forward / speed / More).
+   (alongside rewind / play / forward / speed / More/direct chips).
 2. **Exit as a first-class More shelf action** (not hidden under Advanced).
-3. Tablet: the existing direct chips row could include a **Library** or
-   **Back** chip next to Visuals / Audio / Mixer / etc.
 
 ### Audit questions (before implementation)
 
@@ -183,11 +181,12 @@ Player is a one-tap visible action on every mobile/tablet layout.
 
 ---
 
-## P1 — Phone-Friendly Main Navigation
+## P1 — Touch Main Navigation
 
 ### Problem
 
-The main UI uses a **top-left menu / hamburger**.  On phone this is:
+The main UI used a **top-left menu / hamburger/sidebar**.  On touch layouts
+this is:
 - small,
 - in the top corner (hard to reach one-handed),
 - awkward for thumb-driven navigation.
@@ -195,8 +194,7 @@ The main UI uses a **top-left menu / hamburger**.  On phone this is:
 ### Goals
 
 - Phone: provide a thumb-friendly navigation entry point.
-- Tablet: keep closer to current layout unless testing shows it needs the
-  same treatment.
+- Tablet / phone landscape: use the extra width for a wider direct nav.
 - Desktop: unchanged.
 - The existing drawer / navigation must remain the **source of truth** —
   no duplicate routing.
@@ -228,25 +226,33 @@ concept while leaving the core drawer untouched.
 **Status:** ✅ Done, then removed.  The floating Menu pill has been replaced
 by the bottom navigation bar (see below).
 
-### Second slice — Phone portrait bottom navigation bar
+### Current implementation — Touch bottom navigation
 
-A proper 5-tab **bottom navigation bar** on phone portrait non-Player screens:
+Touch non-Player screens use a Mobile UI **bottom navigation bar**.
+
+**Compact phone portrait nav:**
 
 **Home | Library | Progress | Plugins | More**
+
+**Wide touch nav for phone landscape and tablet:**
+
+**Home | Library | Progress | Unlockables | FeedBarcade | Plugins | Settings | More**
 
 - **Home** → `window.showScreen('v3-home')`
 - **Library** → `window.showScreen('v3-songs')`
 - **Progress** → `window.showScreen('v3-progress')`
 - **Plugins** → `window.showScreen('v3-plugins')`
+- **Unlockables / FeedBarcade / Settings** appear directly in wide mode.
 - **More** → opens a Mobile UI translucent bottom sheet (does **not** open
-  the core drawer)
+  the core drawer/sidebar)
 
 **More sheet:**
 - Built dynamically from remaining core nav items in `#v3-nav a[data-v3-nav]`.
-- Excludes the four primary tabs (home, songs, progress, plugins).
-- Includes all other available core/plugin nav items: Settings, Playlists,
-  Favorites, Saved for Later, Lessons, FeedBarcade, Unlockables/Shop, and
-  any plugin-added nav items present in the core sidebar.
+- Excludes the direct nav items for the current mode.
+- Includes the remaining available core/plugin nav items for the current
+  mode: Playlists, Favorites, Saved for Later, Lessons, Settings,
+  FeedBarcade, Unlockables/Shop, and any plugin-added nav items present in
+  the core sidebar, excluding items already exposed directly in that mode.
 - Item clicks use the original core nav `<a>` element, preserving core and
   plugin nav behaviour.
 - Two-column grid layout, glass styling matching the bottom nav.
@@ -254,19 +260,27 @@ A proper 5-tab **bottom navigation bar** on phone portrait non-Player screens:
 **Status:** ✅ Done.
 
 - The old floating Menu pill is removed (zero references in code).
-- Bottom nav is hidden on Player, phone landscape, tablet, and desktop.
+- Bottom nav is hidden on Player and desktop.
 - Core drawer is never opened by bottom nav More.
+- Core sidebar / hamburger are hidden while Mobile UI bottom nav is active.
 - Core `#v3-nav` remains the source of truth for available More sheet items.
 - Active state on primary tabs uses CSS-only via existing
   `mobile-ui-screen-*` root classes.
 - Content padding on `#v3-main` via `mobile-ui-has-bottom-nav` root class.
+- First-paint old menu/sidebar flash handling has been improved:
+  - disabled convention fixed to `mobile_ui.disabled === '1'`;
+  - tablet landscape preboot detection expanded beyond 1024 px widths;
+  - inline preboot style added before `src/main.js` import.
+- A tiny old-menu/sidebar flash may still remain on hard refresh because
+  plugin code loads after the core shell can paint.  True zero-frame removal
+  likely needs a core early-load hook.
 
 ### Done criteria
 
 - [x] Phone has a thumb-friendly navigation entry point.
+- [x] Phone landscape / tablet have a wider touch nav.
 - [x] Existing core nav remains source of truth for available More items.
 - [x] Desktop unchanged.
-- [x] Tablet intentionally unchanged for this slice.
 - [x] No route duplication or desync.
 
 ### Risks
@@ -278,9 +292,8 @@ A proper 5-tab **bottom navigation bar** on phone portrait non-Player screens:
   - Outside-tap / Escape key close for the More sheet is future polish.
   - Keyboard / `visualViewport` overlap with the bottom nav on iOS is future
     polish.
-  - Five tabs on very narrow screens (≤ 320 px) should be visually checked;
-    labels are compact (0.7rem font) and the pill shape provides ample tap
-    targets.
+  - True no-flash hiding of the old core sidebar before the first paint may
+    require core support, because `#v3-sidebar` exists in initial v3 HTML.
 
 ---
 
@@ -312,6 +325,23 @@ Treat each viewport profile as a separate layout target.  No one-size-fits-all.
   The direct chip strip remains a scroll-safe horizontal strip with fade
   masks on the edges.  Scoped to phone low-height landscape Player only.
   Tablet and desktop unaffected.
+- **Implemented:** compact/wide touch bottom navigation.
+  Phone portrait uses compact primary tabs; phone landscape and tablet use
+  a wider direct nav.  Player and desktop remain excluded.
+- **Implemented:** touch topbar layout polish.
+  - Home touch topbar:
+    row 1 is title/welcome left and Support Us right;
+    row 2 is compact status cards.
+  - Non-Home touch topbar:
+    row 1 is screen title left and Support Us right;
+    row 2 is status cards;
+    row 3 is Library search only.
+  - Library search now sits below the title/status area.
+  - Applies to phone/tablet non-Player screens.  Desktop unchanged.
+- **Implemented:** shared compact status-card rules for touch topbars.
+  Tuning / instrument / streak cards share the same visual height.  The
+  streak/rank card may be wider, but is no longer taller and keeps its mini
+  signal graph visible.
 - **Audited:** tablet portrait Player controls.  Layout math shows
   transport + speed slider + 7 chips fit at ~768 px width with ~70 px of
   slack.  No code change was made.  A real-device screenshot is still
@@ -335,6 +365,9 @@ concrete spacing / crowding issue is visible.
 
 - [x] Phone low-height landscape Player reviewed and adjusted.
 - [x] Tablet portrait Player audited — no change made; layout appears to fit.
+- [x] Touch bottom nav has compact and wide modes.
+- [x] Home and non-Home touch topbars use the accepted row model.
+- [x] Touch topbar status cards have equal visual height with mini graph visible.
 - [ ] Each remaining profile independently reviewed and adjusted.
 - [ ] No regressions to desktop.
 - [ ] No regressions to other profiles.
@@ -583,8 +616,10 @@ These are worth doing but depend on earlier work or audits:
   bottom nav More sheet.
 - **Bottom nav keyboard / visualViewport handling** — handle iOS keyboard
   overlap gracefully.
-- **Tablet bottom nav** — only if real-device testing shows tablets need
-  the same treatment as phones.
+- **Core early no-flash hook** — plugin preboot reduces the old
+  menu/sidebar flash after plugin load, but true zero-frame removal likely
+  needs core support because `#v3-sidebar` can paint from initial HTML
+  before plugins load.
 
 ---
 
