@@ -51,6 +51,7 @@ if (existingRuntime?.installed) {
 
 function createRuntime() {
   const state = createState();
+  const rotationSettleTimers = new Set();
   const lifecycle = createLifecycle([
     createShellFeature(),
     createHomeFeature(),
@@ -187,7 +188,10 @@ function createRuntime() {
     if (state.listeners.length) return;
 
     state.listeners.push(addWindowListener('resize', () => queueRefresh('resize')));
-    state.listeners.push(addWindowListener('orientationchange', () => queueRefresh('orientationchange')));
+    state.listeners.push(addWindowListener('orientationchange', () => {
+      queueRefresh('orientationchange');
+      queueStandaloneRotationSettleRefresh();
+    }));
     state.listeners.push(addFeedBackListener('screen:changed', () => queueRefresh('screen:changed')));
 
     if (window.visualViewport?.addEventListener) {
@@ -199,6 +203,7 @@ function createRuntime() {
 
   function removeListeners() {
     state.listeners.splice(0).forEach((remove) => remove());
+    clearRotationSettleTimers();
   }
 
   function queueRefresh(reason) {
@@ -217,6 +222,30 @@ function createRuntime() {
       window.clearTimeout(state.refreshTimer);
       state.refreshTimer = null;
     }
+  }
+
+  function queueStandaloneRotationSettleRefresh() {
+    const viewport = getViewportInfo();
+    if (!viewport.standalone || !isTouchLayout(viewport)) return;
+
+    const timer = window.setTimeout(() => {
+      rotationSettleTimers.delete(timer);
+      const settledViewport = getViewportInfo();
+      if (settledViewport.standalone && isTouchLayout(settledViewport)) {
+        refresh('orientationchange-settled');
+      }
+    }, 350);
+
+    rotationSettleTimers.add(timer);
+  }
+
+  function clearRotationSettleTimers() {
+    rotationSettleTimers.forEach((timer) => window.clearTimeout(timer));
+    rotationSettleTimers.clear();
+  }
+
+  function isTouchLayout(viewport) {
+    return viewport?.deviceClass === 'phone' || viewport?.deviceClass === 'tablet';
   }
 
   function addWindowListener(type, handler) {
