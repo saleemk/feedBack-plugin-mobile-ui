@@ -2917,6 +2917,32 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   top: 34px !important;
 }
 
+/* Tablet Section Map gets a little more touch height; portrait hides cramped labels. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet #section-map {
+  height: 30px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet #section-map #sm-marker {
+  width: 3px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet #section-map ~ #player-hud {
+  padding-top: calc(30px + 0.65rem) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet #section-map ~ #v3-railzone::before {
+  top: 30px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet.mobile-ui-portrait #section-map .sm-block span {
+  display: none !important;
+  line-height: 30px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet.mobile-ui-landscape #section-map .sm-block span {
+  display: inline-block !important;
+  line-height: 30px !important;
+}
 /* 13. Player panels / Practice
    Rail popovers → bottom sheets (More shelf mode).
    Popovers are siblings of #v3-player-rail inside #v3-railzone.

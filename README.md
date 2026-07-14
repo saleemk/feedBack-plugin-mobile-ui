@@ -33,8 +33,6 @@ improvements with honest limits.
 
 ## Screenshots
 
-<!-- Replace the PASTE_* placeholders below with GitHub user-attachment URLs before committing. -->
-
 Mobile UI adapts its navigation, content density, and Player controls for phone
 and tablet portrait/landscape layouts.
 
