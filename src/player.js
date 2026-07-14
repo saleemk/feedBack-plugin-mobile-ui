@@ -118,7 +118,7 @@ function _isPlayerMobileSpeedScope(state) {
 const MORE_ACTIONS = [
   { label: 'Visuals',  selector: SELECTORS.rail + ' [data-rail="viz"]' },
   { label: 'Audio',    selector: SELECTORS.rail + ' [data-rail="audio"]' },
-  { label: 'Mixer',    selector: SELECTORS.rail + ' [data-rail="mixer"]' },
+  { label: 'Mixer',    selector: SELECTORS.rail + ' [data-rail="mixer"]', nestedSelector: '#btn-mixer' },
   { label: 'Lyrics',   selector: SELECTORS.rail + ' [data-rail-action="lyrics"]', toggle: true },
   { label: 'Plugins',  selector: SELECTORS.rail + ' [data-rail="plugins"]' },
   { label: 'Practice', selector: SELECTORS.practicePill },
@@ -194,6 +194,24 @@ function _exitPlayerToLibrary() {
   }
 }
 
+function _isNestedActionOpen(action) {
+  if (!action?.nestedSelector) return false;
+  const btn = document.querySelector(action.nestedSelector);
+  return !!btn && (btn.getAttribute('aria-expanded') === 'true' || btn.classList.contains('is-active'));
+}
+
+function _openNestedAction(action) {
+  if (!action?.nestedSelector || _isNestedActionOpen(action)) return;
+  const btn = document.querySelector(action.nestedSelector);
+  if (btn) _clickActionButton(btn);
+}
+
+function _closeNestedAction(action) {
+  if (!action?.nestedSelector || !_isNestedActionOpen(action)) return;
+  const btn = document.querySelector(action.nestedSelector);
+  if (btn) _clickActionButton(btn);
+}
+
 function _openCategory(action) {
   _ensureActionSurfaceGuards();
   if (typeof action?.fn === 'function') {
@@ -209,6 +227,7 @@ function _openCategory(action) {
   }
   // If tapping the already-active action, toggle the sheet closed.
   if (_activeAction === action && _isBtnActive(btn)) {
+    _closeNestedAction(action);
     _clickActionButton(btn);
     _activeAction = null;
     _clearSelection();
@@ -217,6 +236,7 @@ function _openCategory(action) {
   // Switch to new action: close previous sheet, open new one.
   _closeSheets();
   _clickActionButton(btn);
+  _openNestedAction(action);
   _ensureActionSurfaceGuards();
   _activeAction = action;
   _selectAction(action);
@@ -224,6 +244,7 @@ function _openCategory(action) {
 
 function _closeSheets() {
   if (!_activeAction) return;
+  _closeNestedAction(_activeAction);
   const btn = _queryActionTarget(_activeAction);
   if (btn && _isBtnActive(btn)) _clickActionButton(btn);
   _activeAction = null;

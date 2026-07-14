@@ -3160,6 +3160,160 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet #st
   z-index: 220 !important;
 }
 
+/* Core Mixer: the nested #mixer-popover is desktop-positioned as an absolute
+   flyout below the "Mixer" button. Inside Mobile UI's bottom-sheet rail popover
+   that absolute flyout clips to a tiny strip, so touch layouts make it part of
+   the panel flow and turn each vertical fader into a horizontal row. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer {
+  overscroll-behavior: contain;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-control,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-anchor {
+  position: static !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #btn-mixer {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-height: 2rem !important;
+  justify-content: center !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover:not(.hidden) {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0.55rem 0 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-row {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 0.55rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  flex-wrap: nowrap !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-strip {
+  display: grid !important;
+  grid-template-columns: minmax(3.6rem, 0.72fr) minmax(0, 1.6fr) minmax(2.8rem, 0.58fr) !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  flex: 0 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-strip-label {
+  max-width: none !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  text-align: left !important;
+  color: #cbd5e1 !important;
+  font-size: 0.72rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-strip-value {
+  min-width: 0 !important;
+  margin-top: 0 !important;
+  color: rgba(226, 232, 240, 0.72) !important;
+  font-size: 0.68rem !important;
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-strip-fader {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 1.6rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  transform-origin: center !important;
+  writing-mode: horizontal-tb !important;
+  direction: ltr !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: transparent !important;
+  cursor: pointer;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-strip-fader::-webkit-slider-runnable-track {
+  height: 0.45rem !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  border-radius: 999px !important;
+  background: linear-gradient(to right, #60a5fa var(--range-pct, 0%), rgba(15, 23, 42, 0.72) var(--range-pct, 0%)) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-strip-fader::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+  margin-top: -0.4rem !important;
+  opacity: 1 !important;
+  border: 2px solid rgba(226, 232, 240, 0.85) !important;
+  border-radius: 999px !important;
+  background: #60a5fa !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-strip-fader::-moz-range-track {
+  height: 0.45rem !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  border-radius: 999px !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-strip-fader::-moz-range-progress {
+  height: 0.45rem !important;
+  border-radius: 999px !important;
+  background: #60a5fa !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-strip-fader::-moz-range-thumb {
+  width: 1rem !important;
+  height: 1rem !important;
+  opacity: 1 !important;
+  border: 2px solid rgba(226, 232, 240, 0.85) !important;
+  border-radius: 999px !important;
+  background: #60a5fa !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-mixer #mixer-popover .mixer-strip-fader:focus-visible {
+  outline: 2px solid rgba(103, 232, 249, 0.72) !important;
+  outline-offset: 0.2rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet #v3-rail-pop-mixer #mixer-popover .mixer-row {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: start !important;
+}
+
 /* 14. Player tablet direct controls
    Tablet intentionally uses always-visible chips, not the phone More shelf. */
 
