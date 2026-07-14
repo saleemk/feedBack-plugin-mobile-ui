@@ -122,11 +122,6 @@ const MORE_ACTIONS = [
   { label: 'Advanced', selector: SELECTORS.rail + ' [data-rail="advanced"]' },
 ];
 
-const PHONE_MORE_ACTIONS = [
-  { label: 'Library', fn: _exitPlayerToLibrary, phoneShelfOnly: true },
-  ...MORE_ACTIONS
-];
-
 let _controlsBtn = null;
 let _controlsPicker = null;
 let _controlsOpen = false;
@@ -344,7 +339,7 @@ function _ensureControls() {
   picker.className = 'mobile-ui-player-controls-picker';
   picker.hidden = true;
 
-  PHONE_MORE_ACTIONS.forEach(function (action, index) {
+  MORE_ACTIONS.forEach(function (action, index) {
     picker.appendChild(_createActionButton(action, index, 'mobile-ui-player-controls-option'));
   });
   container.appendChild(picker);
