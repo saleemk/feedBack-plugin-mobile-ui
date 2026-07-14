@@ -4,6 +4,7 @@
   "version": "0.2.1",
   "description": "Mobile-first layout and player UI improvements for FeedBack.",
   "icon": "assets/thumb.svg",
+  "license": "MIT",
   "category": "practice",
   "script": "screen.js",
   "scriptType": "module",

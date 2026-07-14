@@ -1,6 +1,6 @@
 # Mobile UI
 
-A touch-optimized phone and tablet interface plugin for fee[dB]ack. Mobile
+A touch-optimized phone and tablet interface plugin for [fee[dB]ack](https://github.com/got-feedBack/feedBack). Mobile
 UI improves shell navigation, Home, Song Library, Progress, Settings, Plugins,
 Collections, Player controls, and touch gestures while leaving desktop behavior
 to core.
@@ -223,6 +223,12 @@ Mobile UI provides:
 Pause-on-More does not apply to tablet direct chips or phone low-height
 landscape chips.
 
+## Requirements
+
+- [fee[dB]ack](https://github.com/got-feedBack/feedBack)
+- A phone or tablet browser, installed web app, or supported desktop build
+- The ability to install or mount external fee[dB]ack plugins
+
 ## Installation
 
 Clone this repo into your fee[dB]ack `plugins/` directory as `mobile_ui`, then
@@ -304,6 +310,10 @@ Planned but not implemented yet:
 - keyboard/visualViewport handling for bottom nav
 
 See [ROADMAP.md](ROADMAP.md) for the full plan and priorities.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
 
 ## Technical Notes
 
