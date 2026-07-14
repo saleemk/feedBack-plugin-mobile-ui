@@ -2972,6 +2972,80 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-mor
   z-index: 60 !important;
 }
 
+/* Stem Mixer owns a body-level fixed #stem-mixer-panel. Keep that panel in the
+   same safe Player region as Mobile UI action panels, and hide only the core
+   Plugins popover shell while Stem Mixer is visibly open. */
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet).mobile-ui-stem-mixer-open #v3-rail-pop-plugins {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #stem-mixer-panel {
+  position: fixed !important;
+  left: max(0.5rem, env(safe-area-inset-left)) !important;
+  right: max(0.5rem, env(safe-area-inset-right)) !important;
+  top: auto !important;
+  bottom: calc(9rem + env(safe-area-inset-bottom)) !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  transform: none !important;
+  box-sizing: border-box !important;
+  max-height: calc(100dvh - 10.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain;
+  padding: 0.65rem !important;
+  border-radius: 1rem 1rem 0.75rem 0.75rem !important;
+  z-index: 220 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #stem-mixer-panel > [data-pane-header] {
+  gap: 0.45rem !important;
+  margin-bottom: 0.55rem !important;
+  font-size: 0.78rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #stem-mixer-panel > [data-pane-header] button {
+  min-width: 2rem !important;
+  min-height: 2rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #stem-mixer-panel > label {
+  grid-template-columns: 3.25rem minmax(0, 1fr) 2.4rem !important;
+  gap: 0.5rem !important;
+  min-height: 1.95rem !important;
+  margin: 0.12rem 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #stem-mixer-panel > label input[type="range"] {
+  min-height: 1.45rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-portrait #stem-mixer-hint {
+  margin-top: 0.45rem !important;
+  font-size: 0.62rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet #stem-mixer-panel {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: calc(4.2rem + env(safe-area-inset-bottom)) !important;
+  width: min(32.5rem, calc(100vw - 2rem)) !important;
+  max-width: none !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+  box-sizing: border-box !important;
+  max-height: min(48vh, 22rem) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain;
+  z-index: 220 !important;
+}
+
 /* 14. Player tablet direct controls
    Tablet intentionally uses always-visible chips, not the phone More shelf. */
 
@@ -3435,6 +3509,36 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
     box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35) !important;
     z-index: 60 !important;
     pointer-events: auto !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape #stem-mixer-panel {
+    position: fixed !important;
+    left: max(0.5rem, env(safe-area-inset-left)) !important;
+    right: max(0.5rem, env(safe-area-inset-right)) !important;
+    top: auto !important;
+    bottom: calc(3.5rem + max(0.5rem, env(safe-area-inset-bottom))) !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    max-height: calc(100dvh - 5.375rem) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain;
+    padding: 0.65rem !important;
+    z-index: 220 !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape #stem-mixer-panel > [data-pane-header] {
+    margin-bottom: 0.45rem !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape #stem-mixer-panel > label {
+    grid-template-columns: 3rem minmax(0, 1fr) 2.35rem !important;
+    gap: 0.45rem !important;
+    min-height: 1.75rem !important;
+    margin: 0.08rem 0 !important;
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #section-map {

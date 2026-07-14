@@ -13,6 +13,7 @@ const SELECTORS = {
   rail: '#v3-player-rail',
   railPop: '#v3-railzone .v3-rail-pop',
   pluginControlsSlot: '#v3-plugin-controls-slot',
+  stemMixerPanel: '#stem-mixer-panel',
   practiceControl: '#section-practice-control',
   practiceBar: '#section-practice-bar',
   practicePill: '#section-practice-pill'
@@ -28,6 +29,7 @@ const ACTION_SURFACE_SELECTORS = [
   SELECTORS.rail,
   SELECTORS.railPop,
   SELECTORS.pluginControlsSlot,
+  SELECTORS.stemMixerPanel,
   SELECTORS.practiceControl,
   SELECTORS.practiceBar,
   SELECTORS.practicePill,
@@ -40,6 +42,7 @@ const ACTION_SURFACE_GUARD_SELECTORS = [
   '.mobile-ui-player-tablet-controls',
   SELECTORS.railPop,
   SELECTORS.pluginControlsSlot,
+  SELECTORS.stemMixerPanel,
   SELECTORS.practiceControl,
   SELECTORS.practiceBar,
   '#mixer-popover'
@@ -131,6 +134,8 @@ let _landscapeControls = null;
 let _tabletControls = null;
 let _libraryButton = null;
 let _guardedActionSurfaces = new Set();
+let _stemMixerObserver = null;
+let _stemMixerState = null;
 
 function _showPicker() {
   if (!_controlsPicker) return;
@@ -293,6 +298,51 @@ function _removeActionSurfaceGuards() {
     surface.removeEventListener('click', _stopActionSurfaceClick);
   });
   _guardedActionSurfaces.clear();
+}
+
+function _isElementVisible(el) {
+  if (!el || !el.isConnected || el.hidden) return false;
+  const cs = getComputedStyle(el);
+  if (cs.display === 'none' || cs.visibility === 'hidden') return false;
+  const rect = el.getBoundingClientRect();
+  return rect.width > 0 && rect.height > 0;
+}
+
+function _isStemMixerScope(state) {
+  return state?.screen === 'player' &&
+    state?.isV3 &&
+    (state?.viewport?.deviceClass === 'phone' || state?.viewport?.deviceClass === 'tablet');
+}
+
+function _syncStemMixerState() {
+  const active = _isStemMixerScope(_stemMixerState) &&
+    _isElementVisible(document.querySelector(SELECTORS.stemMixerPanel));
+  document.documentElement.classList.toggle('mobile-ui-stem-mixer-open', !!active);
+}
+
+function _installStemMixerObserver(state) {
+  _stemMixerState = state || null;
+  _syncStemMixerState();
+  if (_stemMixerObserver || !_isStemMixerScope(_stemMixerState)) return;
+  _stemMixerObserver = new MutationObserver(function () {
+    _syncStemMixerState();
+    _ensureActionSurfaceGuards();
+  });
+  _stemMixerObserver.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class', 'style', 'hidden']
+  });
+}
+
+function _uninstallStemMixerObserver() {
+  if (_stemMixerObserver) {
+    _stemMixerObserver.disconnect();
+    _stemMixerObserver = null;
+  }
+  _stemMixerState = null;
+  document.documentElement.classList.remove('mobile-ui-stem-mixer-open');
 }
 
 function _onControlsOutsideClick(e) {
@@ -575,12 +625,14 @@ export function createFeature() {
         _removeControls();
         _removeLandscapeControls();
         _ensureActionSurfaceGuards();
+        _installStemMixerObserver(ctx?.state);
       } else if (moreShelfMode) {
         _ensureLibraryButton();
         _ensureControls();
         _removeTabletControls();
         _removeLandscapeControls();
         _ensureActionSurfaceGuards();
+        _installStemMixerObserver(ctx?.state);
       } else if (lowHeightLandscape) {
         if (_isPlayerPhoneLowHeightLandscape(ctx?.state)) _ensureLibraryButton();
         else _removeLibraryButton();
@@ -588,12 +640,14 @@ export function createFeature() {
         _removeTabletControls();
         _ensureLandscapeControls();
         _ensureActionSurfaceGuards();
+        _installStemMixerObserver(ctx?.state);
       } else {
         _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
         _removeLandscapeControls();
         _removeActionSurfaceGuards();
+        _uninstallStemMixerObserver();
       }
       _installPlayButtonSync();
       _syncPlayButton();
@@ -615,12 +669,14 @@ export function createFeature() {
         _removeControls();
         _removeLandscapeControls();
         _ensureActionSurfaceGuards();
+        _installStemMixerObserver(ctx?.state);
       } else if (moreShelfMode) {
         _ensureLibraryButton();
         _ensureControls();
         _removeTabletControls();
         _removeLandscapeControls();
         _ensureActionSurfaceGuards();
+        _installStemMixerObserver(ctx?.state);
       } else if (lowHeightLandscape) {
         if (_isPlayerPhoneLowHeightLandscape(ctx?.state)) _ensureLibraryButton();
         else _removeLibraryButton();
@@ -628,12 +684,14 @@ export function createFeature() {
         _removeTabletControls();
         _ensureLandscapeControls();
         _ensureActionSurfaceGuards();
+        _installStemMixerObserver(ctx?.state);
       } else {
         _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
         _removeLandscapeControls();
         _removeActionSurfaceGuards();
+        _uninstallStemMixerObserver();
       }
       if (ctx?.state?.screen === 'player' && ctx?.state?.isV3) {
         _installPlayButtonSync();
@@ -649,6 +707,7 @@ export function createFeature() {
       _removeLandscapeControls();
       _removeTabletControls();
       _removeActionSurfaceGuards();
+      _uninstallStemMixerObserver();
       _setMoreShelfMode(false);
       _setTabletDirectControlsMode(false);
       _uninstallPlayButtonSync();
