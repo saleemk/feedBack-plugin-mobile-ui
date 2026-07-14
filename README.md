@@ -9,7 +9,7 @@ The plugin is optimized for phones and tablets in portrait and landscape.
 Browser and device testing is ongoing, so the focus is practical touch
 improvements with honest limits.
 
-> **Early testing:** Please include your device, browser, orientation,
+> **Testing and feedback:** Please include your device, browser, orientation,
 > screenshots, and console errors when reporting issues.
 
 ## What You Get
@@ -22,11 +22,76 @@ improvements with honest limits.
 - visible Home/Library Player exit button on phone and tablet
 - phone portrait Player More shelf
 - phone landscape/tablet direct Player action chips
+- Player action panels that stay open while their controls are used
 - tap-to-play and vertical highway scrub gestures
+- responsive Home and Library portrait/landscape layouts
+- scoped iPhone standalone rotation handling
 - Home and non-Home topbar/status rail polish
 - Song Library search below the title/status rail
 - compact aligned status cards with the streak mini graph preserved
 - enable/disable, debug, and optional pause-on-More settings
+
+## Screenshots
+
+<!-- Replace the PASTE_* placeholders below with GitHub user-attachment URLs before committing. -->
+
+Mobile UI adapts its navigation, content density, and Player controls for phone
+and tablet portrait/landscape layouts.
+
+### Phone Portrait
+
+<p>
+  <img width="280" alt="Mobile UI Home on phone portrait" src="PASTE_PHONE_PORTRAIT_HOME_URL">
+  &nbsp;&nbsp;
+  <img width="280" alt="Mobile UI Song Library on phone portrait" src="PASTE_PHONE_PORTRAIT_LIBRARY_URL">
+</p>
+
+Compact five-item navigation, responsive Home cards, and a touch-friendly
+two-column Song Library layout.
+
+<p>
+  <img width="280" alt="Mobile UI Player controls and More shelf on phone portrait" src="PASTE_PHONE_PORTRAIT_PLAYER_URL">
+  &nbsp;&nbsp;
+  <img width="280" alt="Mobile UI Plugins screen on phone portrait" src="PASTE_PHONE_PORTRAIT_PLUGINS_URL">
+</p>
+
+Phone Player More shelf and touch controls; compact Plugins management layout.
+
+### Phone Landscape
+
+<p>
+  <img width="600" alt="Mobile UI Home on phone landscape" src="PASTE_PHONE_LANDSCAPE_HOME_URL">
+</p>
+
+Landscape Home uses a two-column hero and Continue Playing layout.
+
+<p>
+  <img width="600" alt="Mobile UI Song Library on phone landscape" src="PASTE_PHONE_LANDSCAPE_LIBRARY_URL">
+</p>
+
+Landscape Library uses denser cards and wide touch navigation.
+
+<p>
+  <img width="600" alt="Mobile UI Player direct action controls on phone landscape" src="PASTE_PHONE_LANDSCAPE_PLAYER_URL">
+</p>
+<p>
+  <img width="600" alt="Mobile UI Player plugin controls panel on phone landscape" src="PASTE_PHONE_LANDSCAPE_PLUGIN_PANEL_URL">
+</p>
+
+Phone landscape replaces the More shelf with direct action chips. Player
+category panels remain open while their controls are used.
+
+### Tablet Player
+
+<p>
+  <img width="360" alt="Mobile UI Player on tablet portrait" src="PASTE_TABLET_PORTRAIT_PLAYER_URL">
+</p>
+<p>
+  <img width="700" alt="Mobile UI Player on tablet landscape" src="PASTE_TABLET_LANDSCAPE_PLAYER_URL">
+</p>
+
+Tablet portrait and landscape expose direct Player actions without the phone
+More shelf.
 
 ## Navigation
 
@@ -46,6 +111,10 @@ The Player hides the bottom nav and uses Player-specific controls. Desktop keeps
 the core navigation. While the Mobile UI bottom nav is active, the old core
 sidebar/hamburger is hidden after Mobile UI initializes.
 
+Mobile UI includes a scoped repair for an iPhone standalone
+portrait-to-landscape viewport-origin issue that could otherwise shift the page
+and misalign touch targets.
+
 On some devices, a tiny refresh flash of the old core menu/sidebar may still
 appear because plugins load after the core shell can paint. Runtime layout
 corrects once Mobile UI initializes.
@@ -62,14 +131,18 @@ The tuning, instrument, and streak/rank status cards are compact and aligned.
 The streak/rank card can be wider, but it should not be taller, and its mini
 signal graph remains visible.
 
+Phone landscape Home places the hero and Continue Playing cards side by side
+when space allows. Phone landscape Home and Song Library use denser card
+layouts, while phone portrait keeps the taller touch layout and tablet keeps its
+own sizing.
+
 ## Player Experience
 
 ### Phone
 
 In phone portrait, the Player shows a compact **Home/Library exit button** on
 the left side of the controls row. Tapping More opens a persistent shelf with
-Library first, followed by Visuals, Audio, Mixer, Lyrics, Plugins, Practice,
-and Advanced.
+Visuals, Audio, Mixer, Lyrics, Plugins, Practice, and Advanced.
 
 In low-height phone landscape, the Player shows the same Home/Library exit
 button and direct inline action chips instead of a More shelf.
@@ -93,6 +166,11 @@ On phone/tablet Player:
 
 Desktop/mouse behavior is excluded.
 
+Action/category panels remain open while users interact with lists, selects,
+sliders, buttons, toggles, and plugin controls. Outside taps or category changes
+can still close or switch panels. This applies to phone More shelf panels and
+phone landscape/tablet direct-chip panels.
+
 ### Desktop
 
 Desktop stays with the core fee[dB]ack Player. Mobile UI does not replace the
@@ -100,7 +178,7 @@ desktop Player or desktop layouts.
 
 | Device/mode | Behavior |
 | --- | --- |
-| Phone portrait | Home/Library exit button + More shelf with Library first. |
+| Phone portrait | Home/Library exit button + More shelf. |
 | Phone low-height landscape | Home/Library exit button + direct inline action chips. No More shelf. |
 | Tablet portrait | Home/Library exit button + direct inline action chips. No More shelf. |
 | Tablet landscape | Home/Library exit button + direct inline action chips. No More shelf. |
@@ -115,14 +193,14 @@ glass/translucent panels.
 | Area | Status | Notes |
 | --- | --- | --- |
 | Shell/topbar/nav | active | Touch bottom nav, More sheet, shared topbar/status rail polish. |
-| Home | active | Mobile/tablet layout and status rail polish. |
-| Song Library | active | Title/status/search layout, toolbar, options, and content polish. |
+| Home | active | Responsive portrait layout and two-column phone landscape hero/Continue Playing layout. |
+| Song Library | active | Portrait grid, denser landscape cards, title/status/search layout, toolbar, and options polish. |
 | Progress | active | Mobile/tablet layout and status rail polish. |
 | Settings | active | Mobile/tablet spacing, tabs, and forms. |
-| Plugins | active | Touch layout and plugin screen polish. |
+| Plugins | active | Touch layout and compact plugin management cards. |
 | Playlists/Favorites/Saved for Later | active | Collection layout polish. |
 | Lessons/FeedBarcade/Unlockables | mapped/light-touch | Available in navigation; lighter-touch than main screens. |
-| Player | active | Touch controls, quick exit, gestures, speed cleanup, panels. |
+| Player | active | Quick exit, More/direct chips, interactive action panels, gestures, and iPhone standalone rotation handling. |
 
 ## Usage
 
@@ -179,10 +257,15 @@ Help test Mobile UI on your devices. Areas to try:
 - known tiny refresh flash, if your device still shows it
 - Home topbar/status cards
 - Library title/status/search layout
+- phone landscape Home two-column layout
+- phone landscape Library dense cards
 - Progress, Plugins, and Settings topbar/status layout
 - Player Home/Library exit button
 - Player More shelf and direct chips
+- Player action panel controls stay usable without closing the panel
 - highway tap-to-play and vertical scrub gestures
+- iPhone standalone portrait-to-landscape rotation
+- bottom-nav hit targets stay aligned after rotation
 - enable/disable setting
 - desktop unchanged
 
@@ -194,6 +277,7 @@ When reporting issues, include:
 - which screen/page the issue happened on
 - screenshot or short video
 - console errors, if available
+- copied Mobile UI debug text, if the debug view is enabled
 - whether Mobile UI settings were enabled or disabled
 
 ## Compatibility / Known Limits
@@ -203,6 +287,8 @@ When reporting issues, include:
 - Lessons, FeedBarcade, and Unlockables are lighter-touch than Home, Library,
   Progress, Settings, Plugins, and Player.
 - Highway, canvas, camera, renderer, and core Player internals are out of scope.
+- Mobile UI includes a scoped correction for an iPhone standalone rotation
+  issue discovered during testing. Continued device testing is welcome.
 - A tiny old menu/sidebar flash can still appear during refresh on some devices
   because the core shell can paint before plugins load. Runtime layout corrects
   after Mobile UI initializes. A true zero-frame fix likely needs core support.
@@ -214,7 +300,6 @@ Planned but not implemented yet:
 - haptic/audio feedback
 - mobile visual/highway preset audit
 - visual preset implementation
-- README screenshots
 - More sheet outside-tap/Escape polish
 - keyboard/visualViewport handling for bottom nav
 

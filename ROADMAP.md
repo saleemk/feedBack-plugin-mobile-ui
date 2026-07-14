@@ -81,296 +81,107 @@ row (no More shelf).
 
 ---
 
+## Completed Milestones
+
+### v0.2.0–v0.2.1 — Mobile UI Foundation and Polish
+
+The core touch-optimised UI is in place.  Phone and tablet users now have
+a bottom navigation bar, responsive topbar with compact status cards,
+one-tap Player exit, tap-to-play and vertical scrub gestures, and
+orientation-aware layout polish — all without touching core or desktop.
+
+#### Navigation
+
+- Bottom navigation bar replacing the old core hamburger/sidebar on touch layouts.
+- Compact 5-tab nav (Home · Library · Progress · Plugins · More) for phone portrait.
+- Wide 8-tab nav (adding Unlockables · FeedBarcade · Settings) for phone landscape and tablet.
+- Dynamic More sheet built from remaining core `#v3-nav` items — never opens the old core drawer.
+- Core sidebar and hamburger hidden while bottom nav is active (CSS-only, DOM preserved as data source).
+- First-paint flash of old core nav minimised via preboot class.
+- Responsive rebuild on rotation between compact and wide modes.
+
+#### Home
+
+- Responsive touch topbar with title / welcome and Support Us on the first row and compact status cards below.
+- Status card height normalisation — tuner, instrument, and profile/rank cards share the same visual height.
+- Profile equalizer bars remain visible in a compact form so the streak card no longer dominates.
+- Support Us button compacted and kept aligned with the title across touch layouts.
+- Phone landscape Home places the hero and Continue Playing card side-by-side.
+- Landscape density improvements: hero compacted, stat cards tightened, and section spacing reduced.
+- Tablet refinements keep the same information hierarchy while using tablet-specific sizing.
+
+#### Song Library
+
+- Responsive toolbar and Options flow for phone and tablet.
+- Search relocated below the title/status area on touch layouts.
+- Phone portrait keeps a touch-friendly multi-column library layout.
+- Phone landscape uses denser artwork, spacing, text, and tags so more songs fit above the bottom nav.
+- Compact cards and responsive layout polish across touch profiles.
+
+#### Player
+
+- One-tap Home/Library exit icon button on all phone/tablet Player layouts.
+- Phone portrait More shelf with Library as first action.
+- Direct landscape/tablet action chips (Visuals, Audio, Mixer, Lyrics, Plugins, Practice, Advanced).
+- Tap-to-play gesture (touch/pen on highway → play/pause).
+- Vertical scrub gesture (drag down → seek forward, drag up → seek backward).
+- Player category panels remain open while users interact with lists, sliders, toggles, selects, buttons, and plugin controls; outside taps and category changes still close or switch panels.
+- Responsive layouts across all four touch orientations.
+
+#### Tablet
+
+- Shared touch UI with phone — bottom nav, compact topbar, direct Player chips.
+- Portrait and landscape layouts tuned independently.
+- Wider bottom nav island with proper item spacing.
+
+#### General
+
+- Shared compact status-card sizing across all touch orientations.
+- Responsive spacing improvements throughout.
+- Improved preboot handling to reduce the old core navigation flash during plugin startup.
+- Diagnosed an iPhone standalone portrait → landscape viewport-origin bug where iOS reported negative `visualViewport` and document offsets, causing a top gap and incorrect hit-testing.
+- Added a scoped measured-offset correction for standalone phone landscape; the correction clears when the viewport returns to normal.
+- Safari, simulator, portrait, tablet, and desktop remain unaffected by the standalone rotation correction.
+- Enable/disable, debug, and pause-on-More settings.
+
+---
+
 ## Priority Overview
 
 | Priority | Item | Why | Status |
 |---|---|---|---|
-| **P1** | Mobile Player quick exit | Exit was buried under More → Advanced → Close | Done |
-| **P1** | Touch main navigation | Top-left hamburger/sidebar is awkward on touch layouts | Done — compact/wide bottom nav implemented |
-| **P2** | Viewport profile polish | Better portrait / landscape fit per device | Partially done — shell topbar/status polish done; broader review remains |
-| **P2** | Mobile Highway Gestures | Useful mobile highway interaction | Tap-to-play and vertical scrub implemented; advanced gestures remain later |
-| **P2** | Visual preset audit | Improve bland stock visuals safely | Audit first |
-| **P3** | Double-tap loop markers | Useful after single-tap gesture is stable | Later |
-| **P3** | Visual scrub feedback | Optional polish if scrub needs visible feedback | Later |
+| **P1** | Final responsive polish | Address concrete issues found through real-device testing | Ongoing |
+| **P1** | Documentation / screenshots | Present the completed touch layouts clearly | In progress |
+| **P2** | Gesture enhancements | Double-tap loop and optional gesture settings | Later |
+| **P2** | Visual preset audit | Determine safe mobile-friendly visual defaults | Audit first |
+| **P3** | Visual preset implementation | Apply presets without overwriting user settings | After audit |
+| **P3** | Haptics / audio feedback | Optional gesture polish | Later |
 | **P3** | Section map enhancement | Only if current behaviour is lacking | Audit first |
-| **P3** | Audio / haptic feedback | Nice polish; more cleanup risk | Later |
-| **P3** | Visual preset implementation | High impact but cross-plugin risk | After audit |
 
 ---
 
-## P1 — Mobile Player Quick Exit
+## P1 — Final Responsive Polish
 
 ### Problem
 
-On phone portrait the only way to exit the Player is:
-
-> More → Advanced → (scroll to bottom) → ✕ Close player
-
-That is **three taps**, and the target is buried inside a scrollable panel.
-This is too slow for a common action.
+Remaining spacing, crowding, or alignment issues discovered during
+real-device testing across phone portrait, phone landscape, tablet portrait,
+and tablet landscape.
 
 ### Goals
 
-- Phone portrait: exit the Player with **one obvious action**.
-- Tablet portrait / landscape: exit without going through Advanced.
-- Desktop: unchanged.
-- Use the existing core exit path (do not invent a new one).
-
-### Possible designs
-
-1. **Back / Library icon directly in the bottom controls row**
-   (alongside rewind / play / forward / speed / More/direct chips).
-2. **Exit as a first-class More shelf action** (not hidden under Advanced).
-
-### Audit questions (before implementation)
-
-- What is the current core exit path?
-  - Does it call `showScreen('library')` or `window.feedBack.navigate(…)`?
-  - Is there an `#btn-exit` or similar element we can `.click()`?
-  - Does the Advanced panel's "✕ Close player" button call a public function?
-- Does core emit an event when the player closes (e.g. `player:exit`)?
-- Is there a keyboard shortcut (Escape) whose handler we can reuse?
-
-### First safe slice
-
-Add a **Back / Library chip** to the More shelf action list (phone portrait)
-that triggers the same exit behaviour as the Advanced panel's close button.
-Do not move or remove the existing Advanced close button.
-
-**Status:** ✅ Done.  Phone portrait More shelf now shows **Library** as the
-first action.  It calls `window.feedBack.requestExitSong()` and does not appear
-in tablet direct chips, phone low-height landscape chips, or desktop.
-
-### Second slice — Visible Home / Library icon button
-
-Add a compact **Home / Library icon button** directly in the bottom controls
-row, visually separated to the left of the transport controls, so exiting the
-Player is a one-tap visible action on every mobile/tablet layout.
-
-**Status:** ✅ Done.
-
-- **Phone portrait** Player: Home icon button in the bottom controls row
-  (leftmost, `order: 0; margin-inline-end: auto`).
-- **Phone low-height landscape** Player: same Home icon button.
-- **Tablet portrait** Player: same Home icon button.
-- **Tablet landscape** Player: same Home icon button.
-- All call `window.feedBack.requestExitSong()` — the safe core exit path.
-- Phone portrait More shelf still retains Library as the first shelf action.
-- No Library text chip was added to phone landscape or tablet direct chips.
-  Direct chips remain: Visuals, Audio, Mixer, Lyrics, Plugins, Practice, Advanced.
-- Desktop unchanged.
-- Advanced close button still exists as core fallback.
+- Address concrete issues found in screenshots or real-device testing.
+- Each fix must be CSS-only where possible, scoped to the affected
+  orientation, and must not regress other orientations or desktop.
+- No broad refactors.
 
 ### Done criteria
 
-- [x] **Near-term:** phone portrait can exit Player from a first-class
-  More shelf action (≤ 2 taps).
-- [x] **Target:** one-tap visible Back / Library action where space allows
-  (icon in bottom controls row on phone portrait, phone landscape,
-  tablet portrait, tablet landscape).
-- [x] Tablet: exit Player without opening the Advanced panel.
-- [x] Uses the existing core action (`window.feedBack.requestExitSong()`).
-- [x] Desktop unchanged.
-- [x] No duplicate controls.
-- [x] No regression to More shelf / direct chips.
-
-### Risks
-
-- **Low.**  This bridges into an existing core action.  The core exit path
-  already exists and works.
-
----
-
-## P1 — Touch Main Navigation
-
-### Problem
-
-The main UI used a **top-left menu / hamburger/sidebar**.  On touch layouts
-this is:
-- small,
-- in the top corner (hard to reach one-handed),
-- awkward for thumb-driven navigation.
-
-### Goals
-
-- Phone: provide a thumb-friendly navigation entry point.
-- Tablet / phone landscape: use the extra width for a wider direct nav.
-- Desktop: unchanged.
-- The existing drawer / navigation must remain the **source of truth** —
-  no duplicate routing.
-
-### Possible designs
-
-1. **Bottom navigation bar** with tabs for key screens:
-   Home · Library · Progress · Plugins · More.
-2. **Floating bottom Menu pill** that opens the existing drawer
-   (superseded — was the first safe slice, now replaced).
-3. **Bottom drawer handle** that triggers the existing menu.
-
-### Audit questions (before implementation)
-
-- What is the current shell / nav DOM structure?
-- How does the existing drawer open / close (CSS class, JS handler)?
-- Can we safely `.click()` the existing hamburger button?
-- Are there screen-change events (`screen:changed`) we need to stay in
-  sync with?
-- Does the current drawer update its active-item state when we navigate
-  via other means?
-
-### First safe slice (superseded)
-
-A **floating bottom-right Menu pill** (phone portrait only) that clicked the
-existing hamburger button.  This was the initial safe bridge — it proved the
-concept while leaving the core drawer untouched.
-
-**Status:** ✅ Done, then removed.  The floating Menu pill has been replaced
-by the bottom navigation bar (see below).
-
-### Current implementation — Touch bottom navigation
-
-Touch non-Player screens use a Mobile UI **bottom navigation bar**.
-
-**Compact phone portrait nav:**
-
-**Home | Library | Progress | Plugins | More**
-
-**Wide touch nav for phone landscape and tablet:**
-
-**Home | Library | Progress | Unlockables | FeedBarcade | Plugins | Settings | More**
-
-- **Home** → `window.showScreen('v3-home')`
-- **Library** → `window.showScreen('v3-songs')`
-- **Progress** → `window.showScreen('v3-progress')`
-- **Plugins** → `window.showScreen('v3-plugins')`
-- **Unlockables / FeedBarcade / Settings** appear directly in wide mode.
-- **More** → opens a Mobile UI translucent bottom sheet (does **not** open
-  the core drawer/sidebar)
-
-**More sheet:**
-- Built dynamically from remaining core nav items in `#v3-nav a[data-v3-nav]`.
-- Excludes the direct nav items for the current mode.
-- Includes the remaining available core/plugin nav items for the current
-  mode: Playlists, Favorites, Saved for Later, Lessons, Settings,
-  FeedBarcade, Unlockables/Shop, and any plugin-added nav items present in
-  the core sidebar, excluding items already exposed directly in that mode.
-- Item clicks use the original core nav `<a>` element, preserving core and
-  plugin nav behaviour.
-- Two-column grid layout, glass styling matching the bottom nav.
-
-**Status:** ✅ Done.
-
-- The old floating Menu pill is removed (zero references in code).
-- Bottom nav is hidden on Player and desktop.
-- Core drawer is never opened by bottom nav More.
-- Core sidebar / hamburger are hidden while Mobile UI bottom nav is active.
-- Core `#v3-nav` remains the source of truth for available More sheet items.
-- Active state on primary tabs uses CSS-only via existing
-  `mobile-ui-screen-*` root classes.
-- Content padding on `#v3-main` via `mobile-ui-has-bottom-nav` root class.
-- First-paint old menu/sidebar flash handling has been improved:
-  - disabled convention fixed to `mobile_ui.disabled === '1'`;
-  - tablet landscape preboot detection expanded beyond 1024 px widths;
-  - inline preboot style added before `src/main.js` import.
-- A tiny old-menu/sidebar flash may still remain on hard refresh because
-  plugin code loads after the core shell can paint.  True zero-frame removal
-  likely needs a core early-load hook.
-
-### Done criteria
-
-- [x] Phone has a thumb-friendly navigation entry point.
-- [x] Phone landscape / tablet have a wider touch nav.
-- [x] Existing core nav remains source of truth for available More items.
-- [x] Desktop unchanged.
-- [x] No route duplication or desync.
-
-### Risks
-
-- **Low-Medium.**
-  - More sheet item collection depends on core nav DOM (`#v3-nav a[data-v3-nav]`).
-    If core restructures its sidebar markup, `_collectRemainingNavItems()` must
-    be updated.
-  - Outside-tap / Escape key close for the More sheet is future polish.
-  - Keyboard / `visualViewport` overlap with the bottom nav on iOS is future
-    polish.
-  - True no-flash hiding of the old core sidebar before the first paint may
-    require core support, because `#v3-sidebar` exists in initial v3 HTML.
-
----
-
-## P2 — Viewport Profile Polish
-
-### Problem
-
-The current mobile / tablet UI works but needs more deliberate fit for
-portrait and landscape modes.  This is especially important on the Player,
-but also applies to shell, navigation, and screen layouts.
-
-### Goals
-
-Treat each viewport profile as a separate layout target.  No one-size-fits-all.
-
-### Profiles
-
-| Profile | Focus |
-|---|---|
-| **Phone portrait** | Maximise highway / content space.  Thumb-friendly controls.  Avoid top/bottom crowding.  More shelf usable without covering too much. |
-| **Phone low-height landscape** | Minimise vertical waste.  Inline chips usable.  Panels don't cover too much highway.  Scrolling chip strips ok. |
-| **Tablet portrait** | Use available width / height better.  Don't force phone-style cramped layouts.  Don't over-size controls. |
-| **Tablet landscape** | Preserve highway space.  Direct actions accessible.  Avoid panel placement issues.  Direct chip row readable and scroll-safe. |
-| **Standalone / app-like** | Detect `display-mode: standalone`.  Adjust safe-area / overscroll behaviour if needed. |
-
-### Implemented / Audited
-
-- **Implemented:** phone low-height landscape Player chip strip polish.
-  The direct chip strip remains a scroll-safe horizontal strip with fade
-  masks on the edges.  Scoped to phone low-height landscape Player only.
-  Tablet and desktop unaffected.
-- **Implemented:** compact/wide touch bottom navigation.
-  Phone portrait uses compact primary tabs; phone landscape and tablet use
-  a wider direct nav.  Player and desktop remain excluded.
-- **Implemented:** touch topbar layout polish.
-  - Home touch topbar:
-    row 1 is title/welcome left and Support Us right;
-    row 2 is compact status cards.
-  - Non-Home touch topbar:
-    row 1 is screen title left and Support Us right;
-    row 2 is status cards;
-    row 3 is Library search only.
-  - Library search now sits below the title/status area.
-  - Applies to phone/tablet non-Player screens.  Desktop unchanged.
-- **Implemented:** shared compact status-card rules for touch topbars.
-  Tuning / instrument / streak cards share the same visual height.  The
-  streak/rank card may be wider, but is no longer taller and keeps its mini
-  signal graph visible.
-- **Audited:** tablet portrait Player controls.  Layout math shows
-  transport + speed slider + 7 chips fit at ~768 px width with ~70 px of
-  slack.  No code change was made.  A real-device screenshot is still
-  useful for visual confirmation.
-
-### Audit / screenshots needed
-
-- Current screenshots of each profile on the Player screen.
-- Identify specific areas that feel cramped, wasted, or misaligned.
-
-### First safe slice (completed)
-
-Phone low-height landscape Player chip strip polish (CSS-only).
-
-### Next possible slice
-
-Screenshot-led phone portrait or tablet portrait polish, **only if** a
-concrete spacing / crowding issue is visible.
-
-### Done criteria
-
-- [x] Phone low-height landscape Player reviewed and adjusted.
-- [x] Tablet portrait Player audited — no change made; layout appears to fit.
-- [x] Touch bottom nav has compact and wide modes.
-- [x] Home and non-Home touch topbars use the accepted row model.
-- [x] Touch topbar status cards have equal visual height with mini graph visible.
-- [ ] Each remaining profile independently reviewed and adjusted.
+- [x] Representative real-device screenshots collected for phone portrait, phone landscape, tablet portrait, and tablet landscape.
+- [x] Phone landscape Home and Song Library density issues identified in screenshots and corrected.
+- [ ] Additional concrete crowding / spacing issues fixed as they are discovered.
 - [ ] No regressions to desktop.
-- [ ] No regressions to other profiles.
+- [ ] No regressions to other orientations.
 
 ### Risks
 
@@ -378,145 +189,66 @@ concrete spacing / crowding issue is visible.
 
 ---
 
-## P2 — Mobile Highway Gestures
+## P1 — Documentation / Screenshots
 
-### Implemented
+### Status
 
-- **Tap-to-play:** touch or pen tap on the actual current `#highway` canvas
-  toggles play / pause.
-- **Vertical scrub:** touch or pen vertical drag on the actual current
-  `#highway` canvas scrubs through the song.
-- Player screen only.  Phone / tablet only.  Desktop / mouse excluded.
-- Uses delegated `pointer` listeners from `#player`.
-- Uses safe core paths:
-  - `#btn-play.click()` for play / pause.
-  - `window.seekBy()` for relative scrub steps.
-- Scrub direction:
-  - drag down seeks forward.
-  - drag up seeks backward.
-  - one second per step.
-- Uses scoped `touch-action` CSS on phone / tablet Player `#highway` so the
-  browser does not cancel the pointer stream before scrub activates.
-- Does **not** touch highway renderer or canvas internals.
-- Ignores interactive targets (buttons, inputs, selects, sliders, panels,
-  More shelf, direct chips).
-- No double-tap loop, haptics, audio feedback, gesture settings, or visual
-  scrub overlay implemented yet.
-- **Verified:** the current 3D Highway wrapper (`.h3d-wrap`) and its child
-  canvases use `pointer-events: none`, so touch / pen events pass through
-  to `#highway`.  Tap-to-play and vertical scrub work with the observed
-  3D setup — no code change needed.  Other custom visual plugins may need
-  verification in the future if they capture pointer events.
+Representative phone and tablet screenshots have been collected.  The README
+screenshot gallery is being prepared using GitHub-hosted user-attachment URLs;
+image files will not be checked into the plugin repository.
 
-### Inspiration only
+### Goals
 
-The old **Slopsmith Mobile Note Highway** plugin had additional gesture
-ideas (double-tap loop, vertical scrub).  Those are **ideas**, not
-code to copy.  fee[dB]ack APIs and DOM structure are different.
+- Add phone portrait screenshots for Home, Song Library, Player, and Plugins.
+- Add phone landscape screenshots for Home, Song Library, Player controls, and a Player category panel.
+- Add tablet portrait and landscape Player screenshots.
+- Keep portrait images narrow enough to pair cleanly and landscape images large enough to show control detail.
+- Keep `README.md` user-facing rather than turning it into a release changelog.
 
-### Gesture candidates
+### Done criteria
 
-- **Tap highway** → play / pause.
-- **Double-tap highway** → cycle loop markers (A → B → Clear).
-- **Vertical drag / swipe on highway** → scrub through song.
-- **Section map drag / tap** enhancement (only if current behaviour is
-  lacking).
-- Optional haptic feedback.
-- Optional audio / whoosh feedback.
-- Optional scrub sensitivity setting.
-
-### Phased plan
-
-#### G0 — Audit (no code)
-
-- Identify the safe fee[dB]ack play / pause API.
-- Identify the safe seek API.
-- Identify the safe loop A / B / Clear API.
-- Check whether `#highway` receives pointer / touch events cleanly.
-- Check whether core already has gesture or pointer handlers.
-- Check interaction with panels, buttons, sliders, select boxes, direct
-  chips, More shelf, Practice, and Lyrics.
-- Check Section Map current tap / drag behaviour.
-
-#### G1 — Gesture infrastructure
-
-- Add a dedicated gesture module (`src/gestures.js`).
-- Do **not** put large gesture logic into `src/player.js`.
-- Player-screen only.
-- Phone / tablet only.
-- Idempotent listener lifecycle.
-- Cleanup on disable, destroy, screen change, and rotation.
-- Ignore interactive targets: `button`, `input`, `select`, `textarea`,
-  `a`, sliders, panels / popovers, More shelf / direct chips.
-- Multi-touch → cancel or ignore.
-- No duplicate listeners after refresh.
-
-#### G2 — Single tap
-
-- Tap empty highway area → play / pause.
-- Prefer triggering the existing core play button / action path.
-- Delay single-tap execution until double-tap window expires (avoid
-  conflict).
-- Do not directly manipulate audio unless the audit confirms it is safe.
-
-#### G3 — Double tap
-
-- Double tap empty highway area → cycle loop markers (A → B → Clear).
-- Must use current fee[dB]ack loop APIs.
-- Small visual feedback (brief highlight / pulse).
-
-#### G4 — Vertical scrub
-
-- Drag vertically on highway → scrub.
-- Start only after movement threshold.
-- Prevent accidental page scroll only after scrub mode is confirmed.
-- Update position through safe core seek path.
-- No audio / whoosh feedback in first scrub slice.
-
-**Status:** ✅ Done.  Uses `window.seekBy()` in one-second relative steps.
-Drag down seeks forward; drag up seeks backward.  Scoped `touch-action` CSS
-keeps the browser from cancelling the pointer stream on phone / tablet Player
-`#highway`.
-
-#### G5 — Section map
-
-- Audit existing Section Map behaviour first.
-- Enhance only if there is a real gap.
-- Do not duplicate or fight the existing Section Map plugin.
-
-#### G6 — Haptic / audio feedback
-
-- Optional later setting.
-- Haptics small and not spammy.
-- Audio feedback / whoosh optional and disabled by default.
-- Web Audio cleanup must be explicit.
-
-### Done criteria (for G2, the first implementation slice)
-
-- [x] G0 audit complete.
-- [x] Tap highway → play / pause works (touch / pen only, phone / tablet only).
-- [x] Does not fire on panels, buttons, sliders, chips, shelf.
-- [x] Cleanup on disable / screen change / rotation.
-- [x] Desktop unaffected.
-- [ ] Does not conflict with double-tap (deferred — double-tap not yet implemented).
-
-### Done criteria (for G4, vertical scrub)
-
-- [x] G0 audit confirmed safe `window.seekBy()` path.
-- [x] Drag down on highway seeks forward.
-- [x] Drag up on highway seeks backward.
-- [x] Scrub uses stepped relative seeking, not absolute seek mutation.
-- [x] Scrub does not also trigger tap-to-play on release.
-- [x] Desktop unaffected.
-- [x] Does not touch highway renderer or canvas internals.
+- [x] Phone portrait screenshots collected: Home, Song Library, Player, Plugins.
+- [x] Phone landscape screenshots collected: Home, Song Library, Player controls, Player category panel.
+- [x] Tablet screenshots collected: portrait Player and landscape Player.
+- [ ] GitHub user-attachment URLs inserted into `README.md`.
+- [ ] Screenshot gallery reviewed in rendered GitHub Markdown.
+- [ ] No image binaries added to the repository.
 
 ### Risks
 
-- **Medium.**  Accidental play / pause while interacting with panels.
-- Conflict with sliders / chips / buttons.
-- Scroll / gesture conflicts in mobile browsers.
-- Incorrect seek / loop API assumptions.
-- Duplicate listeners after refresh / rotation.
+- **Low.**  Documentation-only.  The main risk is oversized or poorly grouped images making the README difficult to scan.
+
+---
+
+## P2 — Gesture Enhancements
+
+Tap-to-play and vertical scrub are implemented.  Remaining gesture work:
+
+### Double-tap loop markers
+
+- Double-tap highway → cycle loop markers (A → B → Clear).
+- Must use core loop APIs (audit required).
+- Must not conflict with single-tap play/pause (delay single-tap until
+  double-tap window expires).
+
+### Gesture settings
+
+- Optional enable/disable per gesture.
+- Scrub sensitivity setting.
+- Persisted via `localStorage`.
+
+### Done criteria
+
+- [ ] Double-tap loop implemented and does not conflict with tap-to-play.
+- [ ] Gesture settings panel added (or integrated into existing settings).
+- [ ] Settings persist across sessions.
+- [ ] Desktop / mouse unaffected.
+- [ ] No regression to existing gestures.
+
+### Risks
+
+- **Medium.**  Double-tap adds latency to single-tap.  Loop API may have
+  edge cases.  Settings UI adds surface area.
 
 ---
 
@@ -598,24 +330,16 @@ touching renderer internals.
 
 These are worth doing but depend on earlier work or audits:
 
-- **Double-tap loop markers** — after single-tap gesture (G2) is stable.
+- **Visual preset implementation** — after P2 audit.
+- **Haptic / audio feedback** — optional setting; requires Web Audio cleanup.
 - **Section map enhancement** — after audit of current behaviour.
-- **Haptic / audio feedback** — optional setting; requires Web Audio
-  cleanup.
 - **Custom visual overlay support** — only if a future visual plugin
   captures pointer events and prevents current canvas-targeted gestures.
-  The current 3D Highway overlay is verified as pass-through (no fix
-  needed).
-- **Visual preset implementation** — after P2 audit.
+  The current 3D Highway overlay is verified as pass-through (no fix needed).
 - **Background image presets** — after visual audit confirms support.
 - **Visual theme packs** — low priority; brainstorming only.
-- **Optional gesture settings** — sensitivity, enable / disable per gesture.
-- **README screenshots** — once the UI is visually stable.
-- **Bottom nav icon / label polish** — if text-only labels feel too sparse.
-- **More sheet outside-tap / Escape close** — small UX polish for the
-  bottom nav More sheet.
-- **Bottom nav keyboard / visualViewport handling** — handle iOS keyboard
-  overlap gracefully.
+- **More sheet outside-tap / Escape close** — small UX polish.
+- **Bottom nav keyboard / visualViewport handling** — handle on-screen keyboard overlap and related viewport resizing gracefully.
 - **Core early no-flash hook** — plugin preboot reduces the old
   menu/sidebar flash after plugin load, but true zero-frame removal likely
   needs core support because `#v3-sidebar` can paint from initial HTML
