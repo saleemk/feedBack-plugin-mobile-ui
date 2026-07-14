@@ -41,18 +41,18 @@ and tablet portrait/landscape layouts.
 ### Phone Portrait
 
 <p>
-  <img width="280" alt="Mobile UI Home on phone portrait" src="PASTE_PHONE_PORTRAIT_HOME_URL">
+  <img width="280" alt="Mobile UI Home on phone portrait" src="https://github.com/user-attachments/assets/628e319c-cca7-4d16-a97d-a82367824fcb">
   &nbsp;&nbsp;
-  <img width="280" alt="Mobile UI Song Library on phone portrait" src="PASTE_PHONE_PORTRAIT_LIBRARY_URL">
+  <img width="280" alt="Mobile UI Song Library on phone portrait" src="https://github.com/user-attachments/assets/0c13cce1-5207-4979-8e7b-2fa89239f7e8" >
 </p>
 
 Compact five-item navigation, responsive Home cards, and a touch-friendly
 two-column Song Library layout.
 
 <p>
-  <img width="280" alt="Mobile UI Player controls and More shelf on phone portrait" src="PASTE_PHONE_PORTRAIT_PLAYER_URL">
+  <img width="280" alt="Mobile UI Player controls and More shelf on phone portrait" src="https://github.com/user-attachments/assets/ef81ea6b-b9fb-4e2c-b41c-a07c784623e4">
   &nbsp;&nbsp;
-  <img width="280" alt="Mobile UI Plugins screen on phone portrait" src="PASTE_PHONE_PORTRAIT_PLUGINS_URL">
+  <img width="280" alt="Mobile UI Plugins screen on phone portrait" src="https://github.com/user-attachments/assets/c9e47a07-2d01-43a6-9b98-ad11d26884ec">
 </p>
 
 Phone Player More shelf and touch controls; compact Plugins management layout.
@@ -60,22 +60,22 @@ Phone Player More shelf and touch controls; compact Plugins management layout.
 ### Phone Landscape
 
 <p>
-  <img width="600" alt="Mobile UI Home on phone landscape" src="PASTE_PHONE_LANDSCAPE_HOME_URL">
+  <img width="600" alt="Mobile UI Home on phone landscape" src="https://github.com/user-attachments/assets/27a29499-266a-497b-9e9e-f7edc39bfe9f">
 </p>
 
 Landscape Home uses a two-column hero and Continue Playing layout.
 
 <p>
-  <img width="600" alt="Mobile UI Song Library on phone landscape" src="PASTE_PHONE_LANDSCAPE_LIBRARY_URL">
+  <img width="600" alt="Mobile UI Song Library on phone landscape" src="https://github.com/user-attachments/assets/03d84e2b-749d-4b04-b072-735cc7221cb2" >
 </p>
 
 Landscape Library uses denser cards and wide touch navigation.
 
 <p>
-  <img width="600" alt="Mobile UI Player direct action controls on phone landscape" src="PASTE_PHONE_LANDSCAPE_PLAYER_URL">
+  <img width="600" alt="Mobile UI Player direct action controls on phone landscape" src="https://github.com/user-attachments/assets/df6d677e-b6ed-41a9-b120-1664c68059b9" >
 </p>
 <p>
-  <img width="600" alt="Mobile UI Player plugin controls panel on phone landscape" src="PASTE_PHONE_LANDSCAPE_PLUGIN_PANEL_URL">
+  <img width="600" alt="Mobile UI Player plugin controls panel on phone landscape" src="https://github.com/user-attachments/assets/fd985f50-6dba-47b8-81d2-a73101c68d6d">
 </p>
 
 Phone landscape replaces the More shelf with direct action chips. Player
@@ -84,10 +84,10 @@ category panels remain open while their controls are used.
 ### Tablet Player
 
 <p>
-  <img width="360" alt="Mobile UI Player on tablet portrait" src="PASTE_TABLET_PORTRAIT_PLAYER_URL">
+  <img width="360" alt="Mobile UI Player on tablet portrait" src="https://github.com/user-attachments/assets/8c2b7b58-0eff-449d-ac79-b6effff0294a" >
 </p>
 <p>
-  <img width="700" alt="Mobile UI Player on tablet landscape" src="PASTE_TABLET_LANDSCAPE_PLAYER_URL">
+  <img width="700" alt="Mobile UI Player on tablet landscape" src="https://github.com/user-attachments/assets/d9198276-8480-4b20-8abf-d8c10fcc49a8" >
 </p>
 
 Tablet portrait and landscape expose direct Player actions without the phone
