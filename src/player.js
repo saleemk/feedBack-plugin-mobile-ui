@@ -11,10 +11,39 @@ const SELECTORS = {
   speedCluster: '.v3-speed-cluster',
   playButton: '#btn-play',
   rail: '#v3-player-rail',
+  railPop: '#v3-railzone .v3-rail-pop',
+  pluginControlsSlot: '#v3-plugin-controls-slot',
+  practiceControl: '#section-practice-control',
+  practiceBar: '#section-practice-bar',
   practicePill: '#section-practice-pill'
 };
 
 const _missingActionTargets = new Set();
+
+const ACTION_SURFACE_SELECTORS = [
+  '.mobile-ui-player-controls-trigger',
+  '.mobile-ui-player-controls-picker',
+  '.mobile-ui-player-landscape-controls',
+  '.mobile-ui-player-tablet-controls',
+  SELECTORS.rail,
+  SELECTORS.railPop,
+  SELECTORS.pluginControlsSlot,
+  SELECTORS.practiceControl,
+  SELECTORS.practiceBar,
+  SELECTORS.practicePill,
+  '#mixer-popover'
+];
+
+const ACTION_SURFACE_GUARD_SELECTORS = [
+  '.mobile-ui-player-controls-trigger',
+  '.mobile-ui-player-landscape-controls',
+  '.mobile-ui-player-tablet-controls',
+  SELECTORS.railPop,
+  SELECTORS.pluginControlsSlot,
+  SELECTORS.practiceControl,
+  SELECTORS.practiceBar,
+  '#mixer-popover'
+];
 
 function _isDebugEnabled() {
   try { return window.localStorage.getItem('mobile_ui.debug') === '1'; } catch (_) { return false; }
@@ -106,6 +135,7 @@ let _actionClickInProgress = false;
 let _landscapeControls = null;
 let _tabletControls = null;
 let _libraryButton = null;
+let _guardedActionSurfaces = new Set();
 
 function _showPicker() {
   if (!_controlsPicker) return;
@@ -165,6 +195,7 @@ function _exitPlayerToLibrary() {
 }
 
 function _openCategory(action) {
+  _ensureActionSurfaceGuards();
   if (typeof action?.fn === 'function') {
     action.fn();
     return;
@@ -186,6 +217,7 @@ function _openCategory(action) {
   // Switch to new action: close previous sheet, open new one.
   _closeSheets();
   _clickActionButton(btn);
+  _ensureActionSurfaceGuards();
   _activeAction = action;
   _selectAction(action);
 }
@@ -245,11 +277,35 @@ function _removeNode(node) {
   if (node) node.remove();
 }
 
+function _isInsidePlayerActionSurface(target) {
+  return !!target?.closest?.(ACTION_SURFACE_SELECTORS.join(','));
+}
+
+function _stopActionSurfaceClick(e) {
+  if (_isInsidePlayerActionSurface(e.target)) e.stopPropagation();
+}
+
+function _ensureActionSurfaceGuards() {
+  document.querySelectorAll(ACTION_SURFACE_GUARD_SELECTORS.join(',')).forEach(function (surface) {
+    if (_guardedActionSurfaces.has(surface)) return;
+    surface.addEventListener('click', _stopActionSurfaceClick);
+    _guardedActionSurfaces.add(surface);
+  });
+}
+
+function _removeActionSurfaceGuards() {
+  _guardedActionSurfaces.forEach(function (surface) {
+    surface.removeEventListener('click', _stopActionSurfaceClick);
+  });
+  _guardedActionSurfaces.clear();
+}
+
 function _onControlsOutsideClick(e) {
   if (!_controlsOpen) return;
   if (_actionClickInProgress) return;
   if (_controlsBtn && _controlsBtn.contains(e.target)) return;
   if (_controlsPicker && _controlsPicker.contains(e.target)) return;
+  if (_isInsidePlayerActionSurface(e.target)) return;
   _hidePicker();
 }
 
@@ -523,22 +579,26 @@ export function createFeature() {
         _ensureLibraryButton();
         _removeControls();
         _removeLandscapeControls();
+        _ensureActionSurfaceGuards();
       } else if (moreShelfMode) {
         _ensureLibraryButton();
         _ensureControls();
         _removeTabletControls();
         _removeLandscapeControls();
+        _ensureActionSurfaceGuards();
       } else if (lowHeightLandscape) {
         if (_isPlayerPhoneLowHeightLandscape(ctx?.state)) _ensureLibraryButton();
         else _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
         _ensureLandscapeControls();
+        _ensureActionSurfaceGuards();
       } else {
         _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
         _removeLandscapeControls();
+        _removeActionSurfaceGuards();
       }
       _installPlayButtonSync();
       _syncPlayButton();
@@ -559,22 +619,26 @@ export function createFeature() {
         _ensureLibraryButton();
         _removeControls();
         _removeLandscapeControls();
+        _ensureActionSurfaceGuards();
       } else if (moreShelfMode) {
         _ensureLibraryButton();
         _ensureControls();
         _removeTabletControls();
         _removeLandscapeControls();
+        _ensureActionSurfaceGuards();
       } else if (lowHeightLandscape) {
         if (_isPlayerPhoneLowHeightLandscape(ctx?.state)) _ensureLibraryButton();
         else _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
         _ensureLandscapeControls();
+        _ensureActionSurfaceGuards();
       } else {
         _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
         _removeLandscapeControls();
+        _removeActionSurfaceGuards();
       }
       if (ctx?.state?.screen === 'player' && ctx?.state?.isV3) {
         _installPlayButtonSync();
@@ -589,6 +653,7 @@ export function createFeature() {
       _removeControls();
       _removeLandscapeControls();
       _removeTabletControls();
+      _removeActionSurfaceGuards();
       _setMoreShelfMode(false);
       _setTabletDirectControlsMode(false);
       _uninstallPlayButtonSync();
