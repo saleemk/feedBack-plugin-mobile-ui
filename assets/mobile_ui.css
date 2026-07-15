@@ -424,9 +424,8 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet #v3-sidebar-backdrop {
 }
 
 /* 3.1  Bottom navigation bar
-   Fixed 5-tab bar on phone and tablet non-Player screens, portrait and
-   landscape.  Active-state highlighting uses the root screen classes that
-   main.js already maintains on <html>. */
+   Touch navigation uses one model across phone and tablet: fixed Home plus a
+   horizontally scrollable destination strip sourced from the core sidebar nav. */
 
 html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone,.mobile-ui-tablet):not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
   position: fixed;
@@ -436,10 +435,10 @@ html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone,.mobile-ui-tablet):not(.
   z-index: 35;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  gap: 0.15rem;
+  justify-content: flex-start;
+  gap: 0.35rem;
   height: 3.2rem;
-  padding: 0 0.25rem;
+  padding: 0 0.35rem;
   border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 999px;
   background: rgba(15, 23, 42, 0.72);
@@ -453,14 +452,42 @@ html.mobile-ui-screen-player .mobile-ui-bottom-nav {
   display: none !important;
 }
 
+.mobile-ui-bottom-nav-fixed {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding-right: 0.35rem;
+  border-right: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.mobile-ui-bottom-nav-scroll {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-ui-bottom-nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 .mobile-ui-bottom-nav-item {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 1 1 0;
+  flex: 0 0 auto;
   min-width: 0;
   height: 2.5rem;
-  padding: 0 0.25rem;
+  padding: 0 0.9rem;
   border: none;
   border-radius: 999px;
   background: transparent;
@@ -474,109 +501,24 @@ html.mobile-ui-screen-player .mobile-ui-bottom-nav {
   transition: color 150ms ease, background 150ms ease;
 }
 
+.mobile-ui-bottom-nav-fixed .mobile-ui-bottom-nav-item {
+  min-width: 4.6rem;
+  padding-inline: 0.95rem;
+}
+
+.mobile-ui-bottom-nav-scroll .mobile-ui-bottom-nav-item {
+  min-width: max-content;
+  white-space: nowrap;
+}
+
 .mobile-ui-bottom-nav-item:active {
   color: rgba(226, 232, 240, 0.85);
   background: rgba(56, 189, 248, 0.12);
 }
 
-/* Active tab — uses root classes set by main.js */
-
-html.mobile-ui-screen-home .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="home"],
-html.mobile-ui-screen-library .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="library"],
-html.mobile-ui-screen-progress .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="progress"],
-html.mobile-ui-screen-plugins .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="plugins"],
-html.mobile-ui-screen-unlockables .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="unlockables"],
-html.mobile-ui-screen-feedbarcade .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="feedbarcade"],
-html.mobile-ui-screen-settings .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="settings"] {
+.mobile-ui-bottom-nav-item.is-active {
   color: #67e8f9 !important;
   background: rgba(34, 211, 238, 0.15) !important;
-}
-
-/* "More" tab neutral styling (no active state) — applies on all screens. */
-
-html.mobile-ui-screen-home .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
-html.mobile-ui-screen-library .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
-html.mobile-ui-screen-progress .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
-html.mobile-ui-screen-plugins .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
-html.mobile-ui-screen-unlockables .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
-html.mobile-ui-screen-feedbarcade .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"],
-html.mobile-ui-screen-settings .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"] {
-  color: rgba(148, 163, 184, 0.55) !important;
-  background: transparent !important;
-}
-
-/* More tab open state — highlight when the More sheet is visible. */
-
-html.mobile-ui-bottom-nav-more-open .mobile-ui-bottom-nav [data-mobile-ui-bottom-nav="more"] {
-  color: #67e8f9 !important;
-  background: rgba(34, 211, 238, 0.15) !important;
-}
-
-/* More sheet — translucent panel that opens above the bottom nav.
-   Populated dynamically from remaining core sidebar nav items. */
-
-html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone,.mobile-ui-tablet):not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet {
-  position: fixed;
-  left: max(0.5rem, env(safe-area-inset-left));
-  right: max(0.5rem, env(safe-area-inset-right));
-  bottom: calc(3.8rem + max(0.45rem, env(safe-area-inset-bottom)));
-  z-index: 34;
-  max-height: min(52vh, 22rem);
-  overflow-y: auto;
-  overflow-x: hidden;
-  box-sizing: border-box;
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  border-radius: 1rem;
-  background: rgba(15, 23, 42, 0.72);
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.28), 0 12px 32px rgba(0, 0, 0, 0.34);
-  -webkit-backdrop-filter: blur(14px) saturate(1.1);
-  backdrop-filter: blur(14px) saturate(1.1);
-  pointer-events: auto;
-}
-
-html.mobile-ui-screen-player .mobile-ui-bottom-nav-more-sheet {
-  display: none !important;
-}
-
-.mobile-ui-bottom-nav-more-sheet-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.4rem;
-  padding: 0.65rem;
-}
-
-.mobile-ui-bottom-nav-more-sheet-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.5rem;
-  padding: 0.45rem 0.5rem;
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  border-radius: 0.75rem;
-  background: rgba(30, 41, 59, 0.55);
-  color: rgba(226, 232, 240, 0.85);
-  font-size: 0.72rem;
-  font-weight: 500;
-  line-height: 1.2;
-  text-align: center;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  transition: background 120ms ease, border-color 120ms ease;
-}
-
-.mobile-ui-bottom-nav-more-sheet-item:active {
-  background: rgba(56, 189, 248, 0.15);
-  border-color: rgba(56, 189, 248, 0.35);
-  color: #67e8f9;
-}
-
-.mobile-ui-bottom-nav-more-sheet-empty {
-  grid-column: 1 / -1;
-  padding: 1.5rem 0.5rem;
-  text-align: center;
-  color: rgba(148, 163, 184, 0.5);
-  font-size: 0.72rem;
 }
 
 /* 3.2  Content padding and core chrome hiding when bottom nav is present.
@@ -588,8 +530,7 @@ html.mobile-ui-has-bottom-nav #v3-main {
 }
 
 /* Hide the old core hamburger and sidebar when the bottom nav is the
-   primary navigation.  The sidebar DOM stays intact so the More sheet can
-   still read #v3-nav a[data-v3-nav] as its data source. */
+   primary navigation. The sidebar DOM stays intact as the nav data source. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-has-bottom-nav #v3-hamburger {
   display: none !important;
@@ -604,19 +545,31 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-has-bottom-nav #v3-sidebar-backdro
 }
 
 /* 3.3  Landscape / tablet variants.
-   Phone landscape has limited vertical space — shrink the nav and More sheet
-   so they don't crowd content.  Tablet gets a wider centered island so the
-   8-item labels have breathing room. */
+   Same fixed Home + scroll-strip architecture, with tighter phone landscape
+   sizing and a wider centered tablet island. */
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
   height: 2.6rem;
-  padding: 0 0.15rem;
-  gap: 0.05rem;
+  padding: 0 0.25rem;
+  gap: 0.25rem;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-item {
   height: 2rem;
   font-size: 0.65rem;
+  padding-inline: 0.72rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-fixed {
+  padding-right: 0.25rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-fixed .mobile-ui-bottom-nav-item {
+  min-width: 3.85rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-scroll {
+  gap: 0.22rem;
 }
 
 /* iOS standalone can mis-hit-test blurred fixed layers after portrait →
@@ -639,20 +592,6 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-standalone.mobile-ui-phone.mobile-
   bottom: calc(max(0.45rem, env(safe-area-inset-bottom)) + var(--mobile-ui-ios-vv-offset-fix, 0px)) !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet {
-  bottom: calc(3.2rem + max(0.45rem, env(safe-area-inset-bottom)));
-  max-height: min(38vh, 16rem);
-}
-
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-standalone.mobile-ui-phone.mobile-ui-landscape.mobile-ui-ios-vv-offset-bug:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet {
-  bottom: calc(3.2rem + max(0.45rem, env(safe-area-inset-bottom)) + var(--mobile-ui-ios-vv-offset-fix, 0px)) !important;
-}
-
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone.mobile-ui-landscape:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-more-sheet-inner {
-  padding: 0.45rem;
-  gap: 0.3rem;
-}
-
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav {
   left: 50%;
   right: auto;
@@ -663,6 +602,11 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-playe
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-item {
   font-size: 0.72rem;
+  padding-inline: 1rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-player) .mobile-ui-bottom-nav-fixed .mobile-ui-bottom-nav-item {
+  min-width: 5rem;
 }
 
 /* 4. Song Library

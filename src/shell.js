@@ -2,31 +2,44 @@ export function createFeature() {
   let statusRow = null;
   let statusRail = null;
   let bottomNav = null;
-  let moreSheet = null;
-  let _excludedNavKeys = ['home', 'songs', 'progress', 'plugins'];
-  var _bottomNavMode = null;   // 'compact' | 'wide' | null
+  let navObserver = null;
+  let observedNav = null;
+  let currentSignature = null;
+  let lastState = null;
 
-  // Compact: phone portrait (5 items).  Wide: phone landscape / tablet (8 items).
-  var COMPACT_ITEMS = [
-    { key: 'home', label: 'Home', screen: 'v3-home' },
-    { key: 'library', label: 'Library', screen: 'v3-songs' },
-    { key: 'progress', label: 'Progress', screen: 'v3-progress' },
-    { key: 'plugins', label: 'Plugins', screen: 'v3-plugins' },
-    { key: 'more', label: 'More', screen: null }
+  const HOME_KEY = 'home';
+  const ORDERED_SCROLL_KEYS = [
+    'songs',
+    'career',
+    'progress',
+    'shop',
+    'feedbarcade',
+    'plugins',
+    'settings',
+    'playlists',
+    'lessons',
+    'favorites',
+    'saved'
   ];
 
-  var WIDE_ITEMS = [
-    { key: 'home', label: 'Home', screen: 'v3-home' },
-    { key: 'library', label: 'Library', screen: 'v3-songs' },
-    { key: 'progress', label: 'Progress', screen: 'v3-progress' },
-    { key: 'unlockables', label: 'Unlockables', screen: 'v3-shop' },
-    { key: 'feedbarcade', label: 'FeedBarcade', screen: 'v3-feedbarcade' },
-    { key: 'plugins', label: 'Plugins', screen: 'v3-plugins' },
-    { key: 'settings', label: 'Settings', screen: 'settings' },
-    { key: 'more', label: 'More', screen: null }
-  ];
+  const LABEL_OVERRIDES = {
+    songs: 'Library'
+  };
 
-  var WIDE_EXCLUDED_KEYS = ['home', 'songs', 'progress', 'shop', 'feedbarcade', 'plugins', 'settings'];
+  const SCREEN_TO_NAV_KEY = {
+    home: 'home',
+    library: 'songs',
+    career: 'career',
+    progress: 'progress',
+    unlockables: 'shop',
+    feedbarcade: 'feedbarcade',
+    plugins: 'plugins',
+    settings: 'settings',
+    playlists: 'playlists',
+    lessons: 'lessons',
+    favorites: 'favorites',
+    saved: 'saved'
+  };
 
   return {
     name: 'shell',
@@ -38,12 +51,16 @@ export function createFeature() {
   };
 
   function refresh(ctx) {
+    lastState = ctx?.state || null;
     clearStatusClasses();
     if (_shouldShowBottomNav(ctx?.state)) {
-      _ensureBottomNav(ctx?.state);
+      _ensureNavObserver();
+      _ensureBottomNav(ctx?.state, {
+        revealActive: ctx?.reason === 'screen:changed',
+        smooth: ctx?.reason === 'screen:changed'
+      });
     } else {
       _removeBottomNav();
-      _closeMoreSheet();
     }
 
     if (ctx?.state?.disabled || !ctx?.state?.isV3) return;
@@ -68,7 +85,8 @@ export function createFeature() {
   function unmount() {
     clearStatusClasses();
     _removeBottomNav();
-    _closeMoreSheet();
+    _removeNavObserver();
+    lastState = null;
   }
 
   function clearStatusClasses() {
@@ -94,166 +112,208 @@ export function createFeature() {
 
   // --- Bottom navigation bar -----------------------------------------------
 
-  function _isWideMode(state) {
-    if (!state || !state.viewport) return false;
-    var cls = state.viewport.deviceClass;
-    if (cls === 'tablet') return true;
-    if (cls === 'phone' && !state.viewport.isPortrait) return true;
-    return false;
-  }
+  function _ensureBottomNav(state, options = {}) {
+    const model = _buildBottomNavModel();
+    const signature = _modelSignature(model);
 
-  function _ensureBottomNav(state) {
-    var wantWide = _isWideMode(state);
-    var wantMode = wantWide ? 'wide' : 'compact';
-
-    // Same mode, same nav — just keep exclusion keys fresh.
-    if (bottomNav && bottomNav.isConnected && _bottomNavMode === wantMode) {
-      _excludedNavKeys = wantWide ? WIDE_EXCLUDED_KEYS : ['home', 'songs', 'progress', 'plugins'];
+    if (bottomNav && bottomNav.isConnected && currentSignature === signature) {
+      _syncBottomNavActive(state, options);
       return;
     }
 
-    // Mode changed or nav missing — tear down and rebuild.
+    const previousScroll = _getScrollStrip()?.scrollLeft || 0;
     if (bottomNav && bottomNav.isConnected) {
-      _closeMoreSheet();
       bottomNav.remove();
       bottomNav = null;
     }
 
-    var items = wantWide ? WIDE_ITEMS : COMPACT_ITEMS;
-    _excludedNavKeys = wantWide ? WIDE_EXCLUDED_KEYS : ['home', 'songs', 'progress', 'plugins'];
-    _bottomNavMode = wantMode;
-
-    var nav = document.createElement('nav');
+    const nav = document.createElement('nav');
     nav.className = 'mobile-ui-bottom-nav';
     nav.setAttribute('aria-label', 'Primary mobile navigation');
 
-    for (var i = 0; i < items.length; i++) {
-      var item = items[i];
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'mobile-ui-bottom-nav-item';
-      btn.setAttribute('data-mobile-ui-bottom-nav', item.key);
-      btn.setAttribute('aria-label', item.label);
-      btn.textContent = item.label;
+    const fixed = document.createElement('div');
+    fixed.className = 'mobile-ui-bottom-nav-fixed';
+    if (model.home) fixed.appendChild(_createBottomNavItem(model.home));
 
-      if (item.key === 'more') {
-        btn.addEventListener('click', function () {
-          _toggleMoreSheet();
-        });
-      } else if (item.screen) {
-        btn.addEventListener('click', function (screenId) {
-          return function () {
-            _closeMoreSheet();
-            if (typeof window.showScreen === 'function') {
-              window.showScreen(screenId);
-            }
-          };
-        }(item.screen));
-      }
-
-      nav.appendChild(btn);
+    const scroll = document.createElement('div');
+    scroll.className = 'mobile-ui-bottom-nav-scroll';
+    scroll.setAttribute('aria-label', 'More destinations');
+    scroll.tabIndex = 0;
+    for (var i = 0; i < model.scroll.length; i++) {
+      scroll.appendChild(_createBottomNavItem(model.scroll[i]));
     }
 
+    nav.appendChild(fixed);
+    nav.appendChild(scroll);
     document.body.appendChild(nav);
     bottomNav = nav;
+    currentSignature = signature;
+
+    if (previousScroll && !options.revealActive) {
+      scroll.scrollLeft = previousScroll;
+    }
 
     document.documentElement.classList.add('mobile-ui-has-bottom-nav');
+    _syncBottomNavActive(state, options);
   }
 
   function _removeBottomNav() {
-    _closeMoreSheet();
+    _removeNavObserver();
     if (bottomNav) {
       bottomNav.remove();
       bottomNav = null;
     }
     document.querySelectorAll('.mobile-ui-bottom-nav').forEach(function (el) { el.remove(); });
     document.documentElement.classList.remove('mobile-ui-has-bottom-nav');
-    _bottomNavMode = null;
+    currentSignature = null;
   }
 
-  // --- More sheet ----------------------------------------------------------
+  function _buildBottomNavModel() {
+    const entries = _collectCoreNavEntries();
+    const byKey = {};
+    const used = {};
 
-  function _toggleMoreSheet() {
-    if (moreSheet && moreSheet.isConnected) {
-      _closeMoreSheet();
-    } else {
-      _openMoreSheet();
-    }
-  }
-
-  function _openMoreSheet() {
-    _closeMoreSheet();            // safety: never duplicate
-    _ensureMoreSheetDOM();
-    document.documentElement.classList.add('mobile-ui-bottom-nav-more-open');
-  }
-
-  function _closeMoreSheet() {
-    if (moreSheet) {
-      moreSheet.remove();
-      moreSheet = null;
-    }
-    document.querySelectorAll('.mobile-ui-bottom-nav-more-sheet').forEach(function (el) { el.remove(); });
-    document.documentElement.classList.remove('mobile-ui-bottom-nav-more-open');
-  }
-
-  function _ensureMoreSheetDOM() {
-    var sheet = document.createElement('div');
-    sheet.className = 'mobile-ui-bottom-nav-more-sheet';
-    sheet.setAttribute('aria-label', 'More navigation');
-
-    var inner = document.createElement('div');
-    inner.className = 'mobile-ui-bottom-nav-more-sheet-inner';
-
-    var remaining = _collectRemainingNavItems();
-    if (remaining.length === 0) {
-      var empty = document.createElement('div');
-      empty.className = 'mobile-ui-bottom-nav-more-sheet-empty';
-      empty.textContent = 'No more items';
-      inner.appendChild(empty);
-    } else {
-      for (var i = 0; i < remaining.length; i++) {
-        var entry = remaining[i];
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'mobile-ui-bottom-nav-more-sheet-item';
-        btn.textContent = entry.label;
-
-        btn.addEventListener('click', function (navKey) {
-          return function () {
-            // Click the original sidebar link so core's own handler
-            // (go() → showScreen + closeMobileSidebar) runs.
-            var original = document.querySelector('#v3-nav a[data-v3-nav="' + navKey + '"]');
-            if (original) original.click();
-            _closeMoreSheet();
-          };
-        }(entry.key));
-        inner.appendChild(btn);
-      }
+    for (var i = 0; i < entries.length; i++) {
+      if (!byKey[entries[i].key]) byKey[entries[i].key] = entries[i];
     }
 
-    sheet.appendChild(inner);
-    document.body.appendChild(sheet);
-    moreSheet = sheet;
+    const home = byKey[HOME_KEY] || null;
+    if (home) used[HOME_KEY] = true;
+
+    const scroll = [];
+    for (var j = 0; j < ORDERED_SCROLL_KEYS.length; j++) {
+      const key = ORDERED_SCROLL_KEYS[j];
+      const entry = byKey[key];
+      if (!entry || used[key]) continue;
+      used[key] = true;
+      scroll.push(entry);
+    }
+
+    for (var k = 0; k < entries.length; k++) {
+      const extra = entries[k];
+      if (used[extra.key]) continue;
+      used[extra.key] = true;
+      scroll.push(extra);
+    }
+
+    return { home, scroll };
   }
 
-  function _collectRemainingNavItems() {
-    var links = document.querySelectorAll('#v3-nav a[data-v3-nav]');
-    var seen = {};
-    var result = [];
+  function _collectCoreNavEntries() {
+    const links = document.querySelectorAll('#v3-nav a[data-v3-nav]');
+    const seen = {};
+    const result = [];
 
     for (var i = 0; i < links.length; i++) {
-      var el = links[i];
-      var key = el.getAttribute('data-v3-nav');
+      const el = links[i];
+      const key = el.getAttribute('data-v3-nav');
       if (!key || seen[key]) continue;
-      if (_excludedNavKeys.indexOf(key) !== -1) continue;
 
-      var label = (el.textContent || '').trim();
+      const label = LABEL_OVERRIDES[key] || (el.textContent || '').trim();
       if (!label) continue;
 
       seen[key] = true;
-      result.push({ key: key, label: label });
+      result.push({ key, label, original: el });
     }
 
     return result;
+  }
+
+  function _modelSignature(model) {
+    const home = model.home ? `${model.home.key}:${model.home.label}` : 'none';
+    const scroll = model.scroll.map(function (entry) {
+      return `${entry.key}:${entry.label}`;
+    }).join('|');
+
+    return `${home}::${scroll}`;
+  }
+
+  function _createBottomNavItem(entry) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'mobile-ui-bottom-nav-item';
+    btn.setAttribute('data-mobile-ui-bottom-nav', entry.key);
+    btn.setAttribute('aria-label', entry.label);
+    btn.textContent = entry.label;
+
+    btn.addEventListener('click', function () {
+      const original = document.querySelector('#v3-nav a[data-v3-nav="' + entry.key + '"]');
+      if (original) original.click();
+      window.setTimeout(function () {
+        _syncBottomNavActive(lastState, { revealActive: true, smooth: true });
+      }, 0);
+    });
+
+    return btn;
+  }
+
+  function _syncBottomNavActive(state, options = {}) {
+    if (!bottomNav || !bottomNav.isConnected) return;
+
+    const activeKey = _getActiveNavKey(state);
+    const items = bottomNav.querySelectorAll('.mobile-ui-bottom-nav-item');
+    let activeItem = null;
+
+    items.forEach(function (item) {
+      const isActive = !!activeKey && item.getAttribute('data-mobile-ui-bottom-nav') === activeKey;
+      item.classList.toggle('is-active', isActive);
+      if (isActive) {
+        item.setAttribute('aria-current', 'page');
+        activeItem = item;
+      } else {
+        item.removeAttribute('aria-current');
+      }
+    });
+
+    if (options.revealActive && activeItem) {
+      _revealActiveItem(activeItem, !!options.smooth);
+    }
+  }
+
+  function _getActiveNavKey(state) {
+    const mapped = SCREEN_TO_NAV_KEY[state?.screen || ''];
+    if (mapped) return mapped;
+
+    const activeCoreLink = document.querySelector('#v3-nav a[data-v3-nav].bg-fb-card');
+    return activeCoreLink?.getAttribute('data-v3-nav') || null;
+  }
+
+  function _revealActiveItem(item, smooth) {
+    const scroll = _getScrollStrip();
+    if (!scroll || !scroll.contains(item)) return;
+
+    const itemRect = item.getBoundingClientRect();
+    const scrollRect = scroll.getBoundingClientRect();
+    if (itemRect.left >= scrollRect.left && itemRect.right <= scrollRect.right) return;
+
+    item.scrollIntoView({
+      block: 'nearest',
+      inline: 'nearest',
+      behavior: smooth ? 'smooth' : 'auto'
+    });
+  }
+
+  function _getScrollStrip() {
+    return bottomNav?.querySelector('.mobile-ui-bottom-nav-scroll') || null;
+  }
+
+  function _ensureNavObserver() {
+    const nav = document.getElementById('v3-nav');
+    if (!nav) return;
+    if (navObserver && observedNav === nav) return;
+
+    _removeNavObserver();
+    navObserver = new MutationObserver(function () {
+      if (!_shouldShowBottomNav(lastState)) return;
+      _ensureBottomNav(lastState, { preserveScroll: true });
+    });
+    navObserver.observe(nav, { childList: true, subtree: true });
+    observedNav = nav;
+  }
+
+  function _removeNavObserver() {
+    if (navObserver) navObserver.disconnect();
+    navObserver = null;
+    observedNav = null;
   }
 }
