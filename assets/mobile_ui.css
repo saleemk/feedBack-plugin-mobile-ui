@@ -2647,11 +2647,14 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-mor
   width: clamp(4.2rem, 20vw, 5.8rem) !important;
   min-width: 4.2rem !important;
   max-width: 5.8rem !important;
-  padding: 0.35rem 0.55rem !important;
+  height: 2.6rem !important;
+  min-height: 2.6rem !important;
+  padding: 0 0.55rem !important;
   border: 1px solid rgba(148, 163, 184, 0.22) !important;
   border-radius: 999px !important;
   background: rgba(15, 23, 42, 0.45) !important;
   backdrop-filter: blur(8px) !important;
+  align-items: center !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #player-controls .v3-speed-cluster::after {
@@ -2717,8 +2720,8 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobi
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 2.2rem !important;
-  height: 2.2rem !important;
+  width: 2.6rem !important;
+  height: 2.6rem !important;
   padding: 0 !important;
   color: #cbd5e1 !important;
   background: rgba(15, 23, 42, 0.75) !important;
@@ -2772,8 +2775,8 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-mor
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 2.6rem;
+  height: 2.6rem;
   padding: 0;
   color: #cbd5e1;
   background: rgba(15, 23, 42, 0.75);
@@ -3798,8 +3801,8 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 2.2rem !important;
-    height: 2.2rem !important;
+    width: 2.6rem !important;
+    height: 2.6rem !important;
     padding: 0 !important;
     color: #cbd5e1 !important;
     background: rgba(15, 23, 42, 0.75) !important;
@@ -3864,6 +3867,10 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 1.15rem, #000 calc(100% - 1.6rem), transparent 100%);
   }
 
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row {
+    min-height: 2.6rem !important;
+  }
+
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-chip-row::-webkit-scrollbar {
     display: none !important;
   }
@@ -3871,6 +3878,11 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-chip-row.mobile-ui-player-speed-scroll-strip {
     display: block !important;
     line-height: 0 !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row.mobile-ui-player-speed-scroll-strip {
+    height: 2.6rem !important;
+    min-height: 2.6rem !important;
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-chip-row.mobile-ui-player-speed-scroll-strip > .v3-speed-cluster,
@@ -3886,6 +3898,15 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
     vertical-align: middle !important;
   }
 
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row.mobile-ui-player-speed-scroll-strip > .v3-speed-cluster,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row.mobile-ui-player-speed-scroll-strip > .mobile-ui-player-quick-settings,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row.mobile-ui-player-speed-scroll-strip > [data-mobile-ui-player-action] {
+    height: 2.6rem !important;
+    min-height: 2.6rem !important;
+    box-sizing: border-box !important;
+    touch-action: pan-x !important;
+  }
+
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row .v3-speed-cluster.mobile-ui-player-speed-in-scroll {
     flex: 0 0 auto !important;
     width: auto !important;
@@ -3894,7 +3915,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
     min-inline-size: 0 !important;
     max-width: none !important;
     max-inline-size: none !important;
-    min-height: 1.75rem !important;
+    min-height: 2.6rem !important;
     gap: 0.3rem !important;
     padding: 0 0.42rem !important;
     vertical-align: middle !important;
@@ -3952,6 +3973,11 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
     border-radius: 999px !important;
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-controls .mobile-ui-player-quick-settings {
+    min-height: 2.6rem !important;
+    height: 2.6rem !important;
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-controls .mobile-ui-player-arrangement,
@@ -4014,6 +4040,15 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
     white-space: nowrap !important;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip {
+    height: 2.6rem !important;
+    min-height: 2.6rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    touch-action: pan-x !important;
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-chip:active {
