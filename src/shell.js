@@ -4,6 +4,7 @@ export function createFeature() {
   let bottomNav = null;
   let navObserver = null;
   let observedNav = null;
+  let navRebuildFrame = null;
   let currentSignature = null;
   let lastState = null;
 
@@ -208,8 +209,9 @@ export function createFeature() {
       const el = links[i];
       const key = el.getAttribute('data-v3-nav');
       if (!key || seen[key]) continue;
+      if (!_isUsableCoreNavAnchor(el)) continue;
 
-      const label = LABEL_OVERRIDES[key] || (el.textContent || '').trim();
+      const label = LABEL_OVERRIDES[key] || _extractCoreNavLabel(el);
       if (!label) continue;
 
       seen[key] = true;
@@ -237,7 +239,7 @@ export function createFeature() {
     btn.textContent = entry.label;
 
     btn.addEventListener('click', function () {
-      const original = document.querySelector('#v3-nav a[data-v3-nav="' + entry.key + '"]');
+      const original = document.querySelector('#v3-nav a[data-v3-nav="' + _escapeCssValue(entry.key) + '"]');
       if (original) original.click();
       window.setTimeout(function () {
         _syncBottomNavActive(lastState, { revealActive: true, smooth: true });
@@ -304,16 +306,77 @@ export function createFeature() {
 
     _removeNavObserver();
     navObserver = new MutationObserver(function () {
-      if (!_shouldShowBottomNav(lastState)) return;
-      _ensureBottomNav(lastState, { preserveScroll: true });
+      _scheduleBottomNavRebuild();
     });
-    navObserver.observe(nav, { childList: true, subtree: true });
+    navObserver.observe(nav, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: [
+        'data-v3-nav',
+        'hidden',
+        'aria-hidden',
+        'aria-disabled',
+        'class',
+        'style'
+      ]
+    });
     observedNav = nav;
   }
 
   function _removeNavObserver() {
+    if (navRebuildFrame) {
+      window.cancelAnimationFrame(navRebuildFrame);
+      navRebuildFrame = null;
+    }
     if (navObserver) navObserver.disconnect();
     navObserver = null;
     observedNav = null;
+  }
+
+  function _scheduleBottomNavRebuild() {
+    if (navRebuildFrame) return;
+
+    navRebuildFrame = window.requestAnimationFrame(function () {
+      navRebuildFrame = null;
+      if (!_shouldShowBottomNav(lastState)) return;
+      _ensureBottomNav(lastState, { preserveScroll: true });
+    });
+  }
+
+  function _isUsableCoreNavAnchor(anchor) {
+    if (!anchor || anchor.hidden) return false;
+    if (anchor.getAttribute('aria-hidden') === 'true') return false;
+    if (anchor.getAttribute('aria-disabled') === 'true') return false;
+
+    const style = window.getComputedStyle?.(anchor);
+    if (!style) return true;
+
+    return style.display !== 'none' && style.visibility !== 'hidden';
+  }
+
+  function _extractCoreNavLabel(anchor) {
+    const explicit = anchor.querySelector('[data-v3-nav-label], .v3-nav-label');
+    const explicitText = _normalizeLabel(explicit?.textContent || '');
+    if (explicitText) return explicitText;
+
+    const clone = anchor.cloneNode(true);
+    clone.querySelectorAll('svg,[aria-hidden="true"],[hidden],.v3-rail-badge,.fb-acc-badge,[data-badge],[data-counter]')
+      .forEach(function (el) { el.remove(); });
+
+    return _normalizeLabel(clone.textContent || '');
+  }
+
+  function _normalizeLabel(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function _escapeCssValue(value) {
+    if (window.CSS && typeof window.CSS.escape === 'function') {
+      return window.CSS.escape(value);
+    }
+
+    return String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
   }
 }
