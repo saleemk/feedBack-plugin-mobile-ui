@@ -689,12 +689,15 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone
   grid-row: 3 !important;
   display: block !important;
   width: 100% !important;
-  max-width: min(38rem, 100%) !important;
+  max-width: none !important;
   min-width: 0 !important;
   margin: 0.08rem 0 0 !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-search {
+  width: 100% !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
   min-height: 2.35rem !important;
   padding-top: 0.5rem !important;
   padding-bottom: 0.5rem !important;
