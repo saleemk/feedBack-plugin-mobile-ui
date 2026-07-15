@@ -14,6 +14,9 @@ const SELECTORS = {
   railPop: '#v3-railzone .v3-rail-pop',
   pluginControlsSlot: '#v3-plugin-controls-slot',
   stemMixerPanel: '#stem-mixer-panel',
+  arrangementSelect: '#arr-select',
+  difficultySlider: '#mastery-slider',
+  difficultyLabel: '#mastery-label',
   practiceControl: '#section-practice-control',
   practiceBar: '#section-practice-bar',
   practicePill: '#section-practice-pill'
@@ -24,6 +27,7 @@ const _missingActionTargets = new Set();
 const ACTION_SURFACE_SELECTORS = [
   '.mobile-ui-player-controls-trigger',
   '.mobile-ui-player-controls-picker',
+  '.mobile-ui-player-quick-settings',
   '.mobile-ui-player-landscape-controls',
   '.mobile-ui-player-tablet-controls',
   SELECTORS.rail,
@@ -38,6 +42,7 @@ const ACTION_SURFACE_SELECTORS = [
 
 const ACTION_SURFACE_GUARD_SELECTORS = [
   '.mobile-ui-player-controls-trigger',
+  '.mobile-ui-player-quick-settings',
   '.mobile-ui-player-landscape-controls',
   '.mobile-ui-player-tablet-controls',
   SELECTORS.railPop,
@@ -136,6 +141,17 @@ let _libraryButton = null;
 let _guardedActionSurfaces = new Set();
 let _stemMixerObserver = null;
 let _stemMixerState = null;
+let _quickSettings = null;
+let _quickSettingsMode = null;
+let _quickArrangement = null;
+let _quickDifficulty = null;
+let _quickDifficultyValue = null;
+let _quickSettingsSource = null;
+let _quickSettingsFeedBackListeners = null;
+let _quickSettingsTimers = [];
+let _quickSettingsSyncing = false;
+let _speedPlaceholder = null;
+let _speedScrollParent = null;
 
 function _showPicker() {
   if (!_controlsPicker) return;
@@ -298,6 +314,283 @@ function _removeNode(node) {
   if (node) node.remove();
 }
 
+function _getQuickSettingsSource() {
+  return {
+    arrangement: document.querySelector(SELECTORS.arrangementSelect),
+    difficulty: document.querySelector(SELECTORS.difficultySlider),
+    difficultyLabel: document.querySelector(SELECTORS.difficultyLabel)
+  };
+}
+
+function _formatDifficultyValue(value, sourceLabel) {
+  const text = (sourceLabel?.textContent || '').trim();
+  if (text) return text;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? Math.round(parsed) + '%' : '';
+}
+
+function _copyArrangementOptions(source, target) {
+  if (!target) return;
+  target.textContent = '';
+  if (!source) {
+    target.disabled = true;
+    return;
+  }
+  const selected = source.value;
+  Array.from(source.options || []).forEach(function (option) {
+    target.appendChild(option.cloneNode(true));
+  });
+  target.value = selected;
+  target.disabled = !!source.disabled || !target.options.length;
+}
+
+function _syncQuickSettingsFromCore() {
+  if (!_quickSettings) return;
+  const source = _getQuickSettingsSource();
+  _bindQuickSettingsSourceListeners(source);
+  _quickSettingsSyncing = true;
+  try {
+    if (_quickArrangement) {
+      _copyArrangementOptions(source.arrangement, _quickArrangement);
+      _quickArrangement.disabled = !source.arrangement || !!source.arrangement.disabled;
+    }
+    if (_quickDifficulty) {
+      if (source.difficulty) {
+        ['min', 'max', 'step'].forEach(function (attr) {
+          const value = source.difficulty.getAttribute(attr);
+          if (value !== null) _quickDifficulty.setAttribute(attr, value);
+        });
+        _quickDifficulty.value = source.difficulty.value;
+        _quickDifficulty.disabled = !!source.difficulty.disabled;
+        if (_quickDifficultyValue) {
+          _quickDifficultyValue.textContent = _formatDifficultyValue(source.difficulty.value, source.difficultyLabel);
+        }
+      } else {
+        _quickDifficulty.disabled = true;
+        if (_quickDifficultyValue) _quickDifficultyValue.textContent = '';
+      }
+    }
+  } finally {
+    _quickSettingsSyncing = false;
+  }
+}
+
+function _dispatchNativeEvent(el, type) {
+  if (!el) return;
+  el.dispatchEvent(new Event(type, { bubbles: true }));
+}
+
+function _onQuickArrangementChange(e) {
+  if (_quickSettingsSyncing) return;
+  const source = document.querySelector(SELECTORS.arrangementSelect);
+  if (!source) return;
+  source.value = e.currentTarget.value;
+  _dispatchNativeEvent(source, 'change');
+  _scheduleQuickSettingsSync();
+}
+
+function _onQuickDifficultyInput(e) {
+  if (_quickSettingsSyncing) return;
+  const source = document.querySelector(SELECTORS.difficultySlider);
+  if (!source) return;
+  source.value = e.currentTarget.value;
+  _dispatchNativeEvent(source, 'input');
+  const label = document.querySelector(SELECTORS.difficultyLabel);
+  if (_quickDifficultyValue) {
+    _quickDifficultyValue.textContent = _formatDifficultyValue(source.value, label);
+  }
+}
+
+function _createQuickSettings(mode) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'mobile-ui-player-quick-settings';
+  wrapper.dataset.mobileUiQuickSettingsMode = mode;
+  wrapper.setAttribute('data-v3-native', '');
+  wrapper.addEventListener('click', function (e) { e.stopPropagation(); });
+
+  const arrangementLabel = document.createElement('label');
+  arrangementLabel.className = 'mobile-ui-player-arrangement';
+  const arrangementText = document.createElement('span');
+  arrangementText.className = 'mobile-ui-player-quick-settings-label';
+  arrangementText.textContent = 'Arrangement';
+  const arrangement = document.createElement('select');
+  arrangement.className = 'mobile-ui-player-arrangement-select';
+  arrangement.setAttribute('aria-label', 'Arrangement');
+  arrangement.addEventListener('change', _onQuickArrangementChange);
+  arrangementLabel.append(arrangementText, arrangement);
+
+  const difficultyLabel = document.createElement('label');
+  difficultyLabel.className = 'mobile-ui-player-difficulty';
+  const difficultyText = document.createElement('span');
+  difficultyText.className = 'mobile-ui-player-quick-settings-label';
+  difficultyText.textContent = 'Difficulty';
+  const difficulty = document.createElement('input');
+  difficulty.className = 'mobile-ui-player-difficulty-slider';
+  difficulty.type = 'range';
+  difficulty.setAttribute('aria-label', 'Difficulty');
+  difficulty.addEventListener('input', _onQuickDifficultyInput);
+  difficulty.addEventListener('change', _scheduleQuickSettingsSync);
+  const difficultyValue = document.createElement('output');
+  difficultyValue.className = 'mobile-ui-player-difficulty-value';
+  difficultyLabel.append(difficultyText, difficulty, difficultyValue);
+
+  wrapper.append(arrangementLabel, difficultyLabel);
+  _quickSettings = wrapper;
+  _quickSettingsMode = mode;
+  _quickArrangement = arrangement;
+  _quickDifficulty = difficulty;
+  _quickDifficultyValue = difficultyValue;
+  return wrapper;
+}
+
+function _ensureQuickSettings(parent, mode, beforeNode) {
+  if (!parent) return null;
+  if (!_quickSettings || !_quickSettings.isConnected || _quickSettingsMode !== mode) {
+    _removeQuickSettings();
+    _createQuickSettings(mode);
+  }
+  if (_quickSettings.parentElement !== parent) {
+    if (beforeNode && beforeNode.parentElement === parent) parent.insertBefore(_quickSettings, beforeNode);
+    else parent.appendChild(_quickSettings);
+  } else if (beforeNode && beforeNode.parentElement === parent && _quickSettings !== beforeNode && _quickSettings.nextSibling !== beforeNode) {
+    parent.insertBefore(_quickSettings, beforeNode);
+  }
+  _installQuickSettingsFeedBackSync();
+  _syncQuickSettingsFromCore();
+  return _quickSettings;
+}
+
+function _unbindQuickSettingsSourceListeners() {
+  if (_quickSettingsSource) {
+    if (_quickSettingsSource.arrangement) _quickSettingsSource.arrangement.removeEventListener('change', _syncQuickSettingsFromCore);
+    if (_quickSettingsSource.difficulty) {
+      _quickSettingsSource.difficulty.removeEventListener('input', _syncQuickSettingsFromCore);
+    }
+  }
+  _quickSettingsSource = null;
+}
+
+function _bindQuickSettingsSourceListeners(source) {
+  if (_quickSettingsSource &&
+      _quickSettingsSource.arrangement === source.arrangement &&
+      _quickSettingsSource.difficulty === source.difficulty &&
+      _quickSettingsSource.difficultyLabel === source.difficultyLabel) {
+    return;
+  }
+  _unbindQuickSettingsSourceListeners();
+  _quickSettingsSource = source;
+  if (source.arrangement) source.arrangement.addEventListener('change', _syncQuickSettingsFromCore);
+  if (source.difficulty) {
+    source.difficulty.addEventListener('input', _syncQuickSettingsFromCore);
+  }
+}
+
+function _scheduleQuickSettingsSync() {
+  _clearQuickSettingsTimers();
+  [0, 120, 450].forEach(function (ms) {
+    _quickSettingsTimers.push(setTimeout(_syncQuickSettingsFromCore, ms));
+  });
+}
+
+function _clearQuickSettingsTimers() {
+  _quickSettingsTimers.forEach(clearTimeout);
+  _quickSettingsTimers = [];
+}
+
+function _installQuickSettingsFeedBackSync() {
+  if (_quickSettingsFeedBackListeners) return;
+  const fb = window.feedBack;
+  if (!fb || !fb.on) return;
+  _quickSettingsFeedBackListeners = [
+    { event: 'song:loaded', fn: _scheduleQuickSettingsSync },
+    { event: 'song:ready', fn: _scheduleQuickSettingsSync }
+  ];
+  _quickSettingsFeedBackListeners.forEach(function (listener) {
+    fb.on(listener.event, listener.fn);
+  });
+}
+
+function _uninstallQuickSettingsFeedBackSync() {
+  if (!_quickSettingsFeedBackListeners) return;
+  const fb = window.feedBack;
+  _quickSettingsFeedBackListeners.forEach(function (listener) {
+    if (fb && fb.off) fb.off(listener.event, listener.fn);
+  });
+  _quickSettingsFeedBackListeners = null;
+}
+
+function _removeQuickSettings() {
+  _clearQuickSettingsTimers();
+  _unbindQuickSettingsSourceListeners();
+  _uninstallQuickSettingsFeedBackSync();
+  _removeNode(_quickSettings);
+  _quickSettings = null;
+  _quickSettingsMode = null;
+  _quickArrangement = null;
+  _quickDifficulty = null;
+  _quickDifficultyValue = null;
+}
+
+function _removeQuickSettingsIn(container) {
+  if (_quickSettings && container && container.contains(_quickSettings)) _removeQuickSettings();
+}
+
+function _getSpeedCluster() {
+  const slider = document.querySelector(SELECTORS.speedSlider);
+  return slider ? slider.closest(SELECTORS.speedCluster) : null;
+}
+
+function _findSpeedScrollAnchor(parent, cluster) {
+  if (!parent) return null;
+  const children = Array.from(parent.children);
+  return children.find(function (child) {
+    return child !== cluster && child.classList.contains('mobile-ui-player-quick-settings');
+  }) || children.find(function (child) {
+    return child !== cluster && child.hasAttribute('data-mobile-ui-player-action');
+  }) || children.find(function (child) {
+    return child !== cluster;
+  }) || null;
+}
+
+function _moveSpeedClusterInto(parent) {
+  if (!parent) return null;
+  const cluster = _getSpeedCluster();
+  if (!cluster) return null;
+  if (!_speedPlaceholder) {
+    _speedPlaceholder = document.createComment('mobile-ui-speed-origin');
+  }
+  if (!_speedPlaceholder.isConnected && cluster.parentNode) {
+    cluster.parentNode.insertBefore(_speedPlaceholder, cluster);
+  }
+  const anchor = _findSpeedScrollAnchor(parent, cluster);
+  if (anchor && (cluster.parentElement !== parent || cluster.nextElementSibling !== anchor)) {
+    parent.insertBefore(cluster, anchor);
+  } else if (!anchor && cluster.parentElement !== parent) {
+    parent.appendChild(cluster);
+  }
+  if (_speedScrollParent && _speedScrollParent !== parent) {
+    _speedScrollParent.classList.remove('mobile-ui-player-speed-scroll-strip');
+  }
+  parent.classList.add('mobile-ui-player-speed-scroll-strip');
+  _speedScrollParent = parent;
+  cluster.classList.add('mobile-ui-player-speed-in-scroll');
+  return cluster;
+}
+
+function _restoreSpeedCluster() {
+  const cluster = _getSpeedCluster();
+  if (cluster) cluster.classList.remove('mobile-ui-player-speed-in-scroll');
+  if (_speedScrollParent) {
+    _speedScrollParent.classList.remove('mobile-ui-player-speed-scroll-strip');
+    _speedScrollParent = null;
+  }
+  if (_speedPlaceholder && _speedPlaceholder.isConnected && cluster && cluster !== _speedPlaceholder.nextSibling) {
+    _speedPlaceholder.parentNode.insertBefore(cluster, _speedPlaceholder);
+  }
+  _removeNode(_speedPlaceholder);
+  _speedPlaceholder = null;
+}
+
 function _isInsidePlayerActionSurface(target) {
   return !!target?.closest?.(ACTION_SURFACE_SELECTORS.join(','));
 }
@@ -387,6 +680,7 @@ function _ensureControls() {
       if (controlsBar && existing.parentElement !== controlsBar) {
         controlsBar.appendChild(existing);
       }
+      if (_controlsPicker) _ensureQuickSettings(_controlsPicker, 'portrait', _controlsPicker.firstElementChild);
     }
     return;
   }
@@ -410,6 +704,7 @@ function _ensureControls() {
   picker.className = 'mobile-ui-player-controls-picker';
   picker.hidden = true;
 
+  _ensureQuickSettings(picker, 'portrait', null);
   MORE_ACTIONS.forEach(function (action, index) {
     picker.appendChild(_createActionButton(action, index, 'mobile-ui-player-controls-option'));
   });
@@ -452,6 +747,10 @@ function _ensureLandscapeControls() {
 
   if (_landscapeControls && _landscapeControls.isConnected) {
     if (_landscapeControls.parentElement !== controlsBar) controlsBar.appendChild(_landscapeControls);
+    const row = _landscapeControls.querySelector('.mobile-ui-player-landscape-chip-row');
+    const firstChip = row?.querySelector('.mobile-ui-player-landscape-chip') || null;
+    if (row) _moveSpeedClusterInto(row);
+    _ensureQuickSettings(row || _landscapeControls, 'landscape', firstChip);
     return;
   }
 
@@ -466,6 +765,9 @@ function _ensureLandscapeControls() {
   MORE_ACTIONS.forEach(function (action, index) {
     row.appendChild(_createActionButton(action, index, 'mobile-ui-player-landscape-chip'));
   });
+  const firstChip = row.querySelector('.mobile-ui-player-landscape-chip');
+  _moveSpeedClusterInto(row);
+  _ensureQuickSettings(row, 'landscape', firstChip);
   container.appendChild(row);
 
   controlsBar.appendChild(container);
@@ -474,12 +776,17 @@ function _ensureLandscapeControls() {
   _restoreSelection();
 }
 
-function _ensureTabletControls() {
+function _ensureTabletControls(state) {
   const controlsBar = document.querySelector(SELECTORS.controls);
   if (!controlsBar) return;
+  const moveSpeed = state?.viewport?.isPortrait;
 
   if (_tabletControls && _tabletControls.isConnected) {
     if (_tabletControls.parentElement !== controlsBar) controlsBar.appendChild(_tabletControls);
+    const firstChip = _tabletControls.querySelector('.mobile-ui-player-tablet-chip') || null;
+    if (moveSpeed) _moveSpeedClusterInto(_tabletControls);
+    else _restoreSpeedCluster();
+    _ensureQuickSettings(_tabletControls, 'tablet', firstChip);
     _syncToggleChips();
     _restoreSelection();
     return;
@@ -493,6 +800,10 @@ function _ensureTabletControls() {
   MORE_ACTIONS.forEach(function (action, index) {
     container.appendChild(_createActionButton(action, index, 'mobile-ui-player-tablet-chip'));
   });
+  const firstChip = container.querySelector('.mobile-ui-player-tablet-chip');
+  if (moveSpeed) _moveSpeedClusterInto(container);
+  else _restoreSpeedCluster();
+  _ensureQuickSettings(container, 'tablet', firstChip);
 
   controlsBar.appendChild(container);
   _tabletControls = container;
@@ -503,6 +814,8 @@ function _ensureTabletControls() {
 function _removeLandscapeControls() {
   if (_landscapeControls) {
     _closeSheets();
+    _removeQuickSettingsIn(_landscapeControls);
+    _restoreSpeedCluster();
     _removeNode(_landscapeControls);
     _landscapeControls = null;
   }
@@ -511,6 +824,8 @@ function _removeLandscapeControls() {
 function _removeTabletControls() {
   if (_tabletControls) {
     _closeSheets();
+    _removeQuickSettingsIn(_tabletControls);
+    _restoreSpeedCluster();
     _removeNode(_tabletControls);
     _tabletControls = null;
   }
@@ -526,6 +841,7 @@ function _removeControls() {
   _hidePicker();
   if (_controlsBtn) {
     const container = _controlsBtn.closest('.mobile-ui-player-controls-trigger');
+    _removeQuickSettingsIn(container);
     _removeNode(container);
     _controlsBtn = null;
     _controlsPicker = null;
@@ -641,24 +957,24 @@ export function createFeature() {
       _setTabletDirectControlsMode(tabletDirectControlsMode);
       if (_isPlayerMobileSpeedScope(ctx?.state)) _bind();
       if (tabletDirectControlsMode) {
-        _ensureTabletControls();
-        _ensureLibraryButton();
         _removeControls();
         _removeLandscapeControls();
+        _ensureTabletControls(ctx?.state);
+        _ensureLibraryButton();
         _ensureActionSurfaceGuards();
         _installStemMixerObserver(ctx?.state);
       } else if (moreShelfMode) {
-        _ensureLibraryButton();
-        _ensureControls();
         _removeTabletControls();
         _removeLandscapeControls();
+        _ensureLibraryButton();
+        _ensureControls();
         _ensureActionSurfaceGuards();
         _installStemMixerObserver(ctx?.state);
       } else if (lowHeightLandscape) {
-        if (_isPlayerPhoneLowHeightLandscape(ctx?.state)) _ensureLibraryButton();
-        else _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
+        if (_isPlayerPhoneLowHeightLandscape(ctx?.state)) _ensureLibraryButton();
+        else _removeLibraryButton();
         _ensureLandscapeControls();
         _ensureActionSurfaceGuards();
         _installStemMixerObserver(ctx?.state);
@@ -685,24 +1001,24 @@ export function createFeature() {
         _unbind();
       }
       if (tabletDirectControlsMode) {
-        _ensureTabletControls();
-        _ensureLibraryButton();
         _removeControls();
         _removeLandscapeControls();
+        _ensureTabletControls(ctx?.state);
+        _ensureLibraryButton();
         _ensureActionSurfaceGuards();
         _installStemMixerObserver(ctx?.state);
       } else if (moreShelfMode) {
-        _ensureLibraryButton();
-        _ensureControls();
         _removeTabletControls();
         _removeLandscapeControls();
+        _ensureLibraryButton();
+        _ensureControls();
         _ensureActionSurfaceGuards();
         _installStemMixerObserver(ctx?.state);
       } else if (lowHeightLandscape) {
-        if (_isPlayerPhoneLowHeightLandscape(ctx?.state)) _ensureLibraryButton();
-        else _removeLibraryButton();
         _removeControls();
         _removeTabletControls();
+        if (_isPlayerPhoneLowHeightLandscape(ctx?.state)) _ensureLibraryButton();
+        else _removeLibraryButton();
         _ensureLandscapeControls();
         _ensureActionSurfaceGuards();
         _installStemMixerObserver(ctx?.state);

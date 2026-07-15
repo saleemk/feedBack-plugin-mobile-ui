@@ -2838,6 +2838,91 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-mor
   border-color: rgba(148, 163, 184, 0.5);
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player .mobile-ui-player-quick-settings {
+  color: #e2e8f0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player .mobile-ui-player-arrangement,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player .mobile-ui-player-difficulty {
+  min-width: 0;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player .mobile-ui-player-quick-settings-label {
+  color: #94a3b8;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player .mobile-ui-player-arrangement-select {
+  min-width: 0;
+  height: 1.8rem;
+  padding: 0 1.65rem 0 0.65rem;
+  color: #e2e8f0;
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1;
+  background-color: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 0.6rem;
+  outline: none;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player .mobile-ui-player-arrangement-select:focus-visible,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player .mobile-ui-player-difficulty-slider:focus-visible {
+  outline: 2px solid rgba(103, 232, 249, 0.75);
+  outline-offset: 2px;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player .mobile-ui-player-difficulty-slider {
+  min-width: 0;
+  height: 1.35rem;
+  accent-color: #60a5fa;
+  cursor: pointer;
+  touch-action: pan-x;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player .mobile-ui-player-difficulty-value {
+  color: #cbd5e1;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: right;
+  white-space: nowrap;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-picker .mobile-ui-player-quick-settings {
+  flex: 1 0 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.4rem;
+  padding: 0 0.1rem 0.55rem;
+  margin-bottom: 0.05rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-picker .mobile-ui-player-arrangement,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-picker .mobile-ui-player-difficulty {
+  display: grid;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-picker .mobile-ui-player-arrangement {
+  grid-template-columns: 5.2rem minmax(0, 1fr);
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-picker .mobile-ui-player-difficulty {
+  grid-template-columns: 5.2rem minmax(5rem, 1fr) 2.8rem;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode .mobile-ui-player-controls-picker .mobile-ui-player-arrangement-select {
+  width: 100%;
+}
+
 /* Old rail is hidden visually in More shelf mode, but kept in DOM for core .click() targets. */
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-more-shelf-mode #v3-player-rail {
   opacity: 1 !important;
@@ -3413,6 +3498,121 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   display: none !important;
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls.mobile-ui-player-speed-scroll-strip {
+  display: block !important;
+  line-height: 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls.mobile-ui-player-speed-scroll-strip > .v3-speed-cluster,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls.mobile-ui-player-speed-scroll-strip > .mobile-ui-player-quick-settings,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls.mobile-ui-player-speed-scroll-strip > [data-mobile-ui-player-action] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-inline-end: 0.4rem !important;
+  margin-block: 0 !important;
+  align-self: center !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .v3-speed-cluster.mobile-ui-player-speed-in-scroll {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  inline-size: auto !important;
+  min-width: 0 !important;
+  min-inline-size: 0 !important;
+  max-width: none !important;
+  max-inline-size: none !important;
+  min-height: 1.9rem !important;
+  gap: 0.35rem !important;
+  padding: 0 0.55rem !important;
+  vertical-align: middle !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .v3-speed-cluster.mobile-ui-player-speed-in-scroll .v3-speed {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  inline-size: auto !important;
+  min-width: 0 !important;
+  min-inline-size: 0 !important;
+  max-width: none !important;
+  max-inline-size: none !important;
+  gap: 0.35rem !important;
+  align-items: center !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .v3-speed-cluster.mobile-ui-player-speed-in-scroll #speed-slider,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .v3-speed-cluster.mobile-ui-player-speed-in-scroll .v3-speed-slider {
+  flex: 0 0 clamp(78px, 13vw, 100px) !important;
+  flex-grow: 0 !important;
+  flex-shrink: 0 !important;
+  flex-basis: clamp(78px, 13vw, 100px) !important;
+  width: clamp(78px, 10vw, 100px) !important;
+  inline-size: clamp(78px, 13vw, 100px) !important;
+  min-width: 78px !important;
+  min-inline-size: 78px !important;
+  max-width: 100px !important;
+  max-inline-size: 100px !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .v3-speed-cluster.mobile-ui-player-speed-in-scroll #speed-label,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .v3-speed-cluster.mobile-ui-player-speed-in-scroll .v3-speed-label {
+  flex: 0 0 auto !important;
+  display: inline-block !important;
+  min-width: 2.2rem !important;
+  width: auto !important;
+  white-space: nowrap !important;
+  color: #cbd5e1 !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  text-align: right !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .v3-speed-cluster.mobile-ui-player-speed-in-scroll + .mobile-ui-player-quick-settings {
+  margin-inline-start: 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-quick-settings {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  flex: 0 0 auto !important;
+  min-height: 1.9rem !important;
+  margin-inline-start: 1.1rem !important;
+  padding: 0 0.55rem !important;
+  background: rgba(15, 23, 42, 0.58) !important;
+  border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  border-radius: 999px !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-arrangement,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-difficulty {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  flex: 0 0 auto !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-arrangement-select {
+  width: 7rem !important;
+  height: 1.45rem !important;
+  border-radius: 999px !important;
+  font-size: 0.68rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-difficulty-slider {
+  width: 6.5rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-difficulty-value {
+  min-width: 2.4rem !important;
+  font-size: 0.68rem !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-chip {
   flex: 0 0 auto !important;
   min-height: 1.9rem !important;
@@ -3627,7 +3827,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-controls {
     flex: 1 1 0 !important;
-    max-width: clamp(8rem, calc(100vw - 20rem), 18rem) !important;
+    max-width: clamp(14rem, calc(100vw - 20rem), 24rem) !important;
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-controls::after {
@@ -3654,6 +3854,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
     min-width: 0 !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
+    overscroll-behavior-inline: contain !important;
     scrollbar-width: none !important;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x;
@@ -3665,6 +3866,137 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-chip-row::-webkit-scrollbar {
     display: none !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-chip-row.mobile-ui-player-speed-scroll-strip {
+    display: block !important;
+    line-height: 0 !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-chip-row.mobile-ui-player-speed-scroll-strip > .v3-speed-cluster,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-chip-row.mobile-ui-player-speed-scroll-strip > .mobile-ui-player-quick-settings,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-chip-row.mobile-ui-player-speed-scroll-strip > [data-mobile-ui-player-action] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-inline-end: 0.35rem !important;
+    margin-block: 0 !important;
+    align-self: center !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row .v3-speed-cluster.mobile-ui-player-speed-in-scroll {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    inline-size: auto !important;
+    min-width: 0 !important;
+    min-inline-size: 0 !important;
+    max-width: none !important;
+    max-inline-size: none !important;
+    min-height: 1.75rem !important;
+    gap: 0.3rem !important;
+    padding: 0 0.42rem !important;
+    vertical-align: middle !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row .v3-speed-cluster.mobile-ui-player-speed-in-scroll .v3-speed {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    inline-size: auto !important;
+    min-width: 0 !important;
+    min-inline-size: 0 !important;
+    max-width: none !important;
+    max-inline-size: none !important;
+    gap: 0.3rem !important;
+    align-items: center !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row .v3-speed-cluster.mobile-ui-player-speed-in-scroll #speed-slider,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row .v3-speed-cluster.mobile-ui-player-speed-in-scroll .v3-speed-slider {
+    flex: 0 0 clamp(72px, 13vw, 96px) !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    flex-basis: clamp(72px, 13vw, 96px) !important;
+    width: clamp(72px, 13vw, 96px) !important;
+    inline-size: clamp(72px, 13vw, 96px) !important;
+    min-width: 72px !important;
+    min-inline-size: 72px !important;
+    max-width: 96px !important;
+    max-inline-size: 96px !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row .v3-speed-cluster.mobile-ui-player-speed-in-scroll #speed-label,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-chip-row .v3-speed-cluster.mobile-ui-player-speed-in-scroll .v3-speed-label {
+    flex: 0 0 auto !important;
+    display: inline-block !important;
+    min-width: 1.55rem !important;
+    width: auto !important;
+    white-space: nowrap !important;
+    color: #cbd5e1 !important;
+    font-size: 0.64rem !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    text-align: right !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-controls .mobile-ui-player-quick-settings {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    flex: 0 0 auto !important;
+    min-height: 1.75rem !important;
+    padding: 0 0.42rem !important;
+    background: rgba(15, 23, 42, 0.58) !important;
+    border: 1px solid rgba(148, 163, 184, 0.18) !important;
+    border-radius: 999px !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-controls .mobile-ui-player-arrangement,
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-controls .mobile-ui-player-difficulty {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.3rem !important;
+    flex: 0 0 auto !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-phone.mobile-ui-landscape .mobile-ui-player-landscape-controls .mobile-ui-player-quick-settings-label {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-controls .mobile-ui-player-arrangement-select {
+    width: clamp(88px, 15vw, 110px) !important;
+    min-width: 88px !important;
+    max-width: 110px !important;
+    height: 1.35rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 1.35rem !important;
+    border-radius: 999px !important;
+    font-size: 0.64rem !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-controls .mobile-ui-player-difficulty-slider {
+    width: clamp(72px, 13vw, 96px) !important;
+    min-width: 72px !important;
+    max-width: 96px !important;
+  }
+
+  html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-controls .mobile-ui-player-difficulty-value {
+    min-width: 1.9rem !important;
+    font-size: 0.64rem !important;
   }
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape .mobile-ui-player-landscape-chip {
