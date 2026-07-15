@@ -3060,6 +3060,12 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-mor
   z-index: 60 !important;
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-advanced > .v3-pop-row:has(#arr-select),
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-advanced > .v3-pop-row:has(#mastery-slider),
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player:is(.mobile-ui-phone,.mobile-ui-tablet) #v3-rail-pop-advanced > .v3-pop-close[onclick*="requestExitSong"] {
+  display: none !important;
+}
+
 /* Stem Mixer owns a body-level fixed #stem-mixer-panel. Keep that panel in the
    same safe Player region as Mobile UI action panels, and hide only the core
    Plugins popover shell while Stem Mixer is visibly open. */
