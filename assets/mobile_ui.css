@@ -2684,8 +2684,12 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet.mob
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 2.2rem !important;
-  height: 2.2rem !important;
+  width: 2.6rem !important;
+  height: 2.6rem !important;
+  min-width: 2.6rem !important;
+  min-height: 2.6rem !important;
+  max-width: 2.6rem !important;
+  max-height: 2.6rem !important;
   padding: 0 !important;
   color: #cbd5e1 !important;
   background: rgba(15, 23, 42, 0.75) !important;
