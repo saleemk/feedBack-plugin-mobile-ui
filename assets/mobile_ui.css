@@ -2700,11 +2700,11 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet.mob
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   flex: 0 0 auto !important;
-  margin-inline-end: auto !important;
+  margin-inline-end: 0.25rem !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-tablet.mobile-ui-landscape.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-library-button {
-  margin-inline-end: 0.85rem !important;
+  margin-inline-end: 0.35rem !important;
 }
 
 /* Mobile Controls button + category picker — inline in bottom row */
@@ -3363,7 +3363,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   gap: 0.5rem !important;
   flex-wrap: nowrap !important;
   overflow: visible !important;
@@ -3439,9 +3439,9 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   display: flex !important;
   align-items: center !important;
   gap: 0.4rem !important;
-  flex: 1 1 auto !important;
+  flex: 1 1 0 !important;
   min-width: 0 !important;
-  max-width: min(58vw, 34rem) !important;
+  max-width: none !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
   scrollbar-width: none !important;
@@ -3458,6 +3458,8 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls.mobile-ui-player-speed-scroll-strip {
   display: block !important;
   line-height: 0 !important;
+  height: 2.6rem !important;
+  min-height: 2.6rem !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls.mobile-ui-player-speed-scroll-strip > .v3-speed-cluster,
@@ -3471,6 +3473,10 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   align-self: center !important;
   line-height: 1 !important;
   vertical-align: middle !important;
+  height: 2.6rem !important;
+  min-height: 2.6rem !important;
+  box-sizing: border-box !important;
+  touch-action: pan-x !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .v3-speed-cluster.mobile-ui-player-speed-in-scroll {
@@ -3481,9 +3487,9 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   min-inline-size: 0 !important;
   max-width: none !important;
   max-inline-size: none !important;
-  min-height: 1.9rem !important;
-  gap: 0.35rem !important;
-  padding: 0 0.55rem !important;
+  min-height: 2.6rem !important;
+  gap: 0.3rem !important;
+  padding: 0 0.42rem !important;
   vertical-align: middle !important;
 }
 
@@ -3495,7 +3501,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   min-inline-size: 0 !important;
   max-width: none !important;
   max-inline-size: none !important;
-  gap: 0.35rem !important;
+  gap: 0.3rem !important;
   align-items: center !important;
 }
 
@@ -3505,7 +3511,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   flex-grow: 0 !important;
   flex-shrink: 0 !important;
   flex-basis: clamp(78px, 13vw, 100px) !important;
-  width: clamp(78px, 10vw, 100px) !important;
+  width: clamp(78px, 13vw, 100px) !important;
   inline-size: clamp(78px, 13vw, 100px) !important;
   min-width: 78px !important;
   min-inline-size: 78px !important;
@@ -3517,7 +3523,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .v3-speed-cluster.mobile-ui-player-speed-in-scroll .v3-speed-label {
   flex: 0 0 auto !important;
   display: inline-block !important;
-  min-width: 2.2rem !important;
+  min-width: 1.55rem !important;
   width: auto !important;
   white-space: nowrap !important;
   color: #cbd5e1 !important;
@@ -3536,9 +3542,10 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   align-items: center !important;
   gap: 0.45rem !important;
   flex: 0 0 auto !important;
-  min-height: 1.9rem !important;
+  min-height: 2.6rem !important;
+  height: 2.6rem !important;
   margin-inline-start: 1.1rem !important;
-  padding: 0 0.55rem !important;
+  padding: 0 0.42rem !important;
   background: rgba(15, 23, 42, 0.58) !important;
   border: 1px solid rgba(148, 163, 184, 0.18) !important;
   border-radius: 999px !important;
@@ -3550,29 +3557,51 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-difficulty {
   display: flex !important;
   align-items: center !important;
-  gap: 0.35rem !important;
+  gap: 0.3rem !important;
   flex: 0 0 auto !important;
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-quick-settings-label {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-arrangement-select {
-  width: 7rem !important;
-  height: 1.45rem !important;
+  width: clamp(88px, 15vw, 110px) !important;
+  min-width: 88px !important;
+  max-width: 110px !important;
+  height: 1.35rem !important;
+  padding-left: 0.5rem !important;
+  padding-right: 1.35rem !important;
   border-radius: 999px !important;
-  font-size: 0.68rem !important;
+  font-size: 0.64rem !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-difficulty-slider {
-  width: 6.5rem !important;
+  width: clamp(78px, 13vw, 100px) !important;
+  min-width: 78px !important;
+  max-width: 100px !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-controls .mobile-ui-player-difficulty-value {
-  min-width: 2.4rem !important;
-  font-size: 0.68rem !important;
+  min-width: 1.9rem !important;
+  font-size: 0.64rem !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-chip {
   flex: 0 0 auto !important;
-  min-height: 1.9rem !important;
+  min-height: 2.6rem !important;
+  height: 2.6rem !important;
   padding: 0 0.7rem !important;
   font-size: 0.74rem !important;
   font-weight: 500 !important;
@@ -3583,8 +3612,11 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
   border-radius: 999px !important;
   cursor: pointer !important;
   white-space: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
   -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+  touch-action: pan-x;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tablet-direct-controls-mode .mobile-ui-player-tablet-chip:active {

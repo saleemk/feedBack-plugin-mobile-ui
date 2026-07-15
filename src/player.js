@@ -779,7 +779,7 @@ function _ensureLandscapeControls() {
 function _ensureTabletControls(state) {
   const controlsBar = document.querySelector(SELECTORS.controls);
   if (!controlsBar) return;
-  const moveSpeed = state?.viewport?.isPortrait;
+  const moveSpeed = true;
 
   if (_tabletControls && _tabletControls.isConnected) {
     if (_tabletControls.parentElement !== controlsBar) controlsBar.appendChild(_tabletControls);
