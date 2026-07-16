@@ -1,366 +1,346 @@
 # Mobile UI Roadmap
 
-This roadmap captures planned mobile and tablet layout improvements for the
-fee[dB]ack Mobile UI plugin. It is intentionally **implementation-aware**:
-risky items require audits before any code is written, and every feature
-slice must pass explicit done criteria and manual regression checks.
+This roadmap tracks unfinished mobile and tablet work for the standalone
+fee[dB]ack Mobile UI plugin. It is intentionally implementation-aware: risky
+items require audits before code, and every feature slice should have explicit
+done criteria and manual regression checks.
 
-Refer to [`AGENTS.md`](AGENTS.md) for the detailed maintainer and coding-agent
-guide, and [`README.md`](README.md) for the user-facing overview.
+Refer to [AGENTS.md](AGENTS.md) for detailed maintainer and coding-agent
+guidance, and [README.md](README.md) for the user-facing overview.
 
 ---
 
 ## Principles
 
-- **Phone / tablet first.**  Desktop must remain unchanged unless a change
-  is explicitly and intentionally scoped to desktop.
-- **No core edits.**  The plugin lives outside the core repo and must not
-  require core patches.  If a core change is *proposed*, it must be a
-  separate discussion with the feedBack maintainers.
-- **Prefer existing core actions and APIs.**  Bridge into core buttons,
-  events, and globals rather than re-implementing behaviour.
-- **Do not reimplement core popovers, routes, or player behaviour.**  The
-  plugin's job is to *surface* existing controls in a mobile-friendly way,
-  not to duplicate them.
-- **One small slice at a time.**  Prefer CSS-only when possible; add JS
-  only when CSS cannot solve the problem safely.
-- **Audit before risky integrations.**  Anything that touches the highway,
-  canvas, renderer, visualisation settings, or audio playback path must be
-  audited first — do not assume internal APIs.
-- **Preserve the current Player device-behaviour matrix** (see [Current
-  Baseline](#current-baseline)).
-- **Avoid broad refactors while fixing UX issues.**
-- **Run validation + manual regression after every change.**
+- Phone and tablet first. Desktop must remain controlled by core unless a
+  desktop change is explicitly requested and scoped.
+- No core edits as part of this plugin. Any proposed core change must be
+  handled separately.
+- Prefer existing core actions, anchors, buttons, events, and globals over
+  duplicated routing or Player behavior.
+- Do not reimplement core popovers, routes, highway rendering, or playback
+  internals.
+- Keep fixes small and scoped. Prefer CSS-only when it can solve the issue
+  safely.
+- Audit before touching highway, canvas, camera, renderer, visualization, or
+  audio paths.
+- Preserve the current Player device/mode matrix.
+- Validate each change with syntax checks and real-device regression testing
+  appropriate to the affected surface.
 
 ---
 
 ## Current Baseline
 
-### Player behaviour by device / mode
+### Touch Navigation
 
-| Device / mode          | More shelf | Direct chips | Home / Library exit | Old v3 rail | Pause-on-More |
-|------------------------|-----------|-------------|---------------------|-------------|---------------|
-| Phone portrait         | ✅         | —           | ✅ icon + More action | hidden      | ✅ (opt-in)    |
-| Phone low-height landscape | —     | ✅ (inline)  | ✅ icon              | hidden      | ❌             |
-| Tablet portrait        | —         | ✅ (inline)  | ✅ icon              | hidden      | ❌             |
-| Tablet landscape       | —         | ✅ (inline)  | ✅ icon              | hidden      | ❌             |
-| Desktop                | —         | —           | —                   | visible     | ❌             |
+- Home is fixed and always visible.
+- All remaining destinations live in one horizontally scrollable strip.
+- The same navigation architecture is used for phone portrait, phone
+  landscape, tablet portrait, and tablet landscape. Device profiles differ only
+  in sizing and available width.
+- Known destinations use this mobile priority order:
+  1. Library
+  2. Career
+  3. Progress
+  4. Unlockables
+  5. FeedBarcade
+  6. Plugins
+  7. Settings
+  8. Playlists
+  9. Lessons
+  10. Favorites
+  11. Saved for Later
+- Additional valid core or plugin destinations are appended after the known
+  list.
+- Hidden, disabled, removed, or invalid entries are not represented.
+- Dynamic additions, removals, and supported label or visibility changes
+  update the mobile navigation.
+- Mobile UI invokes the original core/plugin anchor action instead of
+  duplicating navigation logic.
+- The active destination is revealed only when needed.
+- The Player hides bottom navigation.
+- Desktop keeps the core navigation.
 
-**Direct chips** are the Visuals / Audio / Mixer / Lyrics / Plugins /
-Practice / Advanced category chips rendered inline in the bottom controls
-row (no More shelf).
+Detailed selector, observer, scheduling, escaping, and lifecycle mechanics
+belong in AGENTS.md.
 
-### Current settings
+### Player
 
-- **Enable mobile UI enhancements** — on/off; persists via
-  `localStorage` key `mobile_ui.disabled`.
-- **Pause song when opening More controls** — on/off; persists via
-  `localStorage` key `mobile_ui.pauseOnMoreOpen`.
-- **Show Mobile UI debug view** — on/off; persists via
-  `localStorage` key `mobile_ui.debug`.
+| Device/mode | Player More shelf | Shared direct-control strip | Home/Library exit | Core v3 rail | Pause-on-More |
+| --- | --- | --- | --- | --- | --- |
+| Phone portrait | yes | no | yes | hidden | opt-in |
+| Phone low-height landscape | no | yes | yes | hidden | no |
+| Tablet portrait | no | yes | yes | hidden | no |
+| Tablet landscape | no | yes | yes | hidden | no |
+| Desktop | no | no | no | visible | no |
 
-### Out of scope (for now)
+Desktop uses the core Player without Mobile UI replacement controls.
 
-- Highway / canvas / camera / renderer internals.
-- Directly resizing or manipulating `#highway` / canvas / renderer
-  internals.  Requesting a safe core resize or layout refresh is
-  allowed **after audit** (e.g. calling a documented core method that
-  triggers a relayout).
-- Changing core playback behaviour (except the explicit pause-on-More
-  setting which only pauses, never plays).
-- Reparenting core rail popovers.
-- Directly toggling `.hidden` on core rail popovers.
+Phone portrait uses the Player More shelf with:
 
-### Docs split
+- quick Arrangement control
+- quick Difficulty control
+- Visuals
+- Audio
+- Mixer
+- Lyrics
+- Plugins
+- Practice
+- Advanced
 
-| File | Audience |
-|---|---|
-| `README.md` | Users — what the plugin does, how to install. |
-| `AGENTS.md` | Maintainers and coding agents — architecture, conventions, patterns. |
-| `ROADMAP.md` | This file — future work, priorities, audit gates. |
+Phone low-height landscape and tablet Player layouts use a shared
+direct-control strip:
+
+1. Speed
+2. Arrangement
+3. Difficulty
+4. Visuals
+5. Audio
+6. Mixer
+7. Lyrics
+8. Plugins
+9. Practice
+10. Advanced
+
+The shared direct-control strip uses the real core Speed control. Arrangement
+and Difficulty are proxy controls that keep the core controls as source of
+truth. Visible Arrangement/Difficulty labels may be visually hidden in tight
+layouts while accessible names and current values remain available.
+
+### Current Settings
+
+- Enable mobile UI enhancements
+- Pause song when opening Player More controls
+- Show Mobile UI debug view
+
+Pause-on-More applies only to the phone portrait Player More shelf.
+
+### Out Of Scope
+
+- Highway/canvas/camera/renderer internals.
+- Direct visual setting overrides without an audit and restore strategy.
+- Core routing, playback, or desktop layout changes.
+- Reparenting core popovers.
+- Directly mutating core hidden state for rail popovers.
 
 ---
 
 ## Completed Milestones
 
-### v0.2.0–v0.2.1 — Mobile UI Foundation and Polish
+### v0.2.0-v0.2.1 - Foundation and Responsive Polish
 
-The core touch-optimised UI is in place.  Phone and tablet users now have
-a bottom navigation bar, responsive topbar with compact status cards,
-one-tap Player exit, tap-to-play and vertical scrub gestures, and
-orientation-aware layout polish — all without touching core or desktop.
+- Standalone v3 plugin with enable/disable, debug, and optional pause when
+  opening the phone portrait Player More shelf.
+- Touch shell/topbar polish and shared compact status rail.
+- Home, Song Library, Progress, Settings, Plugins, and collection screen
+  responsive layout work.
+- Phone landscape Home hero and Continue Playing layout density polish.
+- Song Library title/status/search layout and denser landscape cards.
+- Player Home/Library exit button on touch layouts.
+- Phone portrait Player More shelf and landscape/tablet direct Player actions.
+- Tap-to-play and vertical highway scrub gestures.
+- Player category panels stay open while users interact with controls.
+- iPhone standalone portrait-to-landscape viewport-origin correction.
+- README, license, thumbnail, and screenshot gallery baseline.
 
-#### Navigation
+### Completed Since v0.2.1 / Next Release Baseline
 
-- Bottom navigation bar replacing the old core hamburger/sidebar on touch layouts.
-- Compact 5-tab nav (Home · Library · Progress · Plugins · More) for phone portrait.
-- Wide 8-tab nav (adding Unlockables · FeedBarcade · Settings) for phone landscape and tablet.
-- Dynamic More sheet built from remaining core `#v3-nav` items — never opens the old core drawer.
-- Core sidebar and hamburger hidden while bottom nav is active (CSS-only, DOM preserved as data source).
-- First-paint flash of old core nav minimised via preboot class.
-- Responsive rebuild on rotation between compact and wide modes.
+#### Dynamic Navigation
 
-#### Home
+- Replaced the previous bottom-navigation architecture with fixed Home plus a
+  horizontally scrollable destination strip.
+- Removed the obsolete bottom-navigation overflow UI.
+- Added canonical mobile ordering for known destinations.
+- Added automatic append behavior for valid unknown/plugin-added destinations.
+- Added filtering for hidden, disabled, removed, or invalid core nav anchors.
+- Added dynamic handling for destination additions, removals, label changes,
+  and visibility changes.
+- Preserved original core/plugin anchor click behavior.
+- Added nearest active-item reveal without always recentering the strip.
+- Coalesced nav rebuilds and guarded against duplicate items during refresh and
+  rotation.
 
-- Responsive touch topbar with title / welcome and Support Us on the first row and compact status cards below.
-- Status card height normalisation — tuner, instrument, and profile/rank cards share the same visual height.
-- Profile equalizer bars remain visible in a compact form so the streak card no longer dominates.
-- Support Us button compacted and kept aligned with the title across touch layouts.
-- Phone landscape Home places the hero and Continue Playing card side-by-side.
-- Landscape density improvements: hero compacted, stat cards tightened, and section spacing reduced.
-- Tablet refinements keep the same information hierarchy while using tablet-specific sizing.
+#### Player Quick Controls
 
-#### Song Library
+- Added Arrangement and Difficulty quick controls.
+- Kept core Arrangement and Difficulty controls as the source of truth.
+- Added phone portrait quick settings inside the Player More shelf.
+- Added phone landscape and tablet quick settings in the direct-control strip.
+- Moved the real Speed control into the shared direct-control strip for phone
+  low-height landscape and tablet Player layouts.
+- Compacted Speed, Arrangement, and Difficulty for touch strips while retaining
+  usable sliders/selects.
+- Hid redundant Arrangement, Difficulty, and Close Player rows from the core
+  Advanced panel on touch layouts.
+- Kept the Home/Library exit action separate and visible.
 
-- Responsive toolbar and Options flow for phone and tablet.
-- Search relocated below the title/status area on touch layouts.
-- Phone portrait keeps a touch-friendly multi-column library layout.
-- Phone landscape uses denser artwork, spacing, text, and tags so more songs fit above the bottom nav.
-- Compact cards and responsive layout polish across touch profiles.
+#### Player Panel Compatibility
 
-#### Player
+- Corrected the core Mixer panel so it opens expanded and uses usable touch
+  rows instead of a clipped strip.
+- Added Stem Mixer compatibility for its body-level fixed dialog while keeping
+  Stem Mixer code untouched.
+- Styled the Stem Mixer dialog to match Mobile UI glass panels on touch
+  layouts.
+- Kept Player action/category panels open while internal controls are used.
+- Reused core and plugin controls without reparenting popovers or duplicating
+  panel contents.
 
-- One-tap Home/Library exit icon button on all phone/tablet Player layouts.
-- Phone portrait More shelf with Library as first action.
-- Direct landscape/tablet action chips (Visuals, Audio, Mixer, Lyrics, Plugins, Practice, Advanced).
-- Tap-to-play gesture (touch/pen on highway → play/pause).
-- Vertical scrub gesture (drag down → seek forward, drag up → seek backward).
-- Player category panels remain open while users interact with lists, sliders, toggles, selects, buttons, and plugin controls; outside taps and category changes still close or switch panels.
-- Responsive layouts across all four touch orientations.
+#### Tablet And Touch Target Polish
 
-#### Tablet
+- Aligned touch target heights for Player controls, including Home/Library
+  exit, Speed, Player More, and direct action controls where applicable.
+- Improved tablet Player spacing so controls use more available width.
+- Preserved independent phone/tablet and portrait/landscape sizing.
 
-- Shared touch UI with phone — bottom nav, compact topbar, direct Player chips.
-- Portrait and landscape layouts tuned independently.
-- Wider bottom nav island with proper item spacing.
+#### Documentation And Screenshots
 
-#### General
-
-- Shared compact status-card sizing across all touch orientations.
-- Responsive spacing improvements throughout.
-- Improved preboot handling to reduce the old core navigation flash during plugin startup.
-- Diagnosed an iPhone standalone portrait → landscape viewport-origin bug where iOS reported negative `visualViewport` and document offsets, causing a top gap and incorrect hit-testing.
-- Added a scoped measured-offset correction for standalone phone landscape; the correction clears when the viewport returns to normal.
-- Safari, simulator, portrait, tablet, and desktop remain unaffected by the standalone rotation correction.
-- Enable/disable, debug, and pause-on-More settings.
+- README screenshot gallery uses GitHub user-attachment URLs.
+- README navigation and Player sections reflect the fixed Home, dynamic
+  destination strip, and current Player quick controls.
+- No image binaries are stored in the plugin repo.
+- Rendered GitHub Markdown review remains a release-prep check unless it has
+  been explicitly performed.
 
 ---
 
-## Priority Overview
+## Active Priorities
 
 | Priority | Item | Why | Status |
-|---|---|---|---|
-| **P1** | Final responsive polish | Address concrete issues found through real-device testing | Ongoing |
-| **P1** | Documentation / screenshots | Present the completed touch layouts clearly | In progress |
-| **P2** | Gesture enhancements | Double-tap loop and optional gesture settings | Later |
-| **P2** | Visual preset audit | Determine safe mobile-friendly visual defaults | Audit first |
-| **P3** | Visual preset implementation | Apply presets without overwriting user settings | After audit |
-| **P3** | Haptics / audio feedback | Optional gesture polish | Later |
-| **P3** | Section map enhancement | Only if current behaviour is lacking | Audit first |
+| --- | --- | --- | --- |
+| P1 | Final responsive polish | Fix concrete real-device issues only | Ongoing |
+| P2 | Gesture enhancements | Double-tap loop and optional gesture controls need audit | Planned |
+| P2 | Mobile visual/highway preset audit | Determine safe opt-in visual defaults | Audit first |
+| P3 | Visual preset implementation | Only after the audit recommends implementation | Deferred |
+| P3 | Haptics/audio feedback | Optional interaction polish | Deferred |
+| P3 | Section map enhancement | Only if current behavior proves insufficient | Audit first |
 
 ---
 
-## P1 — Final Responsive Polish
+## P1 - Final Responsive Polish
 
-### Problem
-
-Remaining spacing, crowding, or alignment issues discovered during
-real-device testing across phone portrait, phone landscape, tablet portrait,
-and tablet landscape.
+Remaining responsive work is regression-driven only. Do not start broad
+redesigns from this item.
 
 ### Goals
 
-- Address concrete issues found in screenshots or real-device testing.
-- Each fix must be CSS-only where possible, scoped to the affected
-  orientation, and must not regress other orientations or desktop.
-- No broad refactors.
+- Fix observed real-device layout or interaction issues as small scoped slices.
+- Keep phone, tablet, rotation, Player lifecycle, and desktop regressions in
+  the validation path.
+- Prefer CSS-only and orientation-scoped fixes where practical.
 
-### Done criteria
+### Recent Completed Items
 
-- [x] Representative real-device screenshots collected for phone portrait, phone landscape, tablet portrait, and tablet landscape.
-- [x] Phone landscape Home and Song Library density issues identified in screenshots and corrected.
-- [ ] Additional concrete crowding / spacing issues fixed as they are discovered.
-- [ ] No regressions to desktop.
-- [ ] No regressions to other orientations.
+- Dynamic bottom navigation with fixed Home and plugin destination support.
+- Phone/tablet Player direct-control strip with Speed, Arrangement, Difficulty,
+  and action chips.
+- Tablet Speed placement and control width cleanup.
+- Phone and tablet touch-target height alignment.
+- Song Library search width/layout polish across phone landscape and tablet.
 
-### Risks
+### Closure Criteria
 
-- **Low.**  CSS-only, scoped to device / orientation classes already in use.
-
----
-
-## P1 — Documentation / Screenshots
-
-### Status
-
-Representative phone and tablet screenshots have been collected.  The README
-screenshot gallery is being prepared using GitHub-hosted user-attachment URLs;
-image files will not be checked into the plugin repository.
-
-### Goals
-
-- Add phone portrait screenshots for Home, Song Library, Player, and Plugins.
-- Add phone landscape screenshots for Home, Song Library, Player controls, and a Player category panel.
-- Add tablet portrait and landscape Player screenshots.
-- Keep portrait images narrow enough to pair cleanly and landscape images large enough to show control detail.
-- Keep `README.md` user-facing rather than turning it into a release changelog.
-
-### Done criteria
-
-- [x] Phone portrait screenshots collected: Home, Song Library, Player, Plugins.
-- [x] Phone landscape screenshots collected: Home, Song Library, Player controls, Player category panel.
-- [x] Tablet screenshots collected: portrait Player and landscape Player.
-- [ ] GitHub user-attachment URLs inserted into `README.md`.
-- [ ] Screenshot gallery reviewed in rendered GitHub Markdown.
-- [ ] No image binaries added to the repository.
-
-### Risks
-
-- **Low.**  Documentation-only.  The main risk is oversized or poorly grouped images making the README difficult to scan.
+- Current known phone/tablet layout issues are resolved.
+- Full phone/tablet matrix has been manually rechecked.
+- No open reproducible P1 layout defects remain.
+- Desktop remains unchanged.
 
 ---
 
-## P2 — Gesture Enhancements
+## Audit-First Future Work
 
-Tap-to-play and vertical scrub are implemented.  Remaining gesture work:
+### P2 - Gesture Enhancements
 
-### Double-tap loop markers
+Tap-to-play and vertical scrub are current baseline features. Remaining gesture
+work requires an audit before implementation.
 
-- Double-tap highway → cycle loop markers (A → B → Clear).
-- Must use core loop APIs (audit required).
-- Must not conflict with single-tap play/pause (delay single-tap until
-  double-tap window expires).
+#### Double-Tap Loop Markers
 
-### Gesture settings
+- Identify core loop APIs and events first.
+- Avoid delaying single-tap play/pause unless the interaction tradeoff is
+  accepted.
+- Ensure double-tap handling does not interfere with vertical scrub.
 
-- Optional enable/disable per gesture.
-- Scrub sensitivity setting.
-- Persisted via `localStorage`.
+#### Optional Gesture Settings
 
-### Done criteria
+Possible settings to evaluate:
 
-- [ ] Double-tap loop implemented and does not conflict with tap-to-play.
-- [ ] Gesture settings panel added (or integrated into existing settings).
-- [ ] Settings persist across sessions.
-- [ ] Desktop / mouse unaffected.
-- [ ] No regression to existing gestures.
+- enable/disable tap-to-play
+- enable/disable vertical scrub
+- scrub sensitivity
+- optional double-tap loop controls if implemented
 
-### Risks
+Do not prescribe UI shape or storage keys until the feature is designed.
 
-- **Medium.**  Double-tap adds latency to single-tap.  Loop API may have
-  edge cases.  Settings UI adds surface area.
+### P2 - Mobile Visual / Highway Presets Audit
 
----
+This is an audit, not an implementation promise.
 
-## P2 — Mobile Visual / Highway Presets Audit
+#### Search Targets
 
-### Problem
+These names are unverified search targets only:
 
-The stock visualisation settings can feel bland on mobile.  There appear to
-be many visual options, possibly including background images.
+- highway render scale controls, if any
+- visualization selection APIs such as `setViz()`, if exposed
+- settings/localStorage keys for quality, scoreboard, venue motion, mood FX,
+  background images, and plugin visualizations
 
-### Goal
+#### Safety Rules
 
-Determine whether Mobile UI can **safely** recommend or apply mobile-
-friendly visualisation presets without breaking user customisations or
-touching renderer internals.
+- Opt-in only.
+- Do not automatically overwrite user settings.
+- Preserve and restore previous values.
+- Avoid renderer/canvas/camera internals.
+- Consider plugin visualizations and phone/tablet performance separately.
 
-### Audit questions (before any implementation)
+#### Audit Deliverables
 
-- What visualisation settings exist?
-  - Viz picker (Auto / Classic 2D / 3D Highway / plugin viz).
-  - Quality / render scale.
-  - Min resolution.
-  - Scoreboard.
-  - Venue Motion / Venue Mood FX.
-  - Background images (if any).
-- Are there public APIs for these settings?  **These are possible APIs
-  to verify — none are confirmed safe or callable from plugin scope.**
-  - `highway.setRenderScale()` — existence and safety not yet verified.
-  - `setViz()` — existence and safety not yet verified.
-  - Are there other settings paths (e.g. `localStorage` keys) that can
-    be read / written without calling internal functions?
-- Are settings stored in `localStorage`?
-  - If yes, what keys?
-  - Can Mobile UI safely read / write them?
-- Can changes be **restored**?
-  - Does the viz picker have a "Restore previous" path?
-  - Can we snapshot and restore?
-- Are background images supported?
-  - If yes, what are the path / loading / performance implications on
-    phones?
-- Performance implications:
-  - Does switching to 3D Highway hurt phone framerate?
-  - Does a lower render scale help?
-  - Does tablet need different settings from phone?
-
-### Possible preset names (for later)
-
-- Phone Focus
-- Phone Stage
-- Tablet Stage
-- Performance
-- Default / No override
-
-### User-safety rules (must be enforced if implemented)
-
-- **No automatic overwrite** of custom visual settings.
-- **Explicit Apply button** — user must opt in.
-- **Clear restore / reset** behaviour.
-- Store what Mobile UI changed so it can avoid repeated overwrites.
-- Avoid renderer / canvas / camera internals unless explicitly approved
-  after audit.
-
-### Done criteria (audit only)
-
-- [ ] All audit questions answered.
-- [ ] Report filed: what is safe, what is risky, what is impossible.
-- [ ] Recommendation for whether to proceed with implementation.
-
-### Risks
-
-- **Medium-High (implementation).**  Cross-plugin risk — visualisation
-  plugins may have their own settings contracts.  Background images may
-  have loading / copyright / path issues.  Performance impact on phones
-  may be significant.
+- inventory of available visual settings
+- supported public APIs/events
+- persistence mechanism
+- restoration strategy
+- phone/tablet performance findings
+- recommendation to proceed or stop
 
 ---
 
-## P3 — Later Ideas
+## Deferred / Later Ideas
 
-These are worth doing but depend on earlier work or audits:
-
-- **Visual preset implementation** — after P2 audit.
-- **Haptic / audio feedback** — optional setting; requires Web Audio cleanup.
-- **Section map enhancement** — after audit of current behaviour.
-- **Custom visual overlay support** — only if a future visual plugin
-  captures pointer events and prevents current canvas-targeted gestures.
-  The current 3D Highway overlay is verified as pass-through (no fix needed).
-- **Background image presets** — after visual audit confirms support.
-- **Visual theme packs** — low priority; brainstorming only.
-- **More sheet outside-tap / Escape close** — small UX polish.
-- **Bottom nav keyboard / visualViewport handling** — handle on-screen keyboard overlap and related viewport resizing gracefully.
-- **Core early no-flash hook** — plugin preboot reduces the old
-  menu/sidebar flash after plugin load, but true zero-frame removal likely
-  needs core support because `#v3-sidebar` can paint from initial HTML
-  before plugins load.
+- Visual preset implementation after the audit recommends it.
+- Optional haptic/audio feedback with cleanup and browser support review.
+- Section map enhancement after a focused audit of current behavior.
+- Custom visual overlay support only if a future visual plugin blocks existing
+  gestures.
+- Background image presets only after visual-setting support is confirmed.
+- Visual theme packs as low-priority experimentation.
+- Bottom-nav keyboard/visualViewport handling only if a reproducible issue is
+  found.
+- Core early no-flash hook. Plugin preboot reduces the old menu/sidebar flash,
+  but true zero-frame suppression likely needs core support.
+- Plugin-screen compatibility fixes discovered through testing.
+- Ongoing compatibility review as fee[dB]ack core navigation and Player markup
+  evolve.
+- Official organization or desktop-bundle submission is not an active roadmap
+  item. The plugin remains independently distributed unless that decision is
+  revisited.
 
 ---
 
 ## Feature Slice Template
 
-Use this template when starting a new feature slice:
+Use this template when starting a new feature slice.
 
-### Feature name
+### Feature Name
 
-- **Problem:**  What is broken or missing?
-- **Goal:**  What should be true when done?
-- **Scope:**  Device / mode / screen.  What IS included?
-- **Out of scope:**  What is explicitly NOT included?
-- **Audit required:**  Yes / No.  If yes, list audit questions.
-- **Files likely touched:**
-- **First implementation slice:**
-- **Validation:**
+- Problem:
+- Goal:
+- Scope:
+- Out of scope:
+- Audit required:
+- Files likely touched:
+- First implementation slice:
+- Validation:
   ```powershell
   cd D:\Development\GIT\feedBack-plugin-mobile-ui
   git status --short
@@ -369,35 +349,28 @@ Use this template when starting a new feature slice:
   Get-ChildItem .\src -Filter *.js | ForEach-Object { node --check $_.FullName }
   node --check .\screen.js
   ```
-- **Manual regression:**
-  - [ ] Phone portrait Player
-  - [ ] Phone low-height landscape Player
-  - [ ] Tablet portrait Player
-  - [ ] Tablet landscape Player
-  - [ ] Desktop unchanged
-  - [ ] Player rotation
-  - [ ] Leave / re-enter Player
-  - [ ] No duplicate injected controls
-  - [ ] Enable / disable setting
-  - [ ] Pause-on-More setting
-  - [ ] Debug setting
-  - [ ] Practice
-  - [ ] Lyrics
-  - [ ] Speed slider and speed peek
-  - [ ] Home
-  - [ ] Song Library
-  - [ ] Progress
-  - [ ] Settings
-  - [ ] Plugins
-  - [ ] Playlists / Favorites / Saved for Later
-  - [ ] No console errors
-- **Rollback plan:**  What to revert if the slice causes a regression.
+- Manual regression:
+  - Touch navigation: fixed Home, full horizontal destination strip, Career
+    after Library, plugin-added destinations after known entries, hidden/removed
+    destinations disappear, active destination reveal, no duplicate nav, Player
+    hides bottom nav.
+  - Player controls: phone portrait Player More shelf, phone landscape strip,
+    tablet portrait strip, tablet landscape strip, Speed, Arrangement,
+    Difficulty, no accidental strip pan while dragging sliders, Arrangement
+    changes once, Advanced hides redundant touch controls.
+  - Panels: Mixer, Stem Mixer when installed, Practice, Lyrics, Plugins, and
+    Advanced remain usable.
+  - Lifecycle: rotation, leave/re-enter Player, no duplicate injected controls,
+    enable/disable, pause-on-More, debug.
+  - Screens: Home, Song Library, Progress, Settings, Plugins, and collections.
+  - Desktop unchanged and no console errors.
+- Rollback plan:
 
 ---
 
 ## Validation
 
-Standard validation commands (run after every change):
+Standard validation commands for code/CSS changes:
 
 ```powershell
 cd D:\Development\GIT\feedBack-plugin-mobile-ui
@@ -408,28 +381,78 @@ Get-ChildItem .\src -Filter *.js | ForEach-Object { node --check $_.FullName }
 node --check .\screen.js
 ```
 
-## Manual Regression Areas
+Documentation-only changes should still run:
 
-After any Player or navigation change, verify at minimum:
+```powershell
+git status --short
+git diff --stat -- <changed-doc>
+git diff --check -- <changed-doc>
+git diff -- <changed-doc>
+```
 
-- [ ] Phone portrait Player
-- [ ] Phone low-height landscape Player
-- [ ] Tablet portrait Player
-- [ ] Tablet landscape Player
-- [ ] Desktop unchanged
-- [ ] Player rotation (portrait ↔ landscape)
-- [ ] Leave and re-enter Player
-- [ ] No duplicate injected controls after refresh / screen change
-- [ ] Enable / disable setting works and persists
-- [ ] Pause-on-More setting works and persists
-- [ ] Debug setting works and persists
-- [ ] Practice opens and closes correctly
-- [ ] Lyrics toggles and shows active indicator
-- [ ] Speed slider and speed value peek work
-- [ ] Home screen ok
-- [ ] Song Library screen ok
-- [ ] Progress screen ok
-- [ ] Settings screen ok
-- [ ] Plugins screen ok
-- [ ] Playlists / Favorites / Saved for Later ok
-- [ ] No console errors
+---
+
+## Manual Regression Matrix
+
+### Navigation
+
+- Home remains fixed.
+- Horizontal destination strip reaches all entries.
+- Canonical order is Library, Career, Progress, Unlockables, FeedBarcade,
+  Plugins, Settings, Playlists, Lessons, Favorites, Saved for Later.
+- Plugin-added destination appears after known entries.
+- Hidden/removed destination disappears.
+- Active destination reveals only as needed.
+- No duplicate navigation items after refresh or rotation.
+- Player hides bottom navigation.
+- Desktop sidebar/navigation remains core-controlled.
+
+### Player Layouts
+
+- Phone portrait uses Home/Library exit, transport, compact Speed, and a
+  Player More shelf with visible Arrangement, Difficulty, and action controls.
+- Phone low-height landscape uses Home/Library exit and the shared
+  direct-control strip.
+- Tablet portrait uses Home/Library exit and the shared direct-control strip.
+- Tablet landscape uses Home/Library exit and the shared direct-control strip.
+- Speed is first in shared direct-control strips, followed by Arrangement,
+  Difficulty, and action chips.
+
+### Player Interactions
+
+- Speed slider and speed value peek work.
+- Arrangement select works and changes exactly once.
+- Difficulty slider/value work.
+- Sliders do not accidentally pan the strip.
+- Home/Library exit works.
+- Transport controls work.
+- Player panels stay open during internal interaction.
+- Practice, Lyrics, Mixer, Plugins, and Advanced remain usable.
+- Stem Mixer remains usable when installed.
+- No duplicated or orphaned core controls after rotation/re-entry.
+
+### Screens
+
+- Home.
+- Song Library.
+- Career.
+- Progress.
+- Settings.
+- Plugins.
+- Playlists, Favorites, and Saved for Later.
+- Lessons, FeedBarcade, and Unlockables remain reachable.
+
+### Lifecycle And Settings
+
+- Portrait/landscape rotation.
+- Leave and re-enter Player.
+- Enable/disable setting.
+- Pause-on-More setting.
+- Debug setting and copy action.
+- iPhone standalone rotation correction.
+
+### Desktop And Regressions
+
+- Desktop remains unchanged.
+- Core Player remains unchanged on desktop.
+- No console errors.
