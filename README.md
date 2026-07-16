@@ -53,7 +53,7 @@ Fixed Home with scrollable touch navigation, responsive Home cards, and a
 touch-friendly two-column Song Library layout.
 
 <p>
-  <img width="280" alt="Mobile UI Player controls and Player More shelf on phone portrait" src="https://github.com/user-attachments/assets/ef81ea6b-b9fb-4e2c-b41c-a07c784623e4">
+  <img width="280" alt="Mobile UI Player controls and Player More shelf on phone portrait" src="https://github.com/user-attachments/assets/b0c41ff6-37f7-4452-ba4c-e3181212d21b">
   &nbsp;&nbsp;
   <img width="280" alt="Mobile UI Plugins screen on phone portrait" src="https://github.com/user-attachments/assets/c9e47a07-2d01-43a6-9b98-ad11d26884ec">
 </p>
