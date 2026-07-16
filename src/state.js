@@ -1,6 +1,8 @@
 export const GLOBAL_KEY = '__feedBackMobileUi';
 export const PLUGIN_ID = 'mobile_ui';
-export const PLUGIN_VERSION = '0.1.0';
+// Keep synchronized with plugin.json. The host exposes manifest versions through
+// plugin listings, but not as a stable runtime value for this module.
+export const PLUGIN_VERSION = '0.3.0';
 export const DISABLED_STORAGE_KEY = 'mobile_ui.disabled';
 export const DEBUG_STORAGE_KEY = 'mobile_ui.debug';
 

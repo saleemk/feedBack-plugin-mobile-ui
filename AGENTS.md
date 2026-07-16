@@ -12,6 +12,8 @@ layouts while preserving desktop behavior. The core fee[dB]ack repo remains
 untouched; this plugin is mounted separately and should be reversible through
 its runtime/settings controls.
 
+Current released baseline: v0.3.0.
+
 ## Repository Map
 
 - Plugin repo: [saleemk/feedBack-plugin-mobile-ui](https://github.com/saleemk/feedBack-plugin-mobile-ui)
@@ -28,7 +30,8 @@ its runtime/settings controls.
 - `src/player.js`: highest-risk module; Player touch controls and action bridge
 - `src/library.js`: Song Library toolbar/content behavior
 - `src/plugins.js`: phone Plugins row-to-settings bridge
-- `src/shell.js`: topbar/status rail classes
+- `src/shell.js`: topbar/status rail classes plus fixed-Home horizontal touch
+  navigation
 - `src/debug.js`: debug overlay
 - `src/diagnostics.js`: runtime snapshot
 - `src/safe-area.js`: tiny active diagnostics feature
@@ -39,7 +42,7 @@ its runtime/settings controls.
 
 | Area | Status | Notes |
 | --- | --- | --- |
-| Shell/topbar/drawer | active | Mobile drawer and status rail polish. |
+| Shell/topbar/nav | active | Fixed Home, dynamic horizontal destination strip, and status rail polish. |
 | Home | active | Mobile/tablet layout polish. |
 | Song Library | active | Toolbar, options, and content polish. |
 | Progress | active | Mobile/tablet layout polish. |
@@ -51,16 +54,35 @@ its runtime/settings controls.
 | Lessons | mapped only | Screen detection retained; visual styling reverted. |
 | FeedBarcade | mapped only | Screen detection retained; visual styling skipped. |
 | Unlockables | mapped only | Screen detection retained; visual styling skipped. |
-| Player | active | Touch controls, speed cleanup, panels, and rail bridge. |
+| Player | active | Touch controls, quick settings, speed placement, panels, and rail bridge. |
+
+## Touch Navigation
+
+- Home is fixed and always visible on phone/tablet non-Player screens.
+- Library, Career, Progress, Unlockables, FeedBarcade, Plugins, Settings,
+  Playlists, Lessons, Favorites, Saved for Later, and valid plugin-added
+  destinations live in one horizontally scrollable strip.
+- Known destinations keep that stable priority order. Unknown/plugin
+  destinations are appended afterward.
+- Hidden, disabled, removed, or invalid core nav entries are excluded.
+- Delayed additions/removals and relevant label or visibility mutations update
+  the strip, with rebuilds coalesced before rendering.
+- The old bottom-navigation More button/sheet is removed. Do not restore it
+  unless a future task explicitly changes the accepted navigation model.
+- Mobile UI still clicks the live original core/plugin nav anchor as its routing
+  target.
+- Active destinations are revealed only when they are outside the visible
+  scroll area.
+- Player hides the bottom nav and uses Player-specific controls.
 
 ## Player Mode Map
 
 | Device/mode | Behavior |
 | --- | --- |
-| Phone portrait | More icon opens persistent shelf. |
-| Phone low-height landscape | Direct inline action chips. No More shelf. |
-| Tablet portrait | Direct inline action chips. No More button or More shelf. |
-| Tablet landscape | Direct inline action chips. No More button or More shelf. |
+| Phone portrait | Home/Library exit, transport controls, compact Speed, and Player More shelf with Arrangement, Difficulty, and action controls. |
+| Phone low-height landscape | Shared direct-control strip: Speed, Arrangement, Difficulty, then action chips. No Player More shelf. |
+| Tablet portrait | Shared direct-control strip: Speed, Arrangement, Difficulty, then action chips. No Player More shelf. |
+| Tablet landscape | Shared direct-control strip: Speed, Arrangement, Difficulty, then action chips. No Player More shelf. |
 | Desktop | Core player remains unchanged. |
 
 Notes:
@@ -82,19 +104,22 @@ Notes:
 - Lyrics active-state sync
 - Practice special handling
 - glass/translucent panels
+- quick Arrangement and Difficulty proxy controls
+- real Speed control moved into the shared direct-control strip in phone
+  low-height landscape and tablet Player layouts
 - phone/tablet/landscape panel positioning
-- pause-on-More applies only to phone portrait More shelf opening
+- pause-on-More applies only to phone portrait Player More shelf opening
 
 ## Settings
 
 The plugin settings page provides:
 
 - Enable mobile UI enhancements
-- Pause song when opening More controls
+- Pause song when opening Player More controls
 - Show Mobile UI debug view
 
-Pause-on-More applies only to phone portrait More shelf opening. It does not
-apply to tablet direct chips or phone low-height landscape chips.
+Pause-on-More applies only to the phone portrait Player More shelf. It does not
+apply to tablet direct controls or phone low-height landscape direct controls.
 
 ## Runtime / Debug API
 
@@ -155,9 +180,9 @@ Current CSS sections:
 - Plugins
 - Collections
 - Player shared
-- Player phone portrait
-- Player low-height landscape
-- Player tablet direct controls
+- Player phone portrait More shelf
+- Player low-height landscape shared direct-control strip
+- Player tablet shared direct-control strip
 - Player panels/Practice
 - optional integrations
 
@@ -168,6 +193,9 @@ Treat these core selectors as compatibility points:
 - `#player`
 - `#highway`
 - `#player-controls`
+- `#v3-nav`
+- `#v3-nav a[data-v3-nav]`
+- `.v3-nav-label`
 - `#v3-player-rail`
 - `#v3-railzone`
 - `.v3-rail-pop`
@@ -175,13 +203,30 @@ Treat these core selectors as compatibility points:
 - `#section-practice-control`
 - `#section-map`
 - `#btn-play`
+- `.v3-speed-cluster`
 - `.v3-speed-slider`
 - `#speed-label` / `.v3-speed-label`
+- `#arr-select`
+- `#mastery-slider`
+- `#mastery-label`
+- `#stem-mixer-panel`
+
+Core APIs / events used as compatibility points:
+
+- `window.feedBack.on/off`
+- `screen:changed`
+- `song:loaded`
+- `song:ready`
+- `window.feedBack.requestExitSong()`
+- `window.showScreen()`
+- `window.seekBy()`
 
 Rules:
 
 - Do not remove rail DOM.
 - Do not directly toggle core hidden state unless the existing action path does it.
+- The real `.v3-speed-cluster` is moved in supported touch modes and must be
+  restored on mode exit, disable, and destroy.
 - Missing targets should fail safely.
 - Use debug mode for missing selector diagnostics.
 
@@ -212,16 +257,23 @@ node --check .\screen.js
 - phone low-height landscape Player
 - tablet portrait Player
 - tablet landscape Player
+- fixed Home plus horizontal destination navigation
+- plugin-added destination appears after known destinations
+- hidden/removed destination disappears
+- no duplicate navigation after mutation/rotation
+- active destination reveal works
 - desktop unchanged
 - Player rotation
 - leave and re-enter Player
 - no duplicate injected controls
 - enable/disable setting
-- pause-on-More setting
+- pause-on-More setting for the phone portrait Player More shelf
 - debug view setting
 - Practice opens and remains usable
 - Lyrics toggles and active state updates
 - speed slider and speed peek
+- Speed cluster restores correctly after mode exit, disable, and destroy
+- Arrangement and Difficulty quick controls
 - Home
 - Song Library
 - Progress
