@@ -2126,6 +2126,39 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #s
   max-width: 100% !important;
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #v3-main {
+  overflow-x: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings .fb-tabpanel.active[data-tab="system"],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings .fb-srows,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings .fb-srow-stack,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings .fb-srow-wide {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings .fb-srow-stack:has(#enrich-enabled) .grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings .fb-srow-stack:has(#enrich-enabled) label,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings .fb-srow-stack:has(#enrich-enabled) .fb-srow-wide > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings .fb-srow-stack:has(#enrich-enabled) select,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-phone #settings .fb-srow-stack:has(#enrich-enabled) input[type="text"] {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-settings.mobile-ui-tablet #settings .fb-settings {
   max-width: 64rem !important;
   padding: 1.5rem 1.5rem 3rem !important;
