@@ -139,7 +139,10 @@ let _landscapeControls = null;
 let _tabletControls = null;
 let _libraryButton = null;
 let _guardedActionSurfaces = new Set();
-let _stemMixerObserver = null;
+let _stemMixerDiscoveryObserver = null;
+let _stemMixerPanelObserver = null;
+let _stemMixerSyncFrame = null;
+let _stemMixerPanel = null;
 let _stemMixerState = null;
 let _quickSettings = null;
 let _quickSettingsMode = null;
@@ -599,11 +602,21 @@ function _stopActionSurfaceClick(e) {
   if (_isInsidePlayerActionSurface(e.target)) e.stopPropagation();
 }
 
+function _guardActionSurface(surface) {
+  if (!surface || _guardedActionSurfaces.has(surface)) return;
+  surface.addEventListener('click', _stopActionSurfaceClick);
+  _guardedActionSurfaces.add(surface);
+}
+
+function _unguardActionSurface(surface) {
+  if (!surface || !_guardedActionSurfaces.has(surface)) return;
+  surface.removeEventListener('click', _stopActionSurfaceClick);
+  _guardedActionSurfaces.delete(surface);
+}
+
 function _ensureActionSurfaceGuards() {
   document.querySelectorAll(ACTION_SURFACE_GUARD_SELECTORS.join(',')).forEach(function (surface) {
-    if (_guardedActionSurfaces.has(surface)) return;
-    surface.addEventListener('click', _stopActionSurfaceClick);
-    _guardedActionSurfaces.add(surface);
+    _guardActionSurface(surface);
   });
 }
 
@@ -624,36 +637,117 @@ function _isElementVisible(el) {
 
 function _isStemMixerScope(state) {
   return state?.screen === 'player' &&
+    !state?.disabled &&
     state?.isV3 &&
     (state?.viewport?.deviceClass === 'phone' || state?.viewport?.deviceClass === 'tablet');
 }
 
-function _syncStemMixerState() {
-  const active = _isStemMixerScope(_stemMixerState) &&
-    _isElementVisible(document.querySelector(SELECTORS.stemMixerPanel));
-  document.documentElement.classList.toggle('mobile-ui-stem-mixer-open', !!active);
+function _isStemMixerPanelNode(node) {
+  return node?.nodeType === 1 && node.id === 'stem-mixer-panel';
 }
 
-function _installStemMixerObserver(state) {
-  _stemMixerState = state || null;
-  _syncStemMixerState();
-  if (_stemMixerObserver || !_isStemMixerScope(_stemMixerState)) return;
-  _stemMixerObserver = new MutationObserver(function () {
+function _findStemMixerPanelInNode(node) {
+  if (_isStemMixerPanelNode(node)) return node;
+  if (node?.nodeType !== 1 || typeof node.querySelector !== 'function') return null;
+  return node.querySelector(SELECTORS.stemMixerPanel);
+}
+
+function _removedNodeContainsStemMixerPanel(node) {
+  if (!_stemMixerPanel || node?.nodeType !== 1) return false;
+  return node === _stemMixerPanel ||
+    (typeof node.contains === 'function' && node.contains(_stemMixerPanel));
+}
+
+function _findStemMixerPanel() {
+  return document.getElementById('stem-mixer-panel');
+}
+
+function _disconnectStemMixerPanelObserver() {
+  if (_stemMixerPanelObserver) {
+    _stemMixerPanelObserver.disconnect();
+    _stemMixerPanelObserver = null;
+  }
+}
+
+function _scheduleStemMixerSync() {
+  if (_stemMixerSyncFrame) return;
+  _stemMixerSyncFrame = requestAnimationFrame(function () {
+    _stemMixerSyncFrame = null;
     _syncStemMixerState();
-    _ensureActionSurfaceGuards();
   });
-  _stemMixerObserver.observe(document.body, {
-    childList: true,
-    subtree: true,
+}
+
+function _cacheStemMixerPanel(panel) {
+  if (panel === _stemMixerPanel) return;
+  if (_stemMixerPanel) _unguardActionSurface(_stemMixerPanel);
+  _disconnectStemMixerPanelObserver();
+  _stemMixerPanel = panel || null;
+  if (!_stemMixerPanel) return;
+
+  _guardActionSurface(_stemMixerPanel);
+  _stemMixerPanelObserver = new MutationObserver(function () {
+    _scheduleStemMixerSync();
+  });
+  _stemMixerPanelObserver.observe(_stemMixerPanel, {
     attributes: true,
     attributeFilter: ['class', 'style', 'hidden']
   });
 }
 
+function _clearStemMixerPanel(panel) {
+  if (panel && panel !== _stemMixerPanel) return;
+  if (_stemMixerPanel) _unguardActionSurface(_stemMixerPanel);
+  _disconnectStemMixerPanelObserver();
+  _stemMixerPanel = null;
+}
+
+function _syncStemMixerState() {
+  const active = _isStemMixerScope(_stemMixerState) &&
+    _isElementVisible(_stemMixerPanel);
+  document.documentElement.classList.toggle('mobile-ui-stem-mixer-open', !!active);
+}
+
+function _installStemMixerObserver(state) {
+  _stemMixerState = state || null;
+  if (!_isStemMixerScope(_stemMixerState)) {
+    _uninstallStemMixerObserver();
+    return;
+  }
+  _cacheStemMixerPanel(_findStemMixerPanel());
+  _syncStemMixerState();
+  if (_stemMixerDiscoveryObserver || !document.body) return;
+  _stemMixerDiscoveryObserver = new MutationObserver(function (mutations) {
+    let changed = false;
+    mutations.forEach(function (mutation) {
+      mutation.addedNodes.forEach(function (node) {
+        const panel = _findStemMixerPanelInNode(node);
+        if (!panel) return;
+        _cacheStemMixerPanel(panel);
+        changed = true;
+      });
+      mutation.removedNodes.forEach(function (node) {
+        if (!_removedNodeContainsStemMixerPanel(node)) return;
+        _clearStemMixerPanel();
+        changed = true;
+      });
+    });
+    if (changed) _scheduleStemMixerSync();
+  });
+  _stemMixerDiscoveryObserver.observe(document.body, {
+    childList: true,
+    subtree: false
+  });
+}
+
 function _uninstallStemMixerObserver() {
-  if (_stemMixerObserver) {
-    _stemMixerObserver.disconnect();
-    _stemMixerObserver = null;
+  if (_stemMixerDiscoveryObserver) {
+    _stemMixerDiscoveryObserver.disconnect();
+    _stemMixerDiscoveryObserver = null;
+  }
+  _clearStemMixerPanel();
+  if (_stemMixerSyncFrame) {
+    cancelAnimationFrame(_stemMixerSyncFrame);
+    _stemMixerSyncFrame = null;
   }
   _stemMixerState = null;
   document.documentElement.classList.remove('mobile-ui-stem-mixer-open');
@@ -942,6 +1036,26 @@ function _uninstallPlayButtonSync() {
     if (fb && fb.off) fb.off(l.event, l.fn);
   });
   _pbListeners = null;
+}
+
+function _getPlayerModeForDiagnostics() {
+  if (_controlsPicker?.isConnected || _controlsBtn?.isConnected) return 'phone-portrait-more-shelf';
+  if (_landscapeControls?.isConnected) return 'phone-low-height-landscape-strip';
+  if (_tabletControls?.isConnected) return 'tablet-direct-strip';
+  if (document.documentElement.classList.contains('mobile-ui-screen-player')) return 'core';
+  return 'inactive';
+}
+
+export function getPlayerDiagnostics() {
+  const speedCluster = _getSpeedCluster();
+  return {
+    active: document.documentElement.classList.contains('mobile-ui-screen-player'),
+    mode: _getPlayerModeForDiagnostics(),
+    playerMoreOpen: !!_controlsOpen,
+    speedRelocated: !!(speedCluster && speedCluster.classList.contains('mobile-ui-player-speed-in-scroll')),
+    stemMixerDiscovered: !!(_stemMixerPanel && _stemMixerPanel.isConnected),
+    stemMixerOpen: document.documentElement.classList.contains('mobile-ui-stem-mixer-open')
+  };
 }
 
 // ── Feature ───────────────────────────────────────────────────────────────

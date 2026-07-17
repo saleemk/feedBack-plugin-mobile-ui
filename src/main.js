@@ -20,6 +20,7 @@ import { createFeature as createPluginsFeature } from './plugins.js';
 import { createFeature as createHighwayFeature } from './highway.js';
 import { createFeature as createGesturesFeature } from './gestures.js';
 import { createFeature as createSafeAreaFeature } from './safe-area.js';
+import { cleanupPreboot } from './preboot.js';
 
 const ROOT_CLASSES = [
   'mobile-ui-enabled',
@@ -130,6 +131,7 @@ function createRuntime() {
     clearIosViewportOriginFixIfNeeded();
     lifecycle.refresh(getContext(reason));
     debugOverlay.refresh(getContext(reason));
+    diagnostics.contribute();
     return runtime.snapshot();
   }
 
@@ -454,11 +456,6 @@ function applyRootClasses(state) {
 
 function removeRootClasses() {
   document.documentElement.classList.remove(...ROOT_CLASSES);
-}
-
-function cleanupPreboot() {
-  document.documentElement.classList.remove('mobile-ui-preboot-touch-nav');
-  document.getElementById('mobile-ui-preboot-style')?.remove();
 }
 
 function readStorageFlag(key) {
