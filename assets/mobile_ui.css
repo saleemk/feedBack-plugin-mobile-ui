@@ -1409,6 +1409,15 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-le
   font-size: 0.9rem !important;
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-home > .max-w-7xl > p.text-sm.text-fb-textDim:has(a[href*="/CHANGELOG.md"]) {
+  font-size: 0.75rem !important;
+  line-height: 1.25 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-home > .max-w-7xl > p.text-sm.text-fb-textDim:has(a[href*="/CHANGELOG.md"]) + .grid {
+  margin-top: 0.75rem !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-home > .max-w-7xl > .grid {
   gap: 1rem !important;
   margin-top: 1rem !important;
