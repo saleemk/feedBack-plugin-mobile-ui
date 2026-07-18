@@ -1490,6 +1490,76 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .
   overflow: hidden !important;
 }
 
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-topbar-stats {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: stretch !important;
+  gap: 0.25rem !important;
+  min-width: 0 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-stat-button {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 3.35rem !important;
+  height: 2.85rem !important;
+  min-height: 2.85rem !important;
+  max-height: 2.85rem !important;
+  padding: 0.28rem 0.32rem !important;
+  border: 1px solid rgba(148, 163, 184, 0.16) !important;
+  border-radius: 0.75rem !important;
+  background: rgba(15, 23, 42, 0.74) !important;
+  color: #e5edf8 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 24px rgba(0, 0, 0, 0.18) !important;
+  overflow: hidden !important;
+  touch-action: manipulation !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile-ui-landscape .mobile-ui-home-stat-button {
+  height: 2.6rem !important;
+  min-height: 2.6rem !important;
+  max-height: 2.6rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-stat-button[data-mobile-ui-home-stat="songs"] .mobile-ui-home-stat-unit {
+  color: #fbbf24 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-stat-button[data-mobile-ui-home-stat="active"] .mobile-ui-home-stat-unit {
+  color: #34d399 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-stat-value {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 0.92rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-stat-unit {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  margin-top: 0.16rem !important;
+  font-size: 0.53rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-home .mobile-ui-home-stat-source-hidden {
+  display: none !important;
+}
+
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-tuner [data-open-tuner],
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-instrument [data-inst-toggle],
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-badge-profile [data-v3-open-profile] {
