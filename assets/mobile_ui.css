@@ -1490,7 +1490,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .
   overflow: hidden !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-topbar-stats {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) .mobile-ui-home-topbar-stats {
   display: inline-flex !important;
   flex: 0 0 auto !important;
   align-items: stretch !important;
@@ -1498,7 +1498,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobil
   min-width: 0 !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-stat-button {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) .mobile-ui-home-stat-button {
   box-sizing: border-box !important;
   display: inline-flex !important;
   flex: 0 0 auto !important;
@@ -1525,15 +1525,22 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone.mobile
   max-height: 2.6rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-stat-button[data-mobile-ui-home-stat="songs"] .mobile-ui-home-stat-unit {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet .mobile-ui-home-stat-button {
+  width: 3.5rem !important;
+  height: 3rem !important;
+  min-height: 3rem !important;
+  max-height: 3rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) .mobile-ui-home-stat-button[data-mobile-ui-home-stat="songs"] .mobile-ui-home-stat-unit {
   color: #fbbf24 !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-stat-button[data-mobile-ui-home-stat="active"] .mobile-ui-home-stat-unit {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) .mobile-ui-home-stat-button[data-mobile-ui-home-stat="active"] .mobile-ui-home-stat-unit {
   color: #34d399 !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-stat-value {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) .mobile-ui-home-stat-value {
   display: block !important;
   max-width: 100% !important;
   overflow: hidden !important;
@@ -1544,7 +1551,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobil
   line-height: 1 !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobile-ui-home-stat-unit {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) .mobile-ui-home-stat-unit {
   display: block !important;
   max-width: 100% !important;
   overflow: hidden !important;
@@ -1556,7 +1563,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone .mobil
   line-height: 1 !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-phone #v3-home .mobile-ui-home-stat-source-hidden {
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-home .mobile-ui-home-stat-source-hidden {
   display: none !important;
 }
 

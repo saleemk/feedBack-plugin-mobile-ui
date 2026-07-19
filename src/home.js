@@ -55,15 +55,15 @@ export function createFeature() {
     syncFrame = null;
   }
 
-  function _isPhoneHome() {
+  function _isTouchHomeWithTopbarStats() {
     return lastState?.screen === 'home' &&
       lastState?.isV3 &&
       !lastState?.disabled &&
-      lastState?.viewport?.deviceClass === 'phone';
+      (lastState?.viewport?.deviceClass === 'phone' || lastState?.viewport?.deviceClass === 'tablet');
   }
 
   function _syncTopbarStats() {
-    if (!_isPhoneHome()) {
+    if (!_isTouchHomeWithTopbarStats()) {
       _removeTopbarStats();
       return;
     }
