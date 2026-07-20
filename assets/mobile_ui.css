@@ -618,7 +618,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet:not(.mobile-ui-screen-playe
    Non-Home screens use title + Support on row 1, status cards on row 2.
    Library adds the core search wrapper as row 3 below the status cards. */
 
-html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar {
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-career, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar {
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) auto !important;
   grid-template-rows: auto auto !important;
@@ -627,16 +627,16 @@ html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.
   padding: 0.45rem 0.55rem 0.6rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar > .flex:first-child,
-html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar > .flex:last-child {
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-career, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar > .flex:first-child,
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-career, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar > .flex:last-child {
   display: contents !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-hamburger {
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-career, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-hamburger {
   display: none !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar-title {
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-career, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar-title {
   grid-column: 1 !important;
   grid-row: 1 !important;
   width: auto !important;
@@ -647,7 +647,7 @@ html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.
   white-space: nowrap !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar a[href*="patreon"] {
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-career, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar a[href*="patreon"] {
   grid-column: 2 !important;
   grid-row: 1 !important;
   display: inline-flex !important;
@@ -663,12 +663,12 @@ html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.
   border-radius: 0.5rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar a[href*="patreon"] svg {
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-career, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) #v3-topbar a[href*="patreon"] svg {
   width: 0.75rem !important;
   height: 0.75rem !important;
 }
 
-html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) .mobile-ui-topbar-status-rail {
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.mobile-ui-screen-library, .mobile-ui-screen-career, .mobile-ui-screen-progress, .mobile-ui-screen-plugins, .mobile-ui-screen-settings, .mobile-ui-screen-playlists, .mobile-ui-screen-favorites, .mobile-ui-screen-saved, .mobile-ui-screen-lessons, .mobile-ui-screen-feedbarcade, .mobile-ui-screen-unlockables) .mobile-ui-topbar-status-rail {
   grid-column: 1 / -1 !important;
   grid-row: 2 !important;
   width: 100% !important;
