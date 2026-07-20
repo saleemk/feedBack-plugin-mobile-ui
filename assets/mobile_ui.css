@@ -177,7 +177,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone .mobile-ui-topbar-status-rai
   min-width: 0;
   flex-shrink: 0 !important;
   gap: 0.25rem !important;
-  overflow: hidden;
+  overflow: visible;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-phone #v3-topbar-title {
@@ -345,7 +345,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet.mobile-ui-portrait .mobile-
   width: 100%;
   max-width: 100%;
   flex-shrink: 0 !important;
-  overflow: hidden;
+  overflow: visible;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-tablet.mobile-ui-portrait #v3-topbar-title {
@@ -676,7 +676,31 @@ html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):is(.
   min-width: 0 !important;
   justify-content: flex-start !important;
   align-items: stretch !important;
-  overflow: hidden !important;
+  overflow: visible !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-topbar {
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-tuner-wrap,
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-instrument-wrap {
+  overflow: visible !important;
+  z-index: 45 !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-tuner-wrap #tuner-plugin-ui {
+  left: 0 !important;
+  right: auto !important;
+  width: min(18rem, calc(100vw - 1rem)) !important;
+  max-width: min(18rem, calc(100vw - 1rem)) !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3:is(.mobile-ui-phone, .mobile-ui-tablet):not(.mobile-ui-screen-player) #v3-badge-instrument [data-inst-menu] {
+  left: 0 !important;
+  right: auto !important;
+  max-width: min(15rem, calc(100vw - 1rem)) !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-library:is(.mobile-ui-phone, .mobile-ui-tablet) #v3-topbar {
@@ -1487,7 +1511,7 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .
   min-width: 0 !important;
   justify-content: flex-start !important;
   align-items: stretch !important;
-  overflow: hidden !important;
+  overflow: visible !important;
 }
 
 html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home:is(.mobile-ui-phone, .mobile-ui-tablet) .mobile-ui-home-topbar-stats {
