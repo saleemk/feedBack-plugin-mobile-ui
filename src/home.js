@@ -77,9 +77,9 @@ export function createFeature() {
     }
 
     const wrapper = _ensureTopbarStats(rail, profile);
-    _upsertButton(wrapper, 'songs', stats.songs, 'Songs', 'v3-songs');
+    _upsertStat(wrapper, 'songs', stats.songs, 'Songs');
     if (stats.active) {
-      _upsertButton(wrapper, 'active', stats.active, 'Active', 'v3-plugins');
+      _upsertStat(wrapper, 'active', stats.active, 'Active');
     } else {
       wrapper.querySelector('[data-mobile-ui-home-stat="active"]')?.remove();
     }
@@ -118,7 +118,6 @@ export function createFeature() {
       topbarStats = document.createElement('div');
       topbarStats.className = 'mobile-ui-home-topbar-stats';
       topbarStats.setAttribute('aria-label', 'Home stats');
-      topbarStats.addEventListener('click', _onTopbarStatClick);
     }
     const reference = profile ? profile.nextSibling : null;
     if (topbarStats.parentElement !== rail || (profile && topbarStats.previousElementSibling !== profile)) {
@@ -127,29 +126,21 @@ export function createFeature() {
     return topbarStats;
   }
 
-  function _upsertButton(wrapper, key, stat, label, target) {
-    let button = wrapper.querySelector('[data-mobile-ui-home-stat="' + key + '"]');
-    if (!button) {
-      button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'mobile-ui-home-stat-button';
-      button.setAttribute('data-mobile-ui-home-stat', key);
-      wrapper.appendChild(button);
+  function _upsertStat(wrapper, key, stat, label) {
+    let card = wrapper.querySelector('[data-mobile-ui-home-stat="' + key + '"]');
+    if (!card || card.tagName !== 'DIV') {
+      const replacement = document.createElement('div');
+      replacement.className = 'mobile-ui-home-stat-button';
+      replacement.setAttribute('data-mobile-ui-home-stat', key);
+      if (card) card.replaceWith(replacement);
+      else wrapper.appendChild(replacement);
+      card = replacement;
     }
-    button.setAttribute('data-mobile-ui-target', target);
-    button.setAttribute('aria-label', label + ': ' + stat.value + ' ' + stat.unit);
-    button.innerHTML = '<span class="mobile-ui-home-stat-value"></span><span class="mobile-ui-home-stat-unit"></span>';
-    button.querySelector('.mobile-ui-home-stat-value').textContent = stat.value;
-    button.querySelector('.mobile-ui-home-stat-unit').textContent = stat.unit;
-  }
-
-  function _onTopbarStatClick(event) {
-    const button = event.target.closest('[data-mobile-ui-home-stat]');
-    if (!button) return;
-    const target = button.getAttribute('data-mobile-ui-target');
-    if (target && typeof window.showScreen === 'function') {
-      window.showScreen(target);
-    }
+    card.removeAttribute('data-mobile-ui-target');
+    card.setAttribute('aria-label', label + ': ' + stat.value + ' ' + stat.unit);
+    card.innerHTML = '<span class="mobile-ui-home-stat-value"></span><span class="mobile-ui-home-stat-unit"></span>';
+    card.querySelector('.mobile-ui-home-stat-value').textContent = stat.value;
+    card.querySelector('.mobile-ui-home-stat-unit').textContent = stat.unit;
   }
 
   function _syncSourceVisibility(stats) {
