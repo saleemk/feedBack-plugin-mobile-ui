@@ -2224,6 +2224,63 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-home.mobile-ui-tablet #v3-c
   overflow: hidden !important;
 }
 
+/* 5.3 Career
+   Keep the Venues tab inside the phone viewport without touching bottom-nav scrolling. */
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #v3-main {
+  overflow-x: hidden !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #plugin-career,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #plugin-career > .max-w-5xl,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-progress-wrap,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-venues,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-star-list {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #plugin-career > .max-w-5xl {
+  width: 100% !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues .career-venues > *,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues .career-star-row,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues .career-star-row > *,
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues .flex {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues .career-star-row {
+  align-items: flex-start !important;
+  gap: 0.45rem !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues .career-star-row .song {
+  flex: 1 1 auto !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues .career-star-row .hint {
+  flex: 0 1 auto !important;
+  text-align: right !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues .career-btn {
+  max-width: 100% !important;
+  white-space: normal !important;
+}
+
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues [data-career-play],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues [data-career-unselect],
+html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-career.mobile-ui-phone #career-tab-venues [data-career-delete] {
+  flex: 0 1 auto !important;
+}
+
 /* 6. Progress
    Compact phone progress cards and let tablet progress content use more width. */
 
