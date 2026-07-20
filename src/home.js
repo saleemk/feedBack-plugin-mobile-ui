@@ -5,6 +5,7 @@ export function createFeature() {
   let topbarStats = null;
   let songsSource = null;
   let activeSource = null;
+  let cachedStats = null;
 
   return {
     name: 'home',
@@ -22,6 +23,7 @@ export function createFeature() {
       _cancelSync();
       _removeTopbarStats();
       lastState = null;
+      cachedStats = null;
     }
   };
 
@@ -55,23 +57,31 @@ export function createFeature() {
     syncFrame = null;
   }
 
-  function _isTouchHomeWithTopbarStats() {
-    return lastState?.screen === 'home' &&
+  function _isTouchNonPlayerWithTopbarStats() {
+    return lastState?.screen !== 'player' &&
       lastState?.isV3 &&
       !lastState?.disabled &&
       (lastState?.viewport?.deviceClass === 'phone' || lastState?.viewport?.deviceClass === 'tablet');
   }
 
   function _syncTopbarStats() {
-    if (!_isTouchHomeWithTopbarStats()) {
+    if (!_isTouchNonPlayerWithTopbarStats()) {
       _removeTopbarStats();
       return;
     }
 
     const rail = document.querySelector('.mobile-ui-topbar-status-rail');
     const profile = document.getElementById('v3-badge-profile');
-    const stats = _readHomeStats();
-    if (!rail || !stats.songs) {
+    const sourceStats = _readHomeStats();
+    if (sourceStats.songs) {
+      cachedStats = {
+        songs: sourceStats.songs,
+        active: sourceStats.active
+      };
+    }
+
+    const stats = sourceStats.songs ? sourceStats : cachedStats;
+    if (!rail || !stats?.songs) {
       _removeTopbarStats();
       return;
     }
@@ -83,7 +93,11 @@ export function createFeature() {
     } else {
       wrapper.querySelector('[data-mobile-ui-home-stat="active"]')?.remove();
     }
-    _syncSourceVisibility(stats);
+    if (lastState?.screen === 'home' && sourceStats.songs) {
+      _syncSourceVisibility(sourceStats);
+    } else {
+      _restoreSourceVisibility();
+    }
   }
 
   function _readHomeStats() {
@@ -144,12 +158,18 @@ export function createFeature() {
   }
 
   function _syncSourceVisibility(stats) {
-    _setSourceHidden(songsSource, false);
-    _setSourceHidden(activeSource, false);
+    _restoreSourceVisibility();
     songsSource = stats.songCard || null;
     activeSource = stats.activeCard || null;
     _setSourceHidden(songsSource, true);
     if (stats.active) _setSourceHidden(activeSource, true);
+  }
+
+  function _restoreSourceVisibility() {
+    _setSourceHidden(songsSource, false);
+    _setSourceHidden(activeSource, false);
+    songsSource = null;
+    activeSource = null;
   }
 
   function _setSourceHidden(source, hidden) {
@@ -158,10 +178,7 @@ export function createFeature() {
   }
 
   function _removeTopbarStats() {
-    _setSourceHidden(songsSource, false);
-    _setSourceHidden(activeSource, false);
-    songsSource = null;
-    activeSource = null;
+    _restoreSourceVisibility();
     topbarStats?.remove();
     topbarStats = null;
     document.querySelectorAll('.mobile-ui-home-stat-source-hidden')
