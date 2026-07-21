@@ -4427,12 +4427,12 @@ html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-player-tab
 
   html.mobile-ui-enabled.mobile-ui-v3.mobile-ui-screen-player.mobile-ui-landscape #v3-player-rail > #section-practice-control #section-practice-bar {
     position: fixed !important;
-    left: max(0.5rem, env(safe-area-inset-left)) !important;
-    right: max(0.5rem, env(safe-area-inset-right)) !important;
+    left: auto !important;
+    right: max(0.75rem, env(safe-area-inset-right)) !important;
     bottom: calc(3.7rem + env(safe-area-inset-bottom)) !important;
     top: auto !important;
     transform: none !important;
-    width: auto !important;
+    width: min(22rem, calc(100vw - 1.5rem)) !important;
     min-width: 0 !important;
     max-width: none !important;
     max-height: min(50vh, 16rem) !important;
